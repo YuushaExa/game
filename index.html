@@ -40,6 +40,7 @@
             cursor: pointer;
             border: 2px solid transparent; /* Default border */
             transition: border 0.3s;
+            position: relative; /* For positioning damage and health */
         }
         .hero.selected {
             border: 2px solid #000; /* Border for selected heroes */
@@ -84,23 +85,53 @@
             display: flex;
             justify-content: space-around; /* Space enemies evenly */
         }
+       .battle-result {
+    position: absolute;
+    top: 20px; /* Adjust as needed */
+    left: 20px; /* Position on the left side */
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-height: 200px; /* Limit height */
+    overflow-y: auto; /* Scroll if content exceeds height */
+    z-index: 2; /* Ensure it appears above other elements */
+}
+
+        .health {
+            position: absolute;
+            bottom: -20px; /* Position health below the hero/enemy */
+            font-size: 12px;
+        }
+        .damage {
+            position: absolute;
+            top: -20px; /* Position damage above the hero/enemy */
+            font-size: 12px;
+            color: red;
+            animation: damage-animation 1s forwards; /* Animation for damage */
+        }
+        @keyframes damage-animation {
+            0% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
     </style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="background"></div>
-        <div class="enemies-container" id="enemies-container"></div> <!-- Enemies will be rendered here -->
-        <!-- Selected heroes will be rendered here -->
-    </div>
+<div class="game-container">
+    <div class="background"></div>
+    <div class="enemies-container" id="enemies-container"></div> <!-- Enemies will be rendered here -->
+    <div class="battle-result" id="battle-result"></div> <!-- Move battle result here -->
+    <!-- Selected heroes will be rendered here -->
+</div>
     <div class="tabs">
-        <div class="tab active" data-tab="tab1">Tab 1</div>
-        <div class="tab" data-tab="tab2">Tab 2</div>
-        <div class="tab" data-tab="tab3">Tab 3</div>
+        <div class="tab active" data-tab="tab1">Select Heroes</div>
+        <div class="tab" data-tab="tab2">Content for Tab 2</div>
+        <div class="tab" data-tab="tab3">Content for Tab 3</div>
+        <div class="tab" data-tab="tab4">Battle Mode</div>
     </div>
 
     <div id="tab1" class="tab-content active-content">
         <h2>Select Your Heroes</h2>
-              <div id="heroes-container"></div>
+                <div id="heroes-container"></div>
     </div>
     <div id="tab2" class="tab-content">
         <h2>Content for Tab 2</h2>
@@ -110,6 +141,12 @@
         <h2>Content for Tab 3</h2>
         <p>This is the content for the third tab.</p>
     </div>
+   
+    <div id="tab4" class="tab-content">
+        <h2>Battle Mode</h2>
+        <button id="start-battle">Start Battle</button>
+        <div class="battle-result" id="battle-result"></div>
+    </div>
 
     <script>
         const maxSelection = 5;
@@ -117,42 +154,57 @@
 
         // Fetch heroes from the JSON URL
         fetch('https://raw.githubusercontent.com/YuushaExa/game/refs/heads/main/heroes.json')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(heroes => {
                 const heroesContainer = document.getElementById('heroes-container');
                 heroes.forEach(hero => {
                     const heroDiv = document.createElement('div');
                     heroDiv.classList.add('hero');
                     heroDiv.style.backgroundColor = hero.color;
-                    heroDiv.innerHTML = `<div class="hero-name">${hero.name}</div>`;
+                    heroDiv.innerHTML = `<div class="hero-name">${hero.name}</div><div class="health">${hero.stats.health}</div>`;
+                    heroDiv.dataset.stats = JSON.stringify(hero.stats); // Store stats in a data attribute
                     heroDiv.addEventListener('click', () => selectHero(hero, heroDiv));
                     heroesContainer.appendChild(heroDiv);
                 });
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
             });
 
         // Fetch enemies from the JSON URL
         fetch('https://raw.githubusercontent.com/YuushaExa/game/refs/heads/main/enemies.json')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(enemies => {
                 const enemiesContainer = document.getElementById('enemies-container');
                 enemies.forEach(enemy => {
                     const enemyDiv = document.createElement('div');
                     enemyDiv.classList.add('enemy');
                     enemyDiv.style.backgroundColor = enemy.color;
-                    enemyDiv.innerHTML = `<div class="enemy-name">${enemy.name}</div>`;
+                    enemyDiv.innerHTML = `<div class="enemy-name">${enemy.name}</div><div class="health">${enemy.stats.health}</div>`;
+                    enemyDiv.dataset.stats = JSON.stringify(enemy.stats); // Store stats in a data attribute
                     enemiesContainer.appendChild(enemyDiv);
                 });
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
             });
 
         function selectHero(hero, heroDiv) {
-            // Check if the hero is already selected
             const index = selectedHeroes.findIndex(h => h.id === hero.id);
             if (index > -1) {
-                // If already selected, remove it
                 selectedHeroes.splice(index, 1);
                 heroDiv.classList.remove('selected');
             } else {
-                // If not selected and we haven't reached the max selection, add it
                 if (selectedHeroes.length < maxSelection) {
                     selectedHeroes.push(hero);
                     heroDiv.classList.add('selected');
@@ -163,54 +215,121 @@
             renderSelectedHeroes();
         }
 
-     function renderSelectedHeroes() {
-    // Clear the game container
-    const gameContainer = document.querySelector('.game-container');
-    
-    // Clear existing heroes
-    const existingHeroes = gameContainer.querySelectorAll('.hero');
-    existingHeroes.forEach(hero => hero.remove());
+        function renderSelectedHeroes() {
+            const gameContainer = document.querySelector('.game-container');
+            const existingHeroes = gameContainer.querySelectorAll('.hero');
+            existingHeroes.forEach(hero => hero.remove());
 
-    // Reset background
-    const background = document.createElement('div');
-    background.classList.add('background');
-    gameContainer.appendChild(background);
+            const background = document.createElement('div');
+            background.classList.add('background');
+            gameContainer.appendChild(background);
 
-    // Re-append enemies
-    const enemiesContainer = document.getElementById('enemies-container');
-    gameContainer.appendChild(enemiesContainer); // Re-append enemies
+            const enemiesContainer = document.getElementById('enemies-container');
+            gameContainer.appendChild(enemiesContainer);
 
-    // Render selected heroes
-    selectedHeroes.forEach(hero => {
-        const heroDiv = document.createElement('div');
-        heroDiv.classList.add('hero');
-        heroDiv.style.backgroundColor = hero.color;
-        heroDiv.innerHTML = `<div class="hero-name">${hero.name}</div>`;
-        gameContainer.appendChild(heroDiv);
-    });
-}
+            selectedHeroes.forEach(hero => {
+                const heroDiv = document.createElement('div');
+                heroDiv.classList.add('hero');
+                heroDiv.style.backgroundColor = hero.color;
+                heroDiv.innerHTML = `<div class="hero-name">${hero.name}</div><div class="health">${hero.stats.health}</div>`;
+                heroDiv.dataset.stats = JSON.stringify(hero.stats); // Store stats in a data attribute
+                gameContainer.appendChild(heroDiv);
+            });
+        }
 
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', function() {
                 const tabId = this.getAttribute('data-tab');
 
-                // Hide all tab contents
                 document.querySelectorAll('.tab-content').forEach(content => {
                     content.classList.remove('active-content');
                 });
 
-                // Remove active class from all tabs
                 document.querySelectorAll('.tab').forEach(t => {
                     t.classList.remove('active');
                 });
-
-                // Show the selected tab content
                 document.getElementById(tabId).classList.add('active-content');
-                // Add active class to the selected tab
                 this.classList.add('active');
             });
         });
+
+        // Battle Mode Logic
+        document.getElementById('start-battle').addEventListener('click', () => {
+            if (selectedHeroes.length === 0) {
+                alert('Please select at least one hero to battle.');
+                return;
+            }
+
+            const enemies = Array.from(document.querySelectorAll('.enemy'));
+            const battleResult = document.getElementById('battle-result');
+            battleResult.innerHTML = ''; // Clear previous results
+
+            // Start the battle simulation
+            selectedHeroes.forEach(hero => {
+                enemies.forEach(enemy => {
+                    const enemyStats = JSON.parse(enemy.dataset.stats);
+                    const heroStats = hero.stats;
+
+                    // Calculate damage per second
+                    const heroDamagePerSecond = heroStats.attack * heroStats.speed;
+                    const enemyDamagePerSecond = enemyStats.attack * enemyStats.speed;
+
+                    // Initialize health values
+                    let heroHealth = heroStats.health;
+                    let enemyHealth = enemyStats.health;
+
+                    // Battle loop
+                    const battleInterval = setInterval(() => {
+                        // Hero attacks enemy
+                        enemyHealth -= heroDamagePerSecond;
+                        showDamage(enemy, heroDamagePerSecond);
+
+                        // Check if enemy is defeated
+                        if (enemyHealth <= 0) {
+                            battleResult.innerHTML += `<p>${hero.name} defeats ${enemy.innerText}!</p>`;
+                            clearInterval(battleInterval);
+                            enemy.remove(); // Remove defeated enemy
+                            return;
+                        }
+
+                        // Enemy attacks hero
+                        heroHealth -= enemyDamagePerSecond;
+                        showDamage(hero, enemyDamagePerSecond);
+
+                        // Check if hero is defeated
+                        if (heroHealth <= 0) {
+                            battleResult.innerHTML += `<p>${enemy.innerText} defeats ${hero.name}!</p>`;
+                            clearInterval(battleInterval);
+                            return;
+                        }
+
+                        // Update health display
+                        updateHealthDisplay(hero, heroHealth);
+                        updateHealthDisplay(enemy, enemyHealth);
+                    }, 1000); // Battle actions every second
+                });
+            });
+        });
+
+        function showDamage(character, damage) {
+            const damageDiv = document.createElement('div');
+            damageDiv.classList.add('damage');
+            damageDiv.innerText = damage.toFixed(2);
+            character.appendChild(damageDiv);
+
+            // Remove damage display after animation
+            setTimeout(() => {
+                damageDiv.remove();
+            }, 1000);
+        }
+
+        function updateHealthDisplay(character, health) {
+            const healthDiv = character.querySelector('.health');
+            healthDiv.innerText = health.toFixed(2);
+        }
     </script>
 </body>
 </html>
+ 
+
  
