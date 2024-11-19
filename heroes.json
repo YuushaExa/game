@@ -1,5 +1,6 @@
 [
     {
+        "id": 1,
         "name": "Red Hero",
         "color": "#FF0000",
         "stats": {
@@ -9,6 +10,7 @@
         }
     },
     {
+        "id": 2,
         "name": "Green Hero",
         "color": "#00FF00",
         "stats": {
@@ -18,6 +20,7 @@
         }
     },
     {
+        "id": 3,
         "name": "Blue Hero",
         "color": "#0000FF",
         "stats": {
@@ -27,6 +30,7 @@
         }
     },
     {
+        "id": 4,
         "name": "Yellow Hero",
         "color": "#FFFF00",
         "stats": {
@@ -36,6 +40,7 @@
         }
     },
     {
+        "id": 5,
         "name": "Magenta Hero",
         "color": "#FF00FF",
         "stats": {
