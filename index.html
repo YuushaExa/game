@@ -41,6 +41,7 @@
             border: 2px solid transparent; /* Default border */
             transition: border 0.3s;
             position: relative; /* For positioning damage and health */
+            top: -30px;
         }
         .hero.selected {
             border: 2px solid #000; /* Border for selected heroes */
@@ -85,27 +86,26 @@
             display: flex;
             justify-content: space-around; /* Space enemies evenly */
         }
-       .battle-result {
-    position: absolute;
-    top: 20px; /* Adjust as needed */
-    left: 20px; /* Position on the left side */
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-    border: 1px solid #ccc;
-    padding: 10px;
-    max-height: 200px; /* Limit height */
-    overflow-y: auto; /* Scroll if content exceeds height */
-    z-index: 2; /* Ensure it appears above other elements */
-}
-
+        .battle-result {
+            position: absolute;
+            top: 20px; /* Adjust as needed */
+            left: 20px; /* Position on the left side */
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-height: 200px; /* Limit height */
+            overflow-y: auto; /* Scroll if content exceeds height */
+            z-index: 2; /* Ensure it appears above other elements */
+        }
         .health {
             position: absolute;
-            bottom: -20px; /* Position health below the hero/enemy */
+            bottom: -30px; /* Position health below the hero/enemy */
             font-size: 12px;
         }
         .damage {
-            position: absolute;
+            position: absolute; 
             top: -20px; /* Position damage above the hero/enemy */
-            font-size: 12px;
+            font-size: 12px;  
             color: red;
             animation: damage-animation 1s forwards; /* Animation for damage */
         }
@@ -116,12 +116,13 @@
     </style>
 </head>
 <body>
-<div class="game-container">
-    <div class="background"></div>
-    <div class="enemies-container" id="enemies-container"></div> <!-- Enemies will be rendered here -->
-    <div class="battle-result" id="battle-result"></div> <!-- Move battle result here -->
-    <!-- Selected heroes will be rendered here -->
-</div>
+    <div class="game-container">
+        <div class="background"></div>
+        <div class="enemies-container" id="enemies-container"></div> <!-- Enemies will be rendered here -->
+        <div class="battle-result" id="battle-result"></div> <!-- Battle results displayed here -->
+        <!-- Selected heroes will be rendered
+        <!-- Selected heroes will be rendered here -->
+    </div>
     <div class="tabs">
         <div class="tab active" data-tab="tab1">Select Heroes</div>
         <div class="tab" data-tab="tab2">Content for Tab 2</div>
@@ -131,7 +132,7 @@
 
     <div id="tab1" class="tab-content active-content">
         <h2>Select Your Heroes</h2>
-                <div id="heroes-container"></div>
+        <div id="heroes-container"></div>
     </div>
     <div id="tab2" class="tab-content">
         <h2>Content for Tab 2</h2>
@@ -145,7 +146,6 @@
     <div id="tab4" class="tab-content">
         <h2>Battle Mode</h2>
         <button id="start-battle">Start Battle</button>
-        <div class="battle-result" id="battle-result"></div>
     </div>
 
     <script>
@@ -232,7 +232,7 @@
                 heroDiv.classList.add('hero');
                 heroDiv.style.backgroundColor = hero.color;
                 heroDiv.innerHTML = `<div class="hero-name">${hero.name}</div><div class="health">${hero.stats.health}</div>`;
-                heroDiv.dataset.stats = JSON.stringify(hero.stats); // Store stats in a data attribute
+                               heroDiv.dataset.stats = JSON.stringify(hero.stats); // Store stats in a data attribute
                 gameContainer.appendChild(heroDiv);
             });
         }
@@ -248,6 +248,7 @@
                 document.querySelectorAll('.tab').forEach(t => {
                     t.classList.remove('active');
                 });
+
                 document.getElementById(tabId).classList.add('active-content');
                 this.classList.add('active');
             });
@@ -270,10 +271,6 @@
                     const enemyStats = JSON.parse(enemy.dataset.stats);
                     const heroStats = hero.stats;
 
-                    // Calculate damage per second
-                    const heroDamagePerSecond = heroStats.attack * heroStats.speed;
-                    const enemyDamagePerSecond = enemyStats.attack * enemyStats.speed;
-
                     // Initialize health values
                     let heroHealth = heroStats.health;
                     let enemyHealth = enemyStats.health;
@@ -281,24 +278,26 @@
                     // Battle loop
                     const battleInterval = setInterval(() => {
                         // Hero attacks enemy
-                        enemyHealth -= heroDamagePerSecond;
-                        showDamage(enemy, heroDamagePerSecond);
+                        enemyHealth -= heroStats.attack;
+                        showDamage(enemy, heroStats.attack);
+                        battleResult.innerHTML += `<p>${hero.name} hits ${enemy.querySelector('.enemy-name').innerText} -${heroStats.attack} HP</p>`;
 
                         // Check if enemy is defeated
                         if (enemyHealth <= 0) {
-                            battleResult.innerHTML += `<p>${hero.name} defeats ${enemy.innerText}!</p>`;
+                            battleResult.innerHTML += `<p>${hero.name} defeats ${enemy.querySelector('.enemy-name').innerText}!</p>`;
                             clearInterval(battleInterval);
                             enemy.remove(); // Remove defeated enemy
                             return;
                         }
 
                         // Enemy attacks hero
-                        heroHealth -= enemyDamagePerSecond;
-                        showDamage(hero, enemyDamagePerSecond);
+                        heroHealth -= enemyStats.attack;
+                        showDamage(hero, enemyStats.attack);
+                        battleResult.innerHTML += `<p>${enemy.querySelector('.enemy-name').innerText} hits ${hero.name} -${enemyStats.attack} HP</p>`;
 
                         // Check if hero is defeated
                         if (heroHealth <= 0) {
-                            battleResult.innerHTML += `<p>${enemy.innerText} defeats ${hero.name}!</p>`;
+                            battleResult.innerHTML += `<p>${enemy.querySelector('.enemy-name').innerText} defeats ${hero.name}!</p>`;
                             clearInterval(battleInterval);
                             return;
                         }
@@ -330,6 +329,3 @@
     </script>
 </body>
 </html>
- 
-
- 
