@@ -13,7 +13,7 @@
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
-          flex-direction: column;
+            flex-direction: column;
         }
         .game-container {
             position: relative;
@@ -33,24 +33,16 @@
             z-index: 0; /* Send background to back */
         }
         .hero {
-            width: 100px;
-            height: 100px;
+            width: 30px;
+            height: 30px;
             z-index: 1; /* Bring heroes to front */
+            margin: 5px;
+            cursor: pointer;
+            border: 2px solid transparent; /* Default border */
+            transition: border 0.3s;
         }
-        .red {
-            background-color: #FF0000;
-        }
-        .green {
-            background-color: #00FF00;
-        }
-        .blue {
-            background-color: #0000FF;
-        }
-        .yellow {
-            background-color: #FFFF00;
-        }
-        .magenta {
-            background-color: #FF00FF;
+        .hero.selected {
+            border: 2px solid #000; /* Border for selected heroes */
         }
         .tabs { 
             display: flex;
@@ -81,16 +73,16 @@
         .active-content {
             display: block; /* Show the active tab content */
         }
+        .hero-name {
+            text-align: center;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="game-container">
         <div class="background"></div>
-        <div class="hero red"></div>
-        <div class="hero green"></div>
-        <div class="hero blue"></div>
-        <div class="hero yellow"></div>
-        <div class="hero magenta"></div>
+        <!-- Selected heroes will be rendered here -->
     </div>
     <div class="tabs">
         <div class="tab active" data-tab="tab1">Tab 1</div>
@@ -99,8 +91,8 @@
     </div>
 
     <div id="tab1" class="tab-content active-content">
-        <h2>Content for Tab 1</h2>
-        <p>This is the content for the first tab.</p>
+        <h2>Select Your Heroes</h2>
+        <div id="heroes-container"></div>
     </div>
     <div id="tab2" class="tab-content">
         <h2>Content for Tab 2</h2>
@@ -112,6 +104,58 @@
     </div>
 
     <script>
+        const maxSelection = 5;
+        const selectedHeroes = [];
+
+        // Fetch heroes from the JSON URL
+        fetch('https://raw.githubusercontent.com/YuushaExa/game/refs/heads/main/heroes.json')
+            .then(response => response.json())
+            .then(heroes => {
+                const heroesContainer = document.getElementById('heroes-container');
+                heroes.forEach(hero => {
+                    const heroDiv = document.createElement('div');
+                    heroDiv.classList.add('hero');
+                    heroDiv.style.backgroundColor = hero.color;
+                    heroDiv.innerHTML = `<div class="hero-name">${hero.name}</div>`;
+                    heroDiv.addEventListener('click', () => selectHero(hero, heroDiv));
+                    heroesContainer.appendChild(heroDiv);
+                });
+            });
+
+              function selectHero(hero, heroDiv) {
+            // Check if the hero is already selected
+            const index = selectedHeroes.findIndex(h => h.id === hero.id);
+            if (index > -1) {
+                // If already selected, remove it
+                selectedHeroes.splice(index, 1);
+                heroDiv.classList.remove('selected');
+            } else {
+                // If not selected and we haven't reached the max selection, add it
+                if (selectedHeroes.length < maxSelection) {
+                    selectedHeroes.push(hero);
+                    heroDiv.classList.add('selected');
+                } else {
+                    alert('You can only select up to 5 heroes.');
+                }
+            }
+            renderSelectedHeroes();
+        }
+
+        function renderSelectedHeroes() {
+            // Clear the game container
+            const gameContainer = document.querySelector('.game-container');
+            gameContainer.innerHTML = '<div class="background"></div>'; // Reset background
+
+            // Render selected heroes
+            selectedHeroes.forEach(hero => {
+                const heroDiv = document.createElement('div');
+                heroDiv.classList.add('hero');
+                heroDiv.style.backgroundColor = hero.color;
+                heroDiv.innerHTML = `<div class="hero-name">${hero.name}</div>`;
+                gameContainer.appendChild(heroDiv);
+            });
+        }
+
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', function() {
                 const tabId = this.getAttribute('data-tab');
@@ -127,7 +171,7 @@
                 });
 
                 // Show the selected tab content
-                   document.getElementById(tabId).classList.add('active-content');
+                document.getElementById(tabId).classList.add('active-content');
                 // Add active class to the selected tab
                 this.classList.add('active');
             });
