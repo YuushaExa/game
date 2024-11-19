@@ -1,16 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Horizontal Tabs Example</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+          flex-direction: column;
         }
-        .tabs {
+        .game-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            border: 1px solid #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-around; /* Space heroes evenly */
+            align-items: flex-end; /* Align heroes to the bottom */
+        }
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #87CEEB; /* Sky blue */
+            z-index: 0; /* Send background to back */
+        }
+        .hero {
+            width: 100px;
+            height: 100px;
+            z-index: 1; /* Bring heroes to front */
+        }
+        .red {
+            background-color: #FF0000;
+        }
+        .green {
+            background-color: #00FF00;
+        }
+        .blue {
+            background-color: #0000FF;
+        }
+        .yellow {
+            background-color: #FFFF00;
+        }
+        .magenta {
+            background-color: #FF00FF;
+        }
+        .tabs { 
             display: flex;
             border-bottom: 1px solid #ccc;
+            margin-top: 20px; /* Add some space between game and tabs */
         }
         .tab {
             padding: 10px 20px;
@@ -39,7 +84,14 @@
     </style>
 </head>
 <body>
-
+    <div class="game-container">
+        <div class="background"></div>
+        <div class="hero red"></div>
+        <div class="hero green"></div>
+        <div class="hero blue"></div>
+        <div class="hero yellow"></div>
+        <div class="hero magenta"></div>
+    </div>
     <div class="tabs">
         <div class="tab active" data-tab="tab1">Tab 1</div>
         <div class="tab" data-tab="tab2">Tab 2</div>
@@ -75,12 +127,11 @@
                 });
 
                 // Show the selected tab content
-                document.getElementById(tabId).classList.add('active-content');
+                   document.getElementById(tabId).classList.add('active-content');
                 // Add active class to the selected tab
                 this.classList.add('active');
             });
         });
     </script>
-
 </body>
 </html>
