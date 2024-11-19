@@ -7,7 +7,7 @@
             "health": 100,
             "attack": 15,
             "defense": 5,
-           "speed": .3
+           "speed": 0.3
         }
     },
     {
@@ -18,7 +18,7 @@
             "health": 120,
             "attack": 10,
             "defense": 10,
-           "speed": .5
+           "speed": 0.5
         }
     },
     {
@@ -29,7 +29,7 @@
             "health": 90,
             "attack": 20,
             "defense": 3,
-           "speed": .7
+           "speed": 0.7
         }
     },
     {
@@ -51,7 +51,7 @@
             "health": 95,
             "attack": 18,
             "defense": 4,
-           "speed": 1
+           "speed": 0.1
         }
     }
 ]
