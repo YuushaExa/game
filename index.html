@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizontal Tabs Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ccc;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            margin-right: 5px;
+            transition: background-color 0.3s;
+        }
+        .tab:hover {
+            background-color: #ddd;
+        }
+        .tab-content {
+            border: 1px solid #ccc;
+            padding: 20px;
+            display: none; /* Hide all tab content by default */
+        }
+        .active {
+            background-color: #fff;
+            border-bottom: 1px solid #fff; /* To keep the active tab connected to the content */
+        }
+        .active-content {
+            display: block; /* Show the active tab content */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tabs">
+        <div class="tab active" data-tab="tab1">Tab 1</div>
+        <div class="tab" data-tab="tab2">Tab 2</div>
+        <div class="tab" data-tab="tab3">Tab 3</div>
+    </div>
+
+    <div id="tab1" class="tab-content active-content">
+        <h2>Content for Tab 1</h2>
+        <p>This is the content for the first tab.</p>
+    </div>
+    <div id="tab2" class="tab-content">
+        <h2>Content for Tab 2</h2>
+        <p>This is the content for the second tab.</p>
+    </div>
+    <div id="tab3" class="tab-content">
+        <h2>Content for Tab 3</h2>
+        <p>This is the content for the third tab.</p>
+    </div>
+
+    <script>
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active-content');
+                });
+
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+
+                // Show the selected tab content
+                document.getElementById(tabId).classList.add('active-content');
+                // Add active class to the selected tab
+                this.classList.add('active');
+            });
+        });
+    </script>
+
+</body>
+</html>
