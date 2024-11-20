@@ -35,7 +35,6 @@
         {
           "id": "scene3",
           "text": "You fall back asleep and miss the adventure.",
-          "choices": [],
           "nextScene": "scene5"
         },
         {
