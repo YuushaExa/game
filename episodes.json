@@ -1,0 +1,102 @@
+{
+  "episodes": [
+    {
+      "episode": "1",
+      "title": "The Beginning",
+      "scenes": [
+        {
+          "id": "scene1",
+          "text": "You wake up in a strange place.",
+          "choices": [
+            {
+              "text": "Look around.",
+              "nextScene": "scene2"
+            },
+            {
+              "text": "Go back to sleep.",
+              "nextScene": "scene3"
+            }
+          ]
+        },
+        {
+          "id": "scene2",
+          "text": "You see a door.",
+          "choices": [
+            {
+              "text": "Open the door.",
+              "nextScene": "scene4"
+            },
+            {
+              "text": "Ignore it.",
+              "nextScene": "scene5"
+            }
+          ]
+        },
+        {
+          "id": "scene3",
+          "text": "You fall back asleep and miss the adventure.",
+          "choices": []
+        },
+        {
+          "id": "scene4",
+          "text": "The door creaks open, revealing a dark hallway.",
+          "choices": []
+        },
+        {
+          "id": "scene5",
+          "text": "You decide to stay put, wondering what lies beyond.",
+          "choices": []
+        }
+      ]
+    },
+    {
+      "episode": "2",
+      "title": "The Journey",
+      "scenes": [
+        {
+          "id": "scene1",
+          "text": "You step out of the door and into the unknown.",
+          "choices": [
+            {
+              "text": "Take a left turn.",
+              "nextScene": "scene2"
+            },
+            {
+              "text": "Take a right turn.",
+              "nextScene": "scene3"
+            }
+          ]
+        },
+        {
+          "id": "scene2",
+          "text": "You encounter a friendly traveler.",
+          "choices": [
+            {
+              "text": "Ask for directions.",
+              "nextScene": "scene4"
+            },
+            {
+              "text": "Continue on your own.",
+              "nextScene": "scene5"
+            }
+          ]
+        },
+        {
+          "id": "scene3",
+          "text": "You find a hidden path leading to a beautiful garden.",
+          "choices": []
+        },
+        {
+          "id": "scene4",
+          "text": "The traveler points you towards the nearest town.",
+          "choices": []
+        },
+        {
+          "id": "scene5",
+          "text": "You wander off, feeling a sense of adventure.",
+          "choices": []
+        }
+      ]
+    }
+  ]
+}
