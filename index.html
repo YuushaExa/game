@@ -108,7 +108,9 @@
                 episodeContent.addEventListener('click', (event) => {
                     if (event.target.classList.contains('choice-button')) {
                         loadScene(event.target.getAttribute('data-next-scene'));
-                    } else if (event.target.classList                    } else if (event.target.classList.contains('next-button')) {
+                    } else if (event.target.classList.contains('choice-button')) {
+                        loadScene(event.target.getAttribute('data-next-scene'));
+                    } else if (event.target.classList.contains('next-button')) {
                         loadScene(event.target.getAttribute('data-next-scene'));
                     } else if (event.target.classList.contains('next-episode-button')) {
                         const nextEpisodeIndex = event.target.getAttribute('data-next-episode');
