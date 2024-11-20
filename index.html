@@ -40,8 +40,8 @@
 
     <script>
         let episodes = [];
-        let currentSceneId = null; // To keep track of the current scene
-        let currentEpisodeIndex = null; // To keep track of the current episode index
+        let currentSceneId = null; 
+        let currentEpisodeIndex = null; 
 
         // Load the combined episodes JSON file
         fetch('episodes.json')
@@ -51,65 +51,79 @@
                 }
                 return response.json();
             })
-                       .then(data => {
+            .then(data => {
                 episodes = data.episodes;
                 displayEpisodeList();
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
+                document.getElementById('episodeContent').innerText = 'Failed to load episodes. Please try again later.';
             });
 
         function displayEpisodeList() {
             const episodeList = document.getElementById('episodeList');
-            episodes.forEach((episode, index) => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `<a href="#" onclick="loadEpisode(${index})">Episode ${episode.episode}: ${episode.title}</a>`;
-                episodeList.appendChild(listItem);
+            episodeList.innerHTML = episodes.map((episode, index) => 
+                `<li><a href="#" data-index="${index}">Episode ${episode.episode}: ${episode.title}</a></li>`
+            ).join('');
+            episodeList.addEventListener('click', (event) => {
+                if (event.target.tagName === 'A') {
+                    const index = event.target.getAttribute('data-index');
+                    loadEpisode(index);
+                }
             });
         }
 
         function loadEpisode(index) {
-            currentEpisodeIndex = index; // Set the current episode index
-            const episodeContent = document.getElementById('episodeContent');
+            currentEpisodeIndex = index; 
             const episode = episodes[index];
-            currentSceneId = episode.scenes[0].id; // Start with the first scene
-            displayScene(episode, currentSceneId); // Pass the index to displayScene
+            currentSceneId = episode.scenes[0].id; 
+            displayScene(episode, currentSceneId); 
         }
 
-    function displayScene(episode, sceneId) {
-    const episodeContent = document.getElementById('episodeContent');
-    const scene = episode.scenes.find(s => s.id === sceneId);
-    
-    if (scene) {
-        episodeContent.innerHTML = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
-        
-        // Create buttons based on the JSON structure
-        if (scene.choices && scene.choices.length > 0) {
-            scene.choices.forEach(choice => {
-                episodeContent.innerHTML += `<button onclick="loadScene('${choice.nextScene}')">${choice.text}</button>`;
-            });
-        } else if (scene.nextScene) {
-            // Show "Next" button only if there is a nextScene
-            episodeContent.innerHTML += `<button onclick="loadScene('${scene.nextScene}')">Next</button>`;
-        }
+        function displayScene(episode, sceneId) {
+            const episodeContent = document.getElementById('episodeContent');
+            const scene = episode.scenes.find(s => s.id === sceneId);
+            
+            if (scene) {
+                let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
+                
+                if (scene.choices && scene.choices.length > 0) {
+                    content += scene.choices.map(choice => 
+                        `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
+                    ).join('');
+                } else if (scene.nextScene) {
+                    content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
+                }
 
-        // Check for nextEpisode property
-        if (scene.nextEpisode) {
-            const nextEpisodeIndex = episodes.findIndex(ep => ep.episode === scene.nextEpisode.split('episode')[1]); // Extract the episode number
-            if (nextEpisodeIndex !== -1) {
-                episodeContent.innerHTML += `<button onclick="loadEpisode(${nextEpisodeIndex})">Next Episode</button>`;
+                if (scene.nextEpisode) {
+                    const nextEpisodeIndex = episodes.findIndex(ep => ep.episode === scene.nextEpisode.split('episode')[1]);
+                    if (nextEpisodeIndex !== -1) {
+                        content += `<button class="next-episode-button" data-next-episode="${nextEpisodeIndex}">Next Episode</button>`;
+                    }
+                }
+
+                episodeContent.innerHTML = content;
+
+                // Event delegation for buttons
+                episodeContent.addEventListener('click', (event) => {
+                    if (event.target.classList.contains('choice-button')) {
+                        loadScene(event.target.getAttribute('data-next-scene'));
+                    } else if (event.target.classList                    } else if (event.target.classList.contains('next-button')) {
+                        loadScene(event.target.getAttribute('data-next-scene'));
+                    } else if (event.target.classList.contains('next-episode-button')) {
+                        const nextEpisodeIndex = event.target.getAttribute('data-next-episode');
+                        loadEpisode(nextEpisodeIndex);
+                    }
+                });
             }
         }
-    }
-}
-
-
 
         function loadScene(sceneId) {
             const episode = episodes[currentEpisodeIndex];
-            currentSceneId = sceneId; // Update the current scene ID
-            displayScene(episode, sceneId); // Pass the episodeIndex to displayScene
+            currentSceneId = sceneId; 
+            displayScene(episode, sceneId); 
         }
     </script>
 </body>
 </html>
+
