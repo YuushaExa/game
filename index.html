@@ -39,7 +39,7 @@
     <div id="episodeContent"></div>
 
     <script>
-      let episodes = [];
+let episodes = [];
 let currentSceneId = null; // To keep track of the current scene
 
 // Load the combined episodes JSON file
@@ -71,10 +71,10 @@ function loadEpisode(index) {
     const episodeContent = document.getElementById('episodeContent');
     const episode = episodes[index];
     currentSceneId = episode.scenes[0].id; // Start with the first scene
-    displayScene(episode, currentSceneId);
+    displayScene(episode, currentSceneId, index); // Pass the index to displayScene
 }
 
-function displayScene(episode, sceneId) {
+function displayScene(episode, sceneId, episodeIndex) {
     const episodeContent = document.getElementById('episodeContent');
     const scene = episode.scenes.find(s => s.id === sceneId);
     
@@ -83,7 +83,7 @@ function displayScene(episode, sceneId) {
         
         if (scene.choices.length > 0) {
             scene.choices.forEach(choice => {
-                episodeContent.innerHTML += `<button onclick="loadScene('${choice.nextScene}', ${index})">${choice.text}</button>`;
+                episodeContent.innerHTML += `<button onclick="loadScene('${choice.nextScene}', ${episodeIndex})">${choice.text}</button>`;
             });
         }
     }
@@ -92,7 +92,7 @@ function displayScene(episode, sceneId) {
 function loadScene(sceneId, episodeIndex) {
     const episode = episodes[episodeIndex];
     currentSceneId = sceneId; // Update the current scene ID
-    displayScene(episode, currentSceneId);
+    displayScene(episode, sceneId, episodeIndex); // Pass the episodeIndex to displayScene
 }
 
     </script>
