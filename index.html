@@ -76,35 +76,33 @@
             displayScene(episode, currentSceneId); // Pass the index to displayScene
         }
 
-        function displayScene(episode, sceneId) {
-            const episodeContent = document.getElementById('episodeContent');
-            const scene = episode.scenes.find(s => s.id === sceneId);
-            
-            if (scene) {
-                episodeContent.innerHTML = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
-                
-                // Create buttons based on the JSON structure
-                if (scene.choices && scene.choices.length > 0) {
-                    scene.choices.forEach(choice => {
-                        episodeContent.innerHTML += `<button onclick="loadScene('${choice.nextScene}')">${choice.text}</button>`;
-                    });
-                } else if (scene.nextScene) {
-                    // Show "Next" button only if there is a nextScene
-                    episodeContent.innerHTML += `<button onclick="loadScene('${scene.nextScene}')">Next</button>`;
-                }
+     function displayScene(episode, sceneId) {
+    const episodeContent = document.getElementById('episodeContent');
+    const scene = episode.scenes.find(s => s.id === sceneId);
+    
+    if (scene) {
+        episodeContent.innerHTML = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
+        
+        // Create buttons based on the JSON structure
+        if (scene.choices && scene.choices.length > 0) {
+            scene.choices.forEach(choice => {
+                episodeContent.innerHTML += `<button onclick="loadScene('${choice.nextScene}')">${choice.text}</button>`;
+            });
+        } else if (scene.nextScene) {
+            // Show "Next" button only if there is a nextScene
+            episodeContent.innerHTML += `<button onclick="loadScene('${scene.nextScene}')">Next</button>`;
+        }
 
-                // Check for nextEpisode property
-                if (scene.nextEpisode) {
-                    const nextEpisodeIndex = episodes.findIndex(ep => ep.episode === scene.nextEpisode);
-                    if (nextEpisodeIndex !== -1) {
-                        episodeContent.innerHTML += `<button onclick="loadEpisode(${nextEpisodeIndex})">Next Episode</button>`;
-                    }
-                } else if (!scene.choices && !scene.nextScene && !scene.nextEpisode) {
-                    // If there are no choices, nextScene, or nextEpisode, show a message
-                    episodeContent.innerHTML += `<p>No further actions available.</p>`;
-                }
+        // Check for nextEpisode property
+        if (scene.nextEpisode) {
+            const nextEpisodeIndex = episodes.findIndex(ep => ep.episode === scene.nextEpisode);
+            if (nextEpisodeIndex !== -1) {
+                episodeContent.innerHTML += `<button onclick="loadEpisode(${nextEpisodeIndex})">Next Episode</button>`;
             }
         }
+    }
+}
+
 
         function loadScene(sceneId) {
             const episode = episodes[currentEpisodeIndex];
