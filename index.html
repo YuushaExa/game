@@ -1,330 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horizontal Tabs Example</title>
+    <title>Visual Novel Episodes</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-            flex-direction: column;
-        }
-        .game-container {
-            position: relative;
-            width: 800px;
-            height: 600px;
-            border: 1px solid #000;
-            overflow: hidden;
-            display: flex;
-            justify-content: space-around; /* Space heroes evenly */
-            align-items: flex-end; /* Align heroes to the bottom */
-        }
-        .background {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: #87CEEB; /* Sky blue */
-            z-index: 0; /* Send background to back */
-        }
-        .hero, .enemy {
-            width: 30px;
-            height: 30px;
-            z-index: 1; /* Bring heroes and enemies to front */
-            margin: 5px;
-            cursor: pointer;
-            border: 2px solid transparent; /* Default border */
-            transition: border 0.3s;
-            position: relative; /* For positioning damage and health */
-            top: -30px;
-        }
-        .hero.selected {
-            border: 2px solid #000; /* Border for selected heroes */
-        }
-        .tabs { 
-            display: flex;
-            border-bottom: 1px solid #ccc;
-            margin-top: 20px; /* Add some space between game and tabs */
-        }
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            background-color: #f1f1f1;
-            border: 1px solid #ccc;
-            border-bottom: none;
-            margin-right: 5px;
-            transition: background-color 0.3s;
-        }
-        .tab:hover {
-            background-color: #ddd;
-        }
-        .tab-content {
-            border: 1px solid #ccc;
             padding: 20px;
-            display: none; /* Hide all tab content by default */
         }
-        .active {
-            background-color: #fff;
-            border-bottom: 1px solid #fff; /* To keep the active tab connected to the content */
-        }
-        .active-content {
-            display: block; /* Show the active tab content */
-        }
-        .hero-name, .enemy-name {
+        h1 {
             text-align: center;
-            margin-top: 5px;
         }
-        .enemies-container {
-            position: absolute;
-            top: 10px; /* Position enemies at the top */
-            width: 100%;
-            display: flex;
-            justify-content: space-around; /* Space enemies evenly */
+        .episode-list {
+            list-style-type: none;
+            padding: 0;
         }
-        .battle-result {
-            position: absolute;
-            top: 20px; /* Adjust as needed */
-            left: 20px; /* Position on the left side */
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-            border: 1px solid #ccc;
+        .episode-list li {
+            margin: 10px 0;
+        }
+        .episode-list a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        #episodeContent {
+            margin-top: 20px;
             padding: 10px;
-            max-height: 200px; /* Limit height */
-            overflow-y: auto; /* Scroll if content exceeds height */
-            z-index: 2; /* Ensure it appears above other elements */
-        }
-        .health {
-            position: absolute;
-            bottom: -30px; /* Position health below the hero/enemy */
-            font-size: 12px;
-        }
-        .damage {
-            position: absolute; 
-            top: -20px; /* Position damage above the hero/enemy */
-            font-size: 12px;  
-            color: red;
-            animation: damage-animation 1s forwards; /* Animation for damage */
-        }
-        @keyframes damage-animation {
-            0% { opacity: 1; }
-            100% { opacity: 0; transform: translateY(-10px); }
+            background-color: #fff;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="background"></div>
-        <div class="enemies-container" id="enemies-container"></div> <!-- Enemies will be rendered here -->
-        <div class="battle-result" id="battle-result"></div> <!-- Battle results displayed here -->
-        <!-- Selected heroes will be rendered
-        <!-- Selected heroes will be rendered here -->
-    </div>
-    <div class="tabs">
-        <div class="tab active" data-tab="tab1">Select Heroes</div>
-        <div class="tab" data-tab="tab2">Content for Tab 2</div>
-        <div class="tab" data-tab="tab3">Content for Tab 3</div>
-        <div class="tab" data-tab="tab4">Battle Mode</div>
-    </div>
-
-    <div id="tab1" class="tab-content active-content">
-        <h2>Select Your Heroes</h2>
-        <div id="heroes-container"></div>
-    </div>
-    <div id="tab2" class="tab-content">
-        <h2>Content for Tab 2</h2>
-        <p>This is the content for the second tab.</p>
-    </div>
-    <div id="tab3" class="tab-content">
-        <h2>Content for Tab 3</h2>
-        <p>This is the content for the third tab.</p>
-    </div>
-   
-    <div id="tab4" class="tab-content">
-        <h2>Battle Mode</h2>
-        <button id="start-battle">Start Battle</button>
-    </div>
+    <h1>Visual Novel Episodes</h1>
+    <ul class="episode-list" id="episodeList"></ul>
+    <div id="episodeContent"></div>
 
     <script>
-        const maxSelection = 5;
-        const selectedHeroes = [];
+        let episodes = [];
 
-        // Fetch heroes from the JSON URL
-        fetch('https://raw.githubusercontent.com/YuushaExa/game/refs/heads/main/heroes.json')
+        // Load the combined episodes JSON file
+        fetch('episodes.json')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
-            .then(heroes => {
-                const heroesContainer = document.getElementById('heroes-container');
-                heroes.forEach(hero => {
-                    const heroDiv = document.createElement('div');
-                    heroDiv.classList.add('hero');
-                    heroDiv.style.backgroundColor = hero.color;
-                    heroDiv.innerHTML = `<div class="hero-name">${hero.name}</div><div class="health">${hero.stats.health}</div>`;
-                    heroDiv.dataset.stats = JSON.stringify(hero.stats); // Store stats in a data attribute
-                    heroDiv.addEventListener('click', () => selectHero(hero, heroDiv));
-                    heroesContainer.appendChild(heroDiv);
-                });
+            .then(data => {
+                episodes = data.episodes;
+                displayEpisodeList();
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
 
-        // Fetch enemies from the JSON URL
-        fetch('https://raw.githubusercontent.com/YuushaExa/game/refs/heads/main/enemies.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+        function displayEpisodeList() {
+            const episodeList = document.getElementById('episodeList');
+            episodes.forEach((episode, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<a href="#" onclick="loadEpisode(${index})">Episode ${episode.episode}: ${episode.title}</a>`;
+                episodeList.appendChild(listItem);
+            });
+        }
+
+        function loadEpisode(index) {
+            const episodeContent = document.getElementById('episodeContent');
+            const episode = episodes[index];
+            episodeContent.innerHTML = `<h2>${episode.title}</h2>`;
+            episode.scenes.forEach(scene => {
+                episodeContent.innerHTML += `<p>${scene.text}</p>`;
+                if (scene.choices.length > 0) {
+                    scene.choices.forEach(choice => {
+                        episodeContent.innerHTML += `<button onclick="loadScene('${choice.nextScene}')">${choice.text}</button>`;
+                    });
                 }
-                return response.json();
-            })
-            .then(enemies => {
-                const enemiesContainer = document.getElementById('enemies-container');
-                enemies.forEach(enemy => {
-                    const enemyDiv = document.createElement('div');
-                    enemyDiv.classList.add('enemy');
-                    enemyDiv.style.backgroundColor = enemy.color;
-                    enemyDiv.innerHTML = `<div class="enemy-name">${enemy.name}</div><div class="health">${enemy.stats.health}</div>`;
-                    enemyDiv.dataset.stats = JSON.stringify(enemy.stats); // Store stats in a data attribute
-                    enemiesContainer.appendChild(enemyDiv);
-                });
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
-
-        function selectHero(hero, heroDiv) {
-            const index = selectedHeroes.findIndex(h => h.id === hero.id);
-            if (index > -1) {
-                selectedHeroes.splice(index, 1);
-                heroDiv.classList.remove('selected');
-            } else {
-                if (selectedHeroes.length < maxSelection) {
-                    selectedHeroes.push(hero);
-                    heroDiv.classList.add('selected');
-                } else {
-                    alert('You can only select up to 5 heroes.');
-                }
-            }
-            renderSelectedHeroes();
-        }
-
-        function renderSelectedHeroes() {
-            const gameContainer = document.querySelector('.game-container');
-            const existingHeroes = gameContainer.querySelectorAll('.hero');
-            existingHeroes.forEach(hero => hero.remove());
-
-            const background = document.createElement('div');
-            background.classList.add('background');
-            gameContainer.appendChild(background);
-
-            const enemiesContainer = document.getElementById('enemies-container');
-            gameContainer.appendChild(enemiesContainer);
-
-            selectedHeroes.forEach(hero => {
-                const heroDiv = document.createElement('div');
-                heroDiv.classList.add('hero');
-                heroDiv.style.backgroundColor = hero.color;
-                heroDiv.innerHTML = `<div class="hero-name">${hero.name}</div><div class="health">${hero.stats.health}</div>`;
-                               heroDiv.dataset.stats = JSON.stringify(hero.stats); // Store stats in a data attribute
-                gameContainer.appendChild(heroDiv);
             });
         }
 
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
-
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active-content');
-                });
-
-                document.querySelectorAll('.tab').forEach(t => {
-                    t.classList.remove('active');
-                });
-
-                document.getElementById(tabId).classList.add('active-content');
-                this.classList.add('active');
-            });
-        });
-
-        // Battle Mode Logic
-        document.getElementById('start-battle').addEventListener('click', () => {
-            if (selectedHeroes.length === 0) {
-                alert('Please select at least one hero to battle.');
-                return;
-            }
-
-            const enemies = Array.from(document.querySelectorAll('.enemy'));
-            const battleResult = document.getElementById('battle-result');
-            battleResult.innerHTML = ''; // Clear previous results
-
-            // Start the battle simulation
-            selectedHeroes.forEach(hero => {
-                enemies.forEach(enemy => {
-                    const enemyStats = JSON.parse(enemy.dataset.stats);
-                    const heroStats = hero.stats;
-
-                    // Initialize health values
-                    let heroHealth = heroStats.health;
-                    let enemyHealth = enemyStats.health;
-
-                    // Battle loop
-                    const battleInterval = setInterval(() => {
-                        // Hero attacks enemy
-                        enemyHealth -= heroStats.attack;
-                        showDamage(enemy, heroStats.attack);
-                        battleResult.innerHTML += `<p>${hero.name} hits ${enemy.querySelector('.enemy-name').innerText} -${heroStats.attack} HP</p>`;
-
-                        // Check if enemy is defeated
-                        if (enemyHealth <= 0) {
-                            battleResult.innerHTML += `<p>${hero.name} defeats ${enemy.querySelector('.enemy-name').innerText}!</p>`;
-                            clearInterval(battleInterval);
-                            enemy.remove(); // Remove defeated enemy
-                            return;
-                        }
-
-                        // Enemy attacks hero
-                        heroHealth -= enemyStats.attack;
-                        showDamage(hero, enemyStats.attack);
-                        battleResult.innerHTML += `<p>${enemy.querySelector('.enemy-name').innerText} hits ${hero.name} -${enemyStats.attack} HP</p>`;
-
-                        // Check if hero is defeated
-                        if (heroHealth <= 0) {
-                            battleResult.innerHTML += `<p>${enemy.querySelector('.enemy-name').innerText} defeats ${hero.name}!</p>`;
-                            clearInterval(battleInterval);
-                            return;
-                        }
-
-                        // Update health display
-                        updateHealthDisplay(hero, heroHealth);
-                        updateHealthDisplay(enemy, enemyHealth);
-                    }, 1000); // Battle actions every second
-                });
-            });
-        });
-
-        function showDamage(character, damage) {
-            const damageDiv = document.createElement('div');
-            damageDiv.classList.add('damage');
-            damageDiv.innerText = damage.toFixed(2);
-            character.appendChild(damageDiv);
-
-            // Remove damage display after animation
-            setTimeout(() => {
-                damageDiv.remove();
-            }, 1000);
-        }
-
-        function updateHealthDisplay(character, health) {
-            const healthDiv = character.querySelector('.health');
-            healthDiv.innerText = health.toFixed(2);
+        function loadScene(sceneId) {
+            // This function can be expanded to load specific scenes if needed
+            console.log(`Loading scene: ${sceneId}`);
+            // For now, it just logs the scene ID
         }
     </script>
 </body>
