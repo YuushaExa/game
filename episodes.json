@@ -47,7 +47,7 @@
           "id": "scene5",
           "text": "You decide to stay put, wondering what lies beyond.",
           "choices": [],
-          "nextEpisode": "episode2"  // This should be correctly defined
+          "nextEpisode": "episode2" 
         }
       ]
     },
