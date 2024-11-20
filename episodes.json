@@ -40,13 +40,14 @@
         {
           "id": "scene4",
           "text": "The door creaks open, revealing a dark hallway.",
-          "choices": []
+          "choices": [],
+          "nextScene": "scene5"
         },
         {
           "id": "scene5",
           "text": "You decide to stay put, wondering what lies beyond.",
-            "choices": [],
-          "nextEpisode": "episode2"
+          "choices": [],
+          "nextEpisode": "episode2"  // This should be correctly defined
         }
       ]
     },
@@ -71,16 +72,8 @@
         {
           "id": "scene2",
           "text": "You encounter a friendly traveler.",
-          "choices": [
-            {
-              "text": "Ask for directions.",
-              "nextScene": "scene4"
-            },
-            {
-              "text": "Continue on your own.",
-              "nextScene": "scene5"
-            }
-          ]
+          "choices": [],
+          "nextScene": "scene4"
         },
         {
           "id": "scene3",
