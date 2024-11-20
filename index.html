@@ -76,7 +76,7 @@
             displayScene(episode, currentSceneId); // Pass the index to displayScene
         }
 
-     function displayScene(episode, sceneId) {
+    function displayScene(episode, sceneId) {
     const episodeContent = document.getElementById('episodeContent');
     const scene = episode.scenes.find(s => s.id === sceneId);
     
@@ -95,13 +95,14 @@
 
         // Check for nextEpisode property
         if (scene.nextEpisode) {
-            const nextEpisodeIndex = episodes.findIndex(ep => ep.episode === scene.nextEpisode);
+            const nextEpisodeIndex = episodes.findIndex(ep => ep.episode === scene.nextEpisode.split('episode')[1]); // Extract the episode number
             if (nextEpisodeIndex !== -1) {
                 episodeContent.innerHTML += `<button onclick="loadEpisode(${nextEpisodeIndex})">Next Episode</button>`;
             }
         }
     }
 }
+
 
 
         function loadScene(sceneId) {
