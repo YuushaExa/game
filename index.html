@@ -51,7 +51,7 @@
                 }
                 return response.json();
             })
-            .then(data => {
+                       .then(data => {
                 episodes = data.episodes;
                 displayEpisodeList();
             })
@@ -83,21 +83,25 @@
             if (scene) {
                 episodeContent.innerHTML = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
                 
-                if (scene.choices.length > 0) {
+                // Create buttons based on the JSON structure
+                if (scene.choices && scene.choices.length > 0) {
                     scene.choices.forEach(choice => {
                         episodeContent.innerHTML += `<button onclick="loadScene('${choice.nextScene}')">${choice.text}</button>`;
                     });
                 } else if (scene.nextScene) {
                     // Show "Next" button only if there is a nextScene
                     episodeContent.innerHTML += `<button onclick="loadScene('${scene.nextScene}')">Next</button>`;
-                } else {
-                    // If it's the last scene, show "Next Episode" button
-                    const nextEpisodeIndex = currentEpisodeIndex + 1;
-                    if (nextEpisodeIndex < episodes.length) {
+                }
+
+                // Check for nextEpisode property
+                if (scene.nextEpisode) {
+                    const nextEpisodeIndex = episodes.findIndex(ep => ep.episode === scene.nextEpisode);
+                    if (nextEpisodeIndex !== -1) {
                         episodeContent.innerHTML += `<button onclick="loadEpisode(${nextEpisodeIndex})">Next Episode</button>`;
-                    } else {
-                        episodeContent.innerHTML += `<p>New Episode Coming Soon</p>`;
                     }
+                } else if (!scene.choices && !scene.nextScene && !scene.nextEpisode) {
+                    // If there are no choices, nextScene, or nextEpisode, show a message
+                    episodeContent.innerHTML += `<p>No further actions available.</p>`;
                 }
             }
         }
