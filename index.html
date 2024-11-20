@@ -39,52 +39,62 @@
     <div id="episodeContent"></div>
 
     <script>
-        let episodes = [];
+      let episodes = [];
+let currentSceneId = null; // To keep track of the current scene
 
-        // Load the combined episodes JSON file
-        fetch('episodes.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                episodes = data.episodes;
-                displayEpisodeList();
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+// Load the combined episodes JSON file
+fetch('episodes.json')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        episodes = data.episodes;
+        displayEpisodeList();
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
 
-        function displayEpisodeList() {
-            const episodeList = document.getElementById('episodeList');
-            episodes.forEach((episode, index) => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `<a href="#" onclick="loadEpisode(${index})">Episode ${episode.episode}: ${episode.title}</a>`;
-                episodeList.appendChild(listItem);
+function displayEpisodeList() {
+    const episodeList = document.getElementById('episodeList');
+    episodes.forEach((episode, index) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `<a href="#" onclick="loadEpisode(${index})">Episode ${episode.episode}: ${episode.title}</a>`;
+        episodeList.appendChild(listItem);
+    });
+}
+
+function loadEpisode(index) {
+    const episodeContent = document.getElementById('episodeContent');
+    const episode = episodes[index];
+    currentSceneId = episode.scenes[0].id; // Start with the first scene
+    displayScene(episode, currentSceneId);
+}
+
+function displayScene(episode, sceneId) {
+    const episodeContent = document.getElementById('episodeContent');
+    const scene = episode.scenes.find(s => s.id === sceneId);
+    
+    if (scene) {
+        episodeContent.innerHTML = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
+        
+        if (scene.choices.length > 0) {
+            scene.choices.forEach(choice => {
+                episodeContent.innerHTML += `<button onclick="loadScene('${choice.nextScene}', ${index})">${choice.text}</button>`;
             });
         }
+    }
+}
 
-        function loadEpisode(index) {
-            const episodeContent = document.getElementById('episodeContent');
-            const episode = episodes[index];
-            episodeContent.innerHTML = `<h2>${episode.title}</h2>`;
-            episode.scenes.forEach(scene => {
-                episodeContent.innerHTML += `<p>${scene.text}</p>`;
-                if (scene.choices.length > 0) {
-                    scene.choices.forEach(choice => {
-                        episodeContent.innerHTML += `<button onclick="loadScene('${choice.nextScene}')">${choice.text}</button>`;
-                    });
-                }
-            });
-        }
+function loadScene(sceneId, episodeIndex) {
+    const episode = episodes[episodeIndex];
+    currentSceneId = sceneId; // Update the current scene ID
+    displayScene(episode, currentSceneId);
+}
 
-        function loadScene(sceneId) {
-            // This function can be expanded to load specific scenes if needed
-            console.log(`Loading scene: ${sceneId}`);
-            // For now, it just logs the scene ID
-        }
     </script>
 </body>
 </html>
