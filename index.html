@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Block Editor</title>
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+        }
+        #sidebar {
+            width: 200px;
+            padding: 10px;
+            background: #f4f4f4;
+        }
+        #canvas {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            min-height: 500px;
+            position: relative;
+        }
+        .block {
+            padding: 10px;
+            margin: 5px;
+            background: #e0e0e0;
+            border: 1px solid #ccc;
+            cursor: move;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <div class="block" draggable="true" data-type="scene">Scene Block</div>
+        <div class="block" draggable="true" data-type="choice">Choice Block</div>
+    </div>
+    <div id="canvas"></div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+
+        // Handle drag and drop
+        document.querySelectorAll('.block').forEach(block => {
+            block.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', e.target.dataset.type);
+            });
+        });
+
+        canvas.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        canvas.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const type = e.dataTransfer.getData('text/plain');
+            const newBlock = document.createElement('div');
+            newBlock.className = 'block';
+            newBlock.innerText = type === 'scene' ? 'New Scene' : 'New Choice';
+            newBlock.contentEditable = true; // Allow editing
+            newBlock.style.position = 'absolute';
+            newBlock.style.left = `${e.offsetX}px`;
+            newBlock.style.top = `${e.offsetY}px`;
+            canvas.appendChild(newBlock);
+        });
+    </script>
+</body>
+</html>
