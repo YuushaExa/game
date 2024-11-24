@@ -79,36 +79,37 @@
                 });
         }
 
-    function displayScene(episode, sceneId) {
-    const episodeContent = document.getElementById('episodeContent');
-    const scene = episode.scenes.find(s => s.id === sceneId);
-    
-    if (scene) {
-        let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
-        
-        if (scene.choices && scene.choices.length > 0) {
-            content += scene.choices.map(choice => 
-                `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
-            ).join('');
-        } else if (scene.nextScene) {
-            content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
+        function displayScene(episode, sceneId) {
+            const episodeContent = document.getElementById('episodeContent');
+            const scene = episode.scenes.find(s => s.id === sceneId);
+            
+            if (scene) {
+                let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
+                
+                if (scene.choices && scene.choices.length > 0) {
+                    content += scene.choices.map(choice => 
+                        `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
+                    ).join('');
+                } else if (scene.nextScene) {
+                    content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
+                }
+
+                episodeContent.innerHTML = content;
+            }
         }
 
-        // Set the innerHTML once after building the entire content
-        episodeContent.innerHTML = content;
-    }
-}
-
-
-                        // Event delegation for buttons
-                episodeContent.addEventListener('click', (event) => {
-                    const target = event.target;
-                    if (target.classList.contains('choice-button')) {
-                        loadScene(target.getAttribute('data-next-scene'));
-                    } else if (target.classList.contains('next-button')) {
-                        loadScene(target.getAttribute('data-next-scene'));
-                    }
-                });
+                        // Event delegation for buttons, keeo it global
+           document.getElementById('episodeContent').addEventListener('click', (event) => {
+        const target = event.target;
+        if (target.classList.contains('choice-button')) {
+            loadScene(target.getAttribute('data-next-scene'));
+        } else if (target.classList.contains('next-button')) {
+            loadScene(target.getAttribute('data-next-scene'));
+        } else if (target.classList.contains('next-episode-button')) {
+            const nextEpisodeIndex = target.getAttribute('data-next-episode');
+            loadEpisode(nextEpisodeIndex);
+        }
+    });
 
         function loadScene(sceneId) {
             const scene = currentEpisode.scenes.find(s => s.id === sceneId); 
