@@ -1,0 +1,51 @@
+{
+  "episode": "1",
+  "title": "The Beginning",
+  "scenes": [
+    {
+      "id": "scene1",
+      "text": "You wake up in a strange place.",
+      "choices": [
+        {
+          "text": "Look around.",
+          "nextScene": "scene2"
+        },
+        {
+          "text": "Go back to sleep.",
+          "nextScene": "scene3"
+        }
+      ]
+    },
+    {
+      "id": "scene2",
+      "text": "You see a door.",
+      "choices": [
+        {
+          "text": "Open the door.",
+          "nextScene": "scene4"
+        },
+        {
+          "text": "Ignore it.",
+          "nextScene": "scene5"
+        }
+      ]
+    },
+    {
+      "id": "scene3",
+      "text": "You fall back asleep and miss the adventure.",
+      "nextScene": "scene5"
+    },
+    {
+      "id": "scene4",
+      "text": "The door creaks open, revealing a dark hallway.",
+      "choices": [],
+      "nextScene": "scene5"
+    },
+    {
+      "id": "scene5",
+      "text": "You decide to stay put, wondering what lies beyond.",
+      "choices": [],
+      "nextEpisode": "episode2" 
+    }
+  ]
+}
