@@ -41,96 +41,77 @@
 </head>
 <body>
     <h1>Visual Novel Episodes</h1>
-    <ul class="episode-list" id="episodeList"></ul>
-    <div id="episodeContent"></div>
+    <ul class="episode-list" id="episodeList">
+        <li><a href="#" data-episode-file="episode1.json">Episode 1: The Beginning</a></li>
+        <li><a href="#" data-episode-file="episode2.json">Episode 2: The Journey Continues</a></li>
+        <!-- Add more episodes here -->
+    </ul>
+        <div id="episodeContent"></div> <!-- Added this line -->
 
-<script>
-    let episodes = [];
-    let currentSceneId = null; 
-    let currentEpisodeIndex = null; 
+    <script>
+           let currentSceneId = null; 
+        let currentEpisode = null; 
 
-    // Load the combined episodes JSON file
-    fetch('episodes.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            episodes = data.episodes;
-            displayEpisodeList();
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-            document.getElementById('episodeContent').innerText = 'Failed to load episodes. Please try again later.';
-        });
-
-    function displayEpisodeList() {
-        const episodeList = document.getElementById('episodeList');
-        episodeList.innerHTML = episodes.map((episode, index) => 
-            `<li><a href="#" data-index="${index}">Episode ${episode.episode}: ${episode.title}</a></li>`
-        ).join('');
-        episodeList.addEventListener('click', (event) => {
+        document.getElementById('episodeList').addEventListener('click', (event) => {
             if (event.target.tagName === 'A') {
-                const index = event.target.getAttribute('data-index');
-                loadEpisode(index);
+                event.preventDefault(); // Prevent default anchor behavior
+                const episodeFile = event.target.getAttribute('data-episode-file');
+                loadEpisode(episodeFile);
             }
         });
-    }
 
-    function loadEpisode(index) {
-        currentEpisodeIndex = index; 
-        const episode = episodes[index];
-        currentSceneId = episode.scenes[0].id; 
-        displayScene(episode, currentSceneId); 
-    }
+        function loadEpisode(file) {
+            fetch(file)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    currentEpisode = data; 
+                    currentSceneId = currentEpisode.scenes[0].id; 
+                    displayScene(currentEpisode, currentSceneId); 
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    document.getElementById('episodeContent').innerText = 'Failed to load episode. Please try again later.';
+                });
+        }
 
-    function displayScene(episode, sceneId) {
-        const episodeContent = document.getElementById('episodeContent');
-        const scene = episode.scenes.find(s => s.id === sceneId);
-        
-        if (scene) {
-            let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
+        function displayScene(episode, sceneId) {
+            const episodeContent = document.getElementById('episodeContent');
+            const scene = episode.scenes.find(s => s.id === sceneId);
             
-            if (scene.choices && scene.choices.length > 0) {
-                content += scene.choices.map(choice => 
-                    `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
-                ).join('');
-            } else if (scene.nextScene) {
-                content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
-            }
-
-            if (scene.nextEpisode) {
-                const nextEpisodeIndex = episodes.findIndex(ep => ep.episode === scene.nextEpisode.split('episode')[1]);
-                if (nextEpisodeIndex !== -1) {
-                    content += `<button class="next-episode-button" data-next-episode="${nextEpisodeIndex}">Next Episode</button>`;
+            if (scene) {
+                let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
+                
+                if (scene.choices && scene.choices.length > 0) {
+                    content += scene.choices.map(choice => 
+                        `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
+                    ).join('');
+                } else if (scene.nextScene) {
+                    content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
                 }
+
+                episodeContent.innerHTML = content;
             }
-
-            episodeContent.innerHTML = content;
         }
-    }
 
-    // Single event listener for all buttons
-    document.getElementById('episodeContent').addEventListener('click', (event) => {
-        const target = event.target;
-        if (target.classList.contains('choice-button')) {
-            loadScene(target.getAttribute('data-next-scene'));
-        } else if (target.classList.contains('next-button')) {
-            loadScene(target.getAttribute('data-next-scene'));
-        } else if (target.classList.contains('next-episode-button')) {
-            const nextEpisodeIndex = target.getAttribute('data-next-episode');
-            loadEpisode(nextEpisodeIndex);
+                        // Event delegation for buttons
+                episodeContent.addEventListener('click', (event) => {
+                    const target = event.target;
+                    if (target.classList.contains('choice-button')) {
+                        loadScene(target.getAttribute('data-next-scene'));
+                    } else if (target.classList.contains('next-button')) {
+                        loadScene(target.getAttribute('data-next-scene'));
+                    }
+                });
+
+        function loadScene(sceneId) {
+            const scene = currentEpisode.scenes.find(s => s.id === sceneId); 
+            displayScene(currentEpisode, sceneId); 
         }
-    });
-
-    function loadScene(sceneId) {
-        const episode = episodes[currentEpisodeIndex];
-        currentSceneId = sceneId; 
-        displayScene(episode, sceneId); 
-    }
-</script>
-
+    </script>
 </body>
 </html>
