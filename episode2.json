@@ -1,0 +1,41 @@
+{
+  "episode": "2",
+  "title": "The Journey",
+  "scenes": [
+    {
+      "id": "scene1",
+      "text": "You step out of the door and into the unknown.",
+      "choices": [
+        {
+          "text": "Take a left turn.",
+          "nextScene": "scene2"
+        },
+        {
+          "text": "Take a right turn.",
+          "nextScene": "scene3"
+        }
+      ]
+    },
+    {
+      "id": "scene2",
+      "text": "You encounter a friendly traveler.",
+      "choices": [],
+      "nextScene": "scene4"
+    },
+    {
+      "id": "scene3",
+      "text": "You find a hidden path leading to a beautiful garden.",
+      "choices": []
+    },
+    {
+      "id": "scene4",
+      "text": "The traveler points you towards the nearest town.",
+      "choices": []
+    },
+    {
+      "id": "scene5",
+      "text": "You wander off, feeling a sense of adventure.",
+      "choices": []
+    }
+  ]
+}
