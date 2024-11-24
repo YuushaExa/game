@@ -82,7 +82,7 @@ function loadEpisode(file) {
             displayScene(currentEpisode, currentSceneId); 
             // Update the URL
             const episodeNumber = file.match(/episode(\d+)\.json/)[1];
-            window.history.pushState({}, '', `?episode=${episodeNumber}`);
+            window.history.pushState({}, '', `episode${episodeNumber}`);
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
