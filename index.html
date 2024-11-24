@@ -94,6 +94,9 @@
                     content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
                 }
 
+ if (scene.nextEpisode) {
+            content += `<button class="next-episode-button" data-next-episode="${scene.nextEpisode}">Next Episode</button>`;
+ }
                 episodeContent.innerHTML = content;
             }
         }
