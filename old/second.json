@@ -1,0 +1,87 @@
+{
+  "episode": "1",
+  "title": "The Beginning",
+  "scenes": [
+    {
+      "id": "scene1",
+      "text": "You wake up in a strange place.",
+      "background": "images/room.png",
+      "music": "audio/ambient.mp3",
+      "choices": [
+        {
+          "text": "Look around.",
+          "nextScene": "scene2"
+        },
+        {
+          "text": "Go back to sleep.",
+          "nextScene": "scene3"
+        }
+      ]
+    },
+    {
+      "id": "scene2",
+      "text": "You see a door.",
+      "background": "images/door.png",
+      "choices": [
+        {
+          "text": "Open the door.",
+          "nextScene": "scene4"
+        },
+        {
+          "text": "Ignore it.",
+          "nextScene": "scene5"
+        }
+      ]
+    },
+    {
+      "id": "scene3",
+      "text": "You fall back asleep and miss the adventure.",
+      "background": "images/bed.png",
+      "nextScene": "scene5"
+    },
+    {
+      "id": "scene4",
+      "text": "The door creaks open, revealing a dark hallway.",
+      "background": "images/hallway.png",
+      "soundEffect": "audio/door_creak.mp3",
+      "choices": [],
+      "nextScene": "scene5"
+    },
+    {
+      "id": "scene5",
+      "text": "You decide to stay put, wondering what lies beyond.",
+      "background": "images/room.png",
+      "choices": [],
+      "nextEpisode": "episode2.json"
+    }
+  ],
+  "characters": [
+    {
+      "id": "mainCharacter",
+      "name": "Alex",
+      "sprite": "images/alex.png",
+      "expressions": {
+        "happy": "images/alex_happy.png",
+        "sad": "images/alex_sad.png",
+        "surprised": "images/alex_surprised.png"
+      }
+    },
+    {
+      "id": "mysteriousStranger",
+      "name": "Mysterious Stranger",
+      "sprite": "images/stranger.png",
+      "expressions": {
+        "neutral": "images/stranger_neutral.png",
+        "smiling": "images/stranger_smiling.png"
+      }
+    }
+  ],
+  "music": {
+    "ambient": "audio/ambient.mp3",
+    "tense": "audio/tense.mp3"
+  },
+  "soundEffects": {
+    "door_creak": "audio/door_creak.mp3",
+    "footsteps": "audio/footsteps.mp3"
+  }
+}
