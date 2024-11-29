@@ -84,9 +84,7 @@ function displayScene(episode, sceneId) {
     const scene = episode.scenes.find(s => s.id === sceneId);
     
     if (scene) {
-        const playerName = localStorage.getItem('PlayerName') || 'Traveler';
-        let sceneText = scene.text.replace(/{playerName}/g, playerName); // Replace placeholder with player name
-        let content = `<h2>${episode.title}</h2><p>${sceneText}</p>`; // Use sceneText here
+          let content = `<h2>${episode.title}</h2><p>${sceneText}</p>`; // Use sceneText here
         
         if (scene.choices && scene.choices.length > 0) {
             content += scene.choices.map(choice => 
@@ -140,6 +138,9 @@ function savePlayerName() {
             savePlayerName(); // Call the function directly
             delete scene.action; // Optionally remove the action to prevent it from being called again
         }
+            const playerName = localStorage.getItem('PlayerName') || 'Traveler';
+        let sceneText = scene.text.replace(/{playerName}/g, playerName); // Replace placeholder with player name
+  
     }
 }
 
