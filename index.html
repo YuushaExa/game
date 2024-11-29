@@ -84,6 +84,8 @@
             const scene = episode.scenes.find(s => s.id === sceneId);
             
             if (scene) {
+                  const playerName = localStorage.getItem('PlayerName') || 'Traveler';
+        let sceneText = scene.text.replace(/{playerName}/g, playerName); 
                 let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
             
                 if (scene.choices && scene.choices.length > 0) {
@@ -100,9 +102,6 @@
                 episodeContent.innerHTML = content;
 
 // actions
-   const playerName = localStorage.getItem('PlayerName') || 'Traveler';
-   let sceneText = scene.text.replace(/{playerName}/g, playerName);
-
                 checkAction();
             }
         }
