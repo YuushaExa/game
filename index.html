@@ -99,6 +99,10 @@
  }
                 episodeContent.innerHTML = content;
 
+// actions
+   const playerName = localStorage.getItem('PlayerName') || 'Traveler';
+   let sceneText = scene.text.replace(/{playerName}/g, playerName);
+
                 checkAction();
             }
         }
