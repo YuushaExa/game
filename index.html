@@ -86,6 +86,10 @@
             if (scene) {
                 let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
                 
+   const playerName = localStorage.getItem('PlayerName') || 'Traveler';
+   let sceneText = scene.text.replace(/{playerName}/g, playerName);
+
+
                 if (scene.choices && scene.choices.length > 0) {
                     content += scene.choices.map(choice => 
                         `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
@@ -100,8 +104,6 @@
                 episodeContent.innerHTML = content;
 
 // actions
-   const playerName = localStorage.getItem('PlayerName') || 'Traveler';
-   let sceneText = scene.text.replace(/{playerName}/g, playerName);
 
                 checkAction();
             }
