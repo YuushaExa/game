@@ -129,15 +129,16 @@ function savePlayerName() {
     }
 }
         
-        function checkAction() {
-    const scene = storyData.scenes.find(s => s.id === currentSceneId);
-    if (scene.action) {
+    function checkAction() {
+    const scene = currentEpisode.scenes.find(s => s.id === currentSceneId);
+    if (scene && scene.action) {
         if (scene.action === "savePlayerName") {
             savePlayerName(); // Call the function directly
-             delete scene.action; 
+            delete scene.action; // Optionally remove the action to prevent it from being called again
         }
     }
 }
+
     </script>
 </body>
 </html>
