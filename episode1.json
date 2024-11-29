@@ -4,7 +4,8 @@
   "scenes": [
     {
       "id": "scene1",
-      "text": "You wake up in a strange place.",
+      "text": "You wake up in a strange place. Traveler, tell me your name.",
+      "action": "savePlayerName",
       "choices": [
         {
           "text": "Look around.",
@@ -18,7 +19,7 @@
     },
     {
       "id": "scene2",
-      "text": "You see a door.",
+      "text": "{playerName} see a door.",
       "choices": [
         {
           "text": "Open the door.",
