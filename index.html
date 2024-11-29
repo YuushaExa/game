@@ -118,6 +118,24 @@
             const scene = currentEpisode.scenes.find(s => s.id === sceneId); 
             displayScene(currentEpisode, sceneId); 
         }
+
+function savePlayerName() {
+    playerName = prompt("Enter your name:");
+    if (playerName) {
+        localStorage.setItem('PlayerName', playerName);
+        alert(`Player name saved: ${playerName}`);
+    }
+}
+        
+        function checkAction() {
+    const scene = storyData.scenes.find(s => s.id === currentSceneId);
+    if (scene.action) {
+        if (scene.action === "savePlayerName") {
+            savePlayerName(); // Call the function directly
+             delete scene.action; 
+        }
+    }
+}
     </script>
 </body>
 </html>
