@@ -72,12 +72,6 @@
                     currentEpisode = data; 
                     currentSceneId = currentEpisode.scenes[0].id; 
                     displayScene(currentEpisode, currentSceneId); 
-
-  const playerName = localStorage.getItem('PlayerName') || 'Traveler';
-            currentEpisode.scenes.forEach(scene => {
-                scene.text = scene.text.replace(/{playerName}/g, playerName);
-            });
-                    
                 })
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
@@ -85,32 +79,27 @@
                 });
         }
 
-function displayScene(episode, sceneId) {
-    const episodeContent = document.getElementById('episodeContent');
-    const scene = episode.scenes.find(s => s.id === sceneId);
-    
-    if (scene) {
-        let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`; // Use scene.text directly
-        
-        if (scene.choices && scene.choices.length > 0) {
-            content += scene.choices.map(choice => 
-                `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
-            ).join('');
-        } else if (scene.nextScene) {
-            content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
-        }
+        function displayScene(episode, sceneId) {
+            const episodeContent = document.getElementById('episodeContent');
+            const scene = episode.scenes.find(s => s.id === sceneId);
 
-        if (scene.nextEpisode) {
+            if (scene) {
+                let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
+
+                if (scene.choices && scene.choices.length > 0) {
+                    content += scene.choices.map(choice => 
+                        `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
+                    ).join('');
+                } else if (scene.nextScene) {
+                    content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
+                }
+
+ if (scene.nextEpisode) {
             content += `<button class="next-episode-button" data-next-episode="${scene.nextEpisode}">Next Episode</button>`;
+ }
+                episodeContent.innerHTML = content;
+            }
         }
-        
-        episodeContent.innerHTML = content;
-
-        checkAction();
-    }
-}
-
-
 
                         // Event delegation for buttons, keeo it global
            document.getElementById('episodeContent').addEventListener('click', (event) => {
@@ -129,23 +118,6 @@ function displayScene(episode, sceneId) {
             const scene = currentEpisode.scenes.find(s => s.id === sceneId); 
             displayScene(currentEpisode, sceneId); 
         }
-
-        
-
-function checkAction() {
-    const scene = currentEpisode.scenes.find(s => s.id === currentSceneId);
-    if (scene && scene.action) {
-        try {
-            eval(scene.action); // Execute the action string as JavaScript code
-        } catch (error) {
-            console.error('Error executing action:', error);
-        }
-                delete scene.action; 
-    }
-}
-
-
-
     </script>
 </body>
 </html>
