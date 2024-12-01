@@ -7,7 +7,7 @@
       "text": "You wake up in a strange place. Traveler, tell me your name.",
       "choices": [
         {
-          "text": "Look {red} around.",
+          "text": "Look around.",
           "nextScene": "scene2"
         },
         {
@@ -18,7 +18,7 @@
     },
     {
       "id": "scene2",
-      "text": "{playerName} see a door.",
+      "text": "{playerName} see a {red}door{/red}.",
       "choices": [
         {
           "text": "Open the door.",
