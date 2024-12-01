@@ -72,6 +72,12 @@
                     currentEpisode = data; 
                     currentSceneId = currentEpisode.scenes[0].id; 
                     displayScene(currentEpisode, currentSceneId); 
+
+  const playerName = localStorage.getItem('PlayerName') || 'Traveler';
+            currentEpisode.scenes.forEach(scene => {
+                scene.text = scene.text.replace(/{playerName}/g, playerName);
+            });
+                    
                 })
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
