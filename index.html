@@ -135,15 +135,14 @@ function displayScene(episode, sceneId) {
 function checkAction() {
     const scene = currentEpisode.scenes.find(s => s.id === currentSceneId);
     if (scene && scene.action) {
-        // Evaluate the action string as JavaScript code
         try {
-            eval(scene.action)(); // Call the function defined in the action string
+            eval(scene.action); // Execute the action string as JavaScript code
         } catch (error) {
             console.error('Error executing action:', error);
         }
-        delete scene.action; // Optionally remove the action to prevent it from being called again
     }
 }
+
 
 
     </script>
