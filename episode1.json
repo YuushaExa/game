@@ -5,11 +5,9 @@
     {
       "id": "scene1",
       "text": "You wake up in a strange place. Traveler, tell me your name.",
-"action": "(function() { var playerName = prompt('Enter your name:'); if (playerName) { localStorage.setItem('PlayerName', playerName); alert('Player name saved: ' + playerName); } })()",
       "choices": [
         {
           "text": "Look around.",
-           "action": "(function() { document.getElementById('episodeContent').style.color = 'red'; })()",
           "nextScene": "scene2"
         },
         {
