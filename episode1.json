@@ -7,7 +7,7 @@
       "text": "You wake up in a strange place. Traveler, tell me your name.",
       "choices": [
         {
-          "text": "Look around.",
+          "text": "Look {red} around.",
           "nextScene": "scene2"
         },
         {
