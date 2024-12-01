@@ -56,7 +56,7 @@ let scripts = {}; // Initialize an empty scripts object
 // Function to load user scripts
 async function loadUserScripts() {
     try {
-        const module = await import('./userScripts.js'); // Adjust the path as necessary
+        const module = await import('/userScripts.js'); // Adjust the path as necessary
         scripts = { ...scripts, ...module.userScripts }; // Merge user scripts with existing scripts
     } catch (error) {
         console.error('Failed to load user scripts:', error);
