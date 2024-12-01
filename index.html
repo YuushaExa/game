@@ -39,6 +39,7 @@
 }
     </style>
 </head>
+        <script src="userScripts.js" defer></script>
 <body>
     <h1>Visual Novel Episodes</h1>
     <ul class="episode-list" id="episodeList">
@@ -51,17 +52,7 @@
     <script>
            let currentSceneId = null; 
         let currentEpisode = null; 
-let scripts = {}; // Initialize an empty scripts object
 
-// Function to load user scripts
-async function loadUserScripts() {
-    try {
-        const module = await import('/userScripts.js'); // Adjust the path as necessary
-        scripts = { ...scripts, ...module.userScripts }; // Merge user scripts with existing scripts
-    } catch (error) {
-        console.error('Failed to load user scripts:', error);
-    }
-}
         document.getElementById('episodeList').addEventListener('click', (event) => {
             if (event.target.tagName === 'A') {
                 event.preventDefault(); // Prevent default anchor behavior
