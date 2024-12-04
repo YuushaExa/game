@@ -89,9 +89,10 @@ function displayScene(episode, sceneId) {
         return; // Exit if the scene is not found
     }
 
-    const { title, text, choices, nextScene, nextEpisode } = scene;
+    // Access the title from the episode object
+    const title = episode.title; // Get the title from the episode
+    const { text, choices, nextScene, nextEpisode } = scene;
 
-    // Use template literals for better readability
     let content = `
         ${generateSceneHeader(title)}
         ${generateSceneText(text)}
@@ -110,6 +111,7 @@ function displayScene(episode, sceneId) {
     // Update the DOM in a single operation
     episodeContent.innerHTML = content;
 }
+
 
 function generateSceneHeader(title) {
     return `<h2>${title}</h2>`;
