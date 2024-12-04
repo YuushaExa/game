@@ -39,7 +39,7 @@
 }
     </style>
 </head>
-            <script src="userScripts.js" defer></script>
+        <script src="userScripts.js" defer></script>
 <body>
     <h1>Visual Novel Episodes</h1>
     <ul class="episode-list" id="episodeList">
@@ -80,74 +80,40 @@
                 });
         }
 
-function displayScene(episode, sceneId) {
-    const episodeContent = document.getElementById('episodeContent');
-    const scene = episode.scenes.find(s => s.id === sceneId);
+        function displayScene(episode, sceneId) {
+            const episodeContent = document.getElementById('episodeContent');
+            const scene = episode.scenes.find(s => s.id === sceneId);
 
-    if (!scene) {
-        episodeContent.innerHTML = '<p>Scene not found.</p>';
-        return; // Exit if the scene is not found
-    }
+            if (scene) {
+                let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
 
-    // Access the title from the episode object
-    const title = episode.title; // Get the title from the episode
-    const { text, choices, nextScene, nextEpisode } = scene;
+                if (scene.choices && scene.choices.length > 0) {
+                    content += scene.choices.map(choice => 
+                        `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
+                    ).join('');
+                } else if (scene.nextScene) {
+                    content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
+                }
 
-    let content = `
-        ${generateSceneHeader(title)}
-        ${generateSceneText(text)}
-    `;
+ if (scene.nextEpisode) {
+            content += `<button class="next-episode-button" data-next-episode="${scene.nextEpisode}">Next Episode</button>`;
+ }
+                episodeContent.innerHTML = content;
+            }
+        }
 
-    if (choices && choices.length > 0) {
-        content += generateChoices(choices);
-    } else if (nextScene) {
-        content += generateNextButton(nextScene);
-    }
-
-    if (nextEpisode) {
-        content += generateNextEpisodeButton(nextEpisode);
-    }
-
-    // Update the DOM in a single operation
-    episodeContent.innerHTML = content;
-}
-
-
-function generateSceneHeader(title) {
-    return `<h2>${title}</h2>`;
-}
-
-function generateSceneText(text) {
-    return `<p>${text}</p>`;
-}
-
-function generateChoices(choices) {
-    return choices.map(choice => 
-        `<button class="choice-button" data-next-scene="${choice.nextScene}" aria-label="${choice.text}">${choice.text}</button>`
-    ).join('');
-}
-
-function generateNextButton(nextScene) {
-    return `<button class="next-button" data-next-scene="${nextScene}" aria-label="Next scene">Next</button>`;
-}
-
-function generateNextEpisodeButton(nextEpisode) {
-    return `<button class="next-episode-button" data-next-episode="${nextEpisode}" aria-label="Next episode">Next Episode</button>`;
-}
-
-// Event delegation for buttons, keep it global
-document.getElementById('episodeContent').addEventListener('click', (event) => {
-    const target = event.target;
-    if (target.classList.contains('choice-button')) {
-        loadScene(target.getAttribute('data-next-scene'));
-    } else if (target.classList.contains('next-button')) {
-        loadScene(target.getAttribute('data-next-scene'));
-    } else if (target.classList.contains('next-episode-button')) {
-        const nextEpisodeIndex = target.getAttribute('data-next-episode');
-        loadEpisode(nextEpisodeIndex);
-    }
-});
-
+                        // Event delegation for buttons, keeo it global
+           document.getElementById('episodeContent').addEventListener('click', (event) => {
+        const target = event.target;
+        if (target.classList.contains('choice-button')) {
+            loadScene(target.getAttribute('data-next-scene'));
+        } else if (target.classList.contains('next-button')) {
+            loadScene(target.getAttribute('data-next-scene'));
+        } else if (target.classList.contains('next-episode-button')) {
+            const nextEpisodeIndex = target.getAttribute('data-next-episode');
+            loadEpisode(nextEpisodeIndex);
+        }
+    });
 
         function loadScene(sceneId) {
             const scene = currentEpisode.scenes.find(s => s.id === sceneId); 
