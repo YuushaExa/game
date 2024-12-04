@@ -27,7 +27,7 @@ function loadEpisode(file) {
         .then(data => {
             currentEpisode = data; 
             replacePlayerNamesInEpisode(currentEpisode); // Replace player names and handle color formatting
-            redEpisode(episode);
+            redEpisode(currentEpisode); // Pass currentEpisode instead of episode
             currentSceneId = currentEpisode.scenes[0].id; 
             displayScene(currentEpisode, currentSceneId); 
         })
@@ -36,6 +36,7 @@ function loadEpisode(file) {
             document.getElementById('episodeContent').innerText = 'Failed to load episode. Please try again later.';
         });
 }
+
 
 // Load JS each scene
 function loadScene(sceneId) {
