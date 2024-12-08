@@ -42,43 +42,49 @@
         <script src="userScripts.js" defer></script>
 <body>
     <h1>Visual Novel Episodes</h1>
-    <ul class="episode-list" id="episodeList">
-        <li><a href="#" data-episode-file="episode1.json">Episode 1: The Beginning</a></li>
-        <li><a href="#" data-episode-file="episode2.json">Episode 2: The Journey Continues</a></li>
-        <!-- Add more episodes here -->
-    </ul>
+    <ul class="episode-list" id="episodeList"></ul>
         <div id="episodeContent"></div> <!-- Added this line -->
 
     <script>
            let currentSceneId = null; 
         let currentEpisode = null; 
 
-        document.getElementById('episodeList').addEventListener('click', (event) => {
-            if (event.target.tagName === 'A') {
-                event.preventDefault();
-                const episodeFile = event.target.getAttribute('data-episode-file');
-                loadEpisode(episodeFile);
-            }
-        });
+        fetch('episodes.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                episodes = data.episodes;
+                displayEpisodeList();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                document.getElementById('episodeContent').innerText = 'Failed to load episodes. Please try again later.';
+            });
 
-        function loadEpisode(file) {
-            fetch(file)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    currentEpisode = data; 
-                    displayScene(currentEpisode.scenes[0]); 
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                    document.getElementById('episodeContent').innerText = 'Failed to load episode. Please try again later.';
-                });
+        function displayEpisodeList() {
+            const episodeList = document.getElementById('episodeList');
+            episodeList.innerHTML = episodes.map((episode, index) => 
+                `<li><a href="#" data-index="${index}">Episode ${episode.episode}: ${episode.title}</a></li>`
+            ).join('');
+            episodeList.addEventListener('click', (event) => {
+                if (event.target.tagName === 'A') {
+                    const index = event.target.getAttribute('data-index');
+                    loadEpisode(index);
+                }
+            });
         }
 
+        function loadEpisode(index) {
+            currentEpisodeIndex = index; 
+            const episode = episodes[index];
+            currentSceneId = episode.scenes[0].id; 
+            displayScene(episode, currentSceneId); 
+        }
+        
         function displayScene(scene) {
             const episodeContent = document.getElementById('episodeContent');
             let content = `<h2>${currentEpisode.title}</h2><p>${scene.text}</p>`;
