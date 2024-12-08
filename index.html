@@ -77,13 +77,12 @@
             });
         }
 
-        function loadEpisode(index) {
+    function loadEpisode(index) {
     currentEpisodeIndex = index; 
     currentEpisode = episodes[index]; // Set currentEpisode here
     currentSceneId = currentEpisode.scenes[0].id; 
     displayScene(currentEpisode.scenes[0]); // Pass the first scene directly
 }
-
 function displayScene(scene) {
     const episodeContent = document.getElementById('episodeContent');
     let content = `<h2>${currentEpisode.title}</h2><p>${scene.text}</p>`; // Use currentEpisode here
@@ -104,21 +103,25 @@ function displayScene(scene) {
 }
 
 
-        document.getElementById('episodeContent').addEventListener('click', (event) => {
-            const target = event.target;
-            if (target.classList.contains('choice-button')) {
-                const nextSceneId = target.getAttribute('data-next-scene');
-                const nextScene = currentEpisode.scenes.find(s => s.id === nextSceneId);
-                displayScene(nextScene);
-            } else if (target.classList.contains('next-button')) {
-                const nextSceneId = target.getAttribute('data-next-scene');
-                const nextScene = currentEpisode.scenes.find(s => s.id === nextSceneId);
-                displayScene(nextScene);
-            } else if (target.classList.contains('next-episode-button')) {
-                const nextEpisodeFile = target.getAttribute('data-next-episode');
-                loadEpisode(nextEpisodeFile);
-            }
-        });
+     document.getElementById('episodeContent').addEventListener('click', (event) => {
+    const target = event.target;
+    if (target.classList.contains('choice-button')) {
+        const nextSceneId = target.getAttribute('data-next-scene');
+        const nextScene = currentEpisode.scenes.find(s => s.id === nextSceneId);
+        displayScene(nextScene);
+    } else if (target.classList.contains('next-button')) {
+        const nextSceneId = target.getAttribute('data-next-scene');
+        const nextScene = currentEpisode.scenes.find(s => s.id === nextSceneId);
+        displayScene(nextScene);
+    } else if (target.classList.contains('next-episode-button')) {
+        const nextEpisodeIndex = parseInt(target.getAttribute('data-next-episode'), 10);
+        if (nextEpisodeIndex >= 0 && nextEpisodeIndex < episodes.length) {
+            loadEpisode(nextEpisodeIndex); // Load the next episode by index
+        } else {
+            console.error('Next episode index is out of bounds');
+        }
+    }
+});
     </script>
 </body>
 </html>
