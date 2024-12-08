@@ -55,7 +55,7 @@
 
         document.getElementById('episodeList').addEventListener('click', (event) => {
             if (event.target.tagName === 'A') {
-                event.preventDefault(); // Prevent default anchor behavior
+                event.preventDefault();
                 const episodeFile = event.target.getAttribute('data-episode-file');
                 loadEpisode(episodeFile);
             }
@@ -71,8 +71,7 @@
                 })
                 .then(data => {
                     currentEpisode = data; 
-                    currentSceneId = currentEpisode.scenes[0].id; 
-                    displayScene(currentEpisode, currentSceneId); 
+                    displayScene(currentEpisode.scenes[0]); 
                 })
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
@@ -80,45 +79,40 @@
                 });
         }
 
-        function displayScene(episode, sceneId) {
+        function displayScene(scene) {
             const episodeContent = document.getElementById('episodeContent');
-            const scene = episode.scenes.find(s => s.id === sceneId);
+            let content = `<h2>${currentEpisode.title}</h2><p>${scene.text}</p>`;
 
-            if (scene) {
-                let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
-
-                if (scene.choices && scene.choices.length > 0) {
-                    content += scene.choices.map(choice => 
-                        `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
-                    ).join('');
-                } else if (scene.nextScene) {
-                    content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
-                }
-
- if (scene.nextEpisode) {
-            content += `<button class="next-episode-button" data-next-episode="${scene.nextEpisode}">Next Episode</button>`;
- }
-                episodeContent.innerHTML = content;
+            if (scene.choices && scene.choices.length > 0) {
+                content += scene.choices.map(choice => 
+                    `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
+                ).join('');
+            } else if (scene.nextScene) {
+                content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
             }
+
+            if (scene.nextEpisode) {
+                content += `<button class="next-episode-button" data-next-episode="${scene.nextEpisode}">Next Episode</button>`;
+            }
+
+            episodeContent.innerHTML = content;
         }
 
-                        // Event delegation for buttons, keeo it global
-           document.getElementById('episodeContent').addEventListener('click', (event) => {
-        const target = event.target;
-        if (target.classList.contains('choice-button')) {
-            loadScene(target.getAttribute('data-next-scene'));
-        } else if (target.classList.contains('next-button')) {
-            loadScene(target.getAttribute('data-next-scene'));
-        } else if (target.classList.contains('next-episode-button')) {
-            const nextEpisodeIndex = target.getAttribute('data-next-episode');
-            loadEpisode(nextEpisodeIndex);
-        }
-    });
-
-        function loadScene(sceneId) {
-            const scene = currentEpisode.scenes.find(s => s.id === sceneId); 
-            displayScene(currentEpisode, sceneId); 
-        }
+        document.getElementById('episodeContent').addEventListener('click', (event) => {
+            const target = event.target;
+            if (target.classList.contains('choice-button')) {
+                const nextSceneId = target.getAttribute('data-next-scene');
+                const nextScene = currentEpisode.scenes.find(s => s.id === nextSceneId);
+                displayScene(nextScene);
+            } else if (target.classList.contains('next-button')) {
+                const nextSceneId = target.getAttribute('data-next-scene');
+                const nextScene = currentEpisode.scenes.find(s => s.id === nextSceneId);
+                displayScene(nextScene);
+            } else if (target.classList.contains('next-episode-button')) {
+                const nextEpisodeFile = target.getAttribute('data-next-episode');
+                loadEpisode(nextEpisodeFile);
+            }
+        });
     </script>
 </body>
 </html>
