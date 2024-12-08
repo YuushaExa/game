@@ -78,30 +78,31 @@
         }
 
         function loadEpisode(index) {
-            currentEpisodeIndex = index; 
-            const episode = episodes[index];
-            currentSceneId = episode.scenes[0].id; 
-            displayScene(episode, currentSceneId); 
-        }
-        
-        function displayScene(scene) {
-            const episodeContent = document.getElementById('episodeContent');
-            let content = `<h2>${currentEpisode.title}</h2><p>${scene.text}</p>`;
+    currentEpisodeIndex = index; 
+    currentEpisode = episodes[index]; // Set currentEpisode here
+    currentSceneId = currentEpisode.scenes[0].id; 
+    displayScene(currentEpisode.scenes[0]); // Pass the first scene directly
+}
 
-            if (scene.choices && scene.choices.length > 0) {
-                content += scene.choices.map(choice => 
-                    `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
-                ).join('');
-            } else if (scene.nextScene) {
-                content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
-            }
+function displayScene(scene) {
+    const episodeContent = document.getElementById('episodeContent');
+    let content = `<h2>${currentEpisode.title}</h2><p>${scene.text}</p>`; // Use currentEpisode here
 
-            if (scene.nextEpisode) {
-                content += `<button class="next-episode-button" data-next-episode="${scene.nextEpisode}">Next Episode</button>`;
-            }
+    if (scene.choices && scene.choices.length > 0) {
+        content += scene.choices.map(choice => 
+            `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
+        ).join('');
+    } else if (scene.nextScene) {
+        content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
+    }
 
-            episodeContent.innerHTML = content;
-        }
+    if (scene.nextEpisode) {
+        content += `<button class="next-episode-button" data-next-episode="${scene.nextEpisode}">Next Episode</button>`;
+    }
+
+    episodeContent.innerHTML = content;
+}
+
 
         document.getElementById('episodeContent').addEventListener('click', (event) => {
             const target = event.target;
