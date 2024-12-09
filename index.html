@@ -114,8 +114,13 @@ document.getElementById('episodeContent').addEventListener('click', (event) => {
         const nextScene = currentEpisode.scenes.find(s => s.id === nextSceneId);
         displayScene(nextScene);
     } else if (target.classList.contains('next-episode-button')) {
+        // Get the next episode number from the current scene
         const nextEpisodeNumber = currentEpisode.scenes.find(scene => scene.id === currentSceneId).nextEpisode;
+
+        // Convert the nextEpisodeNumber to an index
         const nextEpisodeIndex = parseInt(nextEpisodeNumber, 10) - 1; // Convert to zero-based index
+
+        // Check if the index is valid
         if (nextEpisodeIndex >= 0 && nextEpisodeIndex < episodes.length) {
             loadEpisode(nextEpisodeIndex); // Load the next episode by index
         } else {
@@ -123,6 +128,7 @@ document.getElementById('episodeContent').addEventListener('click', (event) => {
         }
     }
 });
+
 
 
 
