@@ -77,7 +77,7 @@
             });
         }
 
-    function loadEpisode(index) {
+function loadEpisode(index) {
     currentEpisodeIndex = index; 
     currentEpisode = episodes[index]; // Set currentEpisode here
     currentSceneId = currentEpisode.scenes[0].id; 
@@ -117,14 +117,10 @@ document.getElementById('episodeContent').addEventListener('click', (event) => {
         // Get the next episode number from the current scene
         const nextEpisodeNumber = currentEpisode.scenes.find(scene => scene.id === currentSceneId).nextEpisode;
 
-        // Directly load the episode based on the episode number
-        loadEpisode(parseInt(nextEpisodeNumber, 10)); // Load the episode by its number
-
-        // Note: Ensure that the loadEpisode function can handle the episode number directly
+        // Load the episode by its index (subtract 1 to convert to zero-based index)
+        loadEpisode(parseInt(nextEpisodeNumber, 10) - 1); // Load the episode by its number
     }
 });
-
-
 
 
 
