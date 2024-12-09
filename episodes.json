@@ -88,7 +88,8 @@
         {
           "id": "scene5",
           "text": "You wander off, feeling a sense of adventure.",
-          "choices": []
+          "choices": [],
+                    "nextEpisode": "1" 
         }
       ]
     }
