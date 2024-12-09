@@ -117,17 +117,13 @@ document.getElementById('episodeContent').addEventListener('click', (event) => {
         // Get the next episode number from the current scene
         const nextEpisodeNumber = currentEpisode.scenes.find(scene => scene.id === currentSceneId).nextEpisode;
 
-        // Convert the nextEpisodeNumber to an index
-        const nextEpisodeIndex = parseInt(nextEpisodeNumber, 10) - 1; // Convert to zero-based index
+        // Directly load the episode based on the episode number
+        loadEpisode(parseInt(nextEpisodeNumber, 10)); // Load the episode by its number
 
-        // Check if the index is valid
-        if (nextEpisodeIndex >= 0 && nextEpisodeIndex < episodes.length) {
-            loadEpisode(nextEpisodeIndex); // Load the next episode by index
-        } else {
-            console.error('Next episode index is out of bounds');
-        }
+        // Note: Ensure that the loadEpisode function can handle the episode number directly
     }
 });
+
 
 
 
