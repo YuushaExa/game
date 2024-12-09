@@ -14,7 +14,8 @@
           "text": "Take a right turn.",
           "nextScene": "scene3"
         }
-      ]
+      ],
+            "nextEpisode": "episode1.json" 
     },
     {
       "id": "scene2",
