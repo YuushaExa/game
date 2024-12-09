@@ -112,10 +112,15 @@
         }
     });
 
-        function loadScene(sceneId) {
-            const scene = currentEpisode.scenes.find(s => s.id === sceneId); 
-            displayScene(currentEpisode, sceneId); 
-        }
+       function loadScene(sceneId) {
+    const scene = currentEpisode.scenes.find(s => s.id === sceneId); 
+    if (scene) {
+        displayScene(currentEpisode, sceneId); 
+    } else {
+        console.error('Scene not found:', sceneId);
+    }
+}
+
     </script>
 </body>
 </html>
