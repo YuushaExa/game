@@ -37,10 +37,16 @@
         button.next-button {
     color: green;
 }
+
+         .episode-list {
+    display: none;
+  }
     </style>
 </head>
         <script src="userScripts.js" defer></script>
 <body>
+
+    <button id="startButton">Start</button>
     <h1>Visual Novel Episodes</h1>
     <ul class="episode-list" id="episodeList">
         <li><a href="#" data-episode-file="episode1.json">Episode 1: The Beginning</a></li>
@@ -50,6 +56,15 @@
         <div id="episodeContent"></div> <!-- Added this line -->
 
     <script>
+
+         const startButton = document.getElementById("startButton");
+  const episodeList = document.getElementById("episodeList");
+
+  startButton.addEventListener("click", () => {
+    episodeList.style.display = "block"; // Show the list on click
+    startButton.style.display = "none"; // Optionally hide the button
+  });
+        
            let currentSceneId = null; 
         let currentEpisode = null; 
 
