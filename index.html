@@ -38,23 +38,8 @@
     color: green;
 }
 
-         .episode-list {
+       .episode-list {
     display: none;
-    opacity: 0; /* Initially hidden and transparent */
-    transition: opacity 0.5s ease-in-out; /* Add transition for opacity */
-  }
-
-  .episode-list.show {
-    display: block;
-    opacity: 1; /* Fully visible when shown */
-  }
-
-  button {
-    transition: opacity 0.5s ease-in-out; /* Add transition for buttons */
-  }
-
-  button.hide {
-    opacity: 0;
   }
     </style>
 </head>
@@ -62,7 +47,6 @@
 <body>
 
     <button id="startButton">Start</button>
-    <button id="backButton" class="hide">Back</button>
 
     <h1>Visual Novel Episodes</h1>
     <ul class="episode-list" id="episodeList">
@@ -73,32 +57,11 @@
         <div id="episodeContent"></div> <!-- Added this line -->
 
     <script>
- const startButton = document.getElementById("startButton");
-  const backButton = document.getElementById("backButton");
+   const startButton = document.getElementById("startButton");
   const episodeList = document.getElementById("episodeList");
 
   startButton.addEventListener("click", () => {
-    episodeList.classList.add("show"); // Add show class to trigger animation
-    startButton.classList.add("hide");
-    backButton.classList.remove("hide");
-
-    // Hide start button after the transition
-    setTimeout(() => {
-      startButton.style.display = "none";
-    }, 500); // 500ms matches transition duration
-  });
-
-  backButton.addEventListener("click", () => {
-    episodeList.classList.remove("show"); // Remove show class to trigger animation
-    startButton.classList.remove("hide");
-    backButton.classList.add("hide");
-
-    // Hide back button after the transition
-    setTimeout(() => {
-      backButton.style.display = "none";
-    }, 500); // 500ms matches transition duration
-
-    startButton.style.display = "block"; // Immediately show the start button
+    episodeList.style.display = "block"; // Show the list on click
   });
 
         // engine
