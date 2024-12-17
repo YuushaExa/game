@@ -102,7 +102,7 @@
            let currentSceneId = null; 
         let currentEpisode = null; 
 
-        document.getElementById('episodeList').addEventListener('click', (event) => {
+        document.getElementById('episode-list').addEventListener('click', (event) => {
             if (event.target.tagName === 'A') {
                 event.preventDefault(); // Prevent default anchor behavior
                 const episodeFile = event.target.getAttribute('data-episode-file');
