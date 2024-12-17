@@ -38,11 +38,20 @@
     color: green;
 }
         
-     .episode-list {
-    display: none;
+   .episode-list {
+    opacity: 0;
+    transform: translateY(-20px); /* Start slightly above */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
   }
+
   .episode-list.show {
-    display: block;
+    opacity: 1;
+    transform: translateY(0); /* Move to original position */
+  }
+
+  .episode-list.hide {
+    opacity: 0;
+    transform: translateY(-20px); /* Start slightly above */
   }
     </style>
 </head>
@@ -63,14 +72,20 @@
 const startButton = document.getElementById("startButton");
   const episodeList = document.getElementById("episode-list");
 
-  startButton.addEventListener("click", () => {
-    episodeList.classList.toggle("show");
+  const startButton = document.getElementById("startButton");
+  const episodeList = document.getElementById("episode-list");
 
-    // Change button text based on list visibility
-    if (episodeList.classList.contains("show")) {
-      startButton.textContent = "Back";
-    } else {
+  startButton.addEventListener("click", () => {
+    const isListShowing = episodeList.classList.contains("show");
+
+    if (isListShowing) {
+      episodeList.classList.remove("show");
+      episodeList.classList.add("hide");
       startButton.textContent = "Start";
+    } else {
+      episodeList.classList.remove("hide");
+      episodeList.classList.add("show");
+      startButton.textContent = "Back";
     }
   });
 
