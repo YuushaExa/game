@@ -37,9 +37,12 @@
         button.next-button {
     color: green;
 }
-
-       .episode-list {
+        
+     .episode-list {
     display: none;
+  }
+  .episode-list.show {
+    display: block;
   }
     </style>
 </head>
@@ -49,7 +52,7 @@
     <button id="startButton">Start</button>
 
     <h1>Visual Novel Episodes</h1>
-    <ul class="episode-list" id="episodeList">
+<ul id="episode-list" class="episode-list">
         <li><a href="#" data-episode-file="episode1.json">Episode 1: The Beginning</a></li>
         <li><a href="#" data-episode-file="episode2.json">Episode 2: The Journey Continues</a></li>
         <!-- Add more episodes here -->
@@ -57,11 +60,18 @@
         <div id="episodeContent"></div> <!-- Added this line -->
 
     <script>
-   const startButton = document.getElementById("startButton");
-  const episodeList = document.getElementById("episodeList");
+const startButton = document.getElementById("startButton");
+  const episodeList = document.getElementById("episode-list");
 
   startButton.addEventListener("click", () => {
-    episodeList.style.display = "block"; // Show the list on click
+    episodeList.classList.toggle("show");
+
+    // Change button text based on list visibility
+    if (episodeList.classList.contains("show")) {
+      startButton.textContent = "Back";
+    } else {
+      startButton.textContent = "Start";
+    }
   });
 
         // engine
