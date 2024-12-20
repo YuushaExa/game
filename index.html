@@ -64,10 +64,20 @@
     margin: 0; /* Removes default body margins */
     height: 100vh; /* Ensures the body takes up the full viewport height */
   }
+
+         .background-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* Ensure it stays behind other content */
+    }
     </style>
 </head>
         <script src="userScripts.js" defer></script>
 <body>
+    <div id="background-image" class="background-image"></div>
 
     <button id="startButton">Start</button>
 
@@ -129,10 +139,18 @@
                 });
         }
 
-        function displayScene(episode, sceneId) {
+  function displayScene(episode, sceneId) {
             const episodeContent = document.getElementById('episodeContent');
             const scene = episode.scenes.find(s => s.id === sceneId);
+            const backgroundImage = document.getElementById('background-image');
             if (scene) {
+                // Update the background image
+                if (scene.background) {
+                    backgroundImage.style.backgroundImage = `url(${scene.background})`;
+                } else {
+                    backgroundImage.style.backgroundImage = ''; // Reset if no background
+                }
+
                 let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
                 if (scene.choices && scene.choices.length > 0) {
                     content += scene.choices.map(choice => 
@@ -141,13 +159,12 @@
                 } else if (scene.nextScene) {
                     content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
                 }
- if (scene.nextEpisode) {
-            content += `<button class="next-episode-button" data-next-episode="${scene.nextEpisode}">Next Episode</button>`;
- }
+                if (scene.nextEpisode) {
+                    content += `<button class="next-episode-button" data-next-episode="${scene.nextEpisode}">Next Episode</button>`;
+                }
                 episodeContent.innerHTML = content;
             }
         }
-
                         // Event delegation for buttons, keeo it global
            document.getElementById('episodeContent').addEventListener('click', (event) => {
         const target = event.target;
