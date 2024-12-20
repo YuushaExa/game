@@ -4,6 +4,7 @@
   "scenes": [
     {
       "id": "scene1",
+      "background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5ScLyz2VKygnlgsRYEmGyITjK0Q5NsPbQZQ&s", 
       "text": "You wake up in a strange place. Traveler, tell me your name.",
       "choices": [
         {
@@ -18,6 +19,7 @@
     },
     {
       "id": "scene2",
+      "background": "https://m.media-amazon.com/images/M/MV5BMTY3OTM0NjMxOV5BMl5BanBnXkFtZTcwNTQ3NjQyMQ@@._V1_.jpg", 
       "text": "{playerName} see a {red}door{/red}.",
       "choices": [
         {
@@ -32,17 +34,20 @@
     },
     {
       "id": "scene3",
+      "background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk9m9bkwYVDdR4zi9_s0-PNL0aubDiSxaxK3uZRxixptBD5IG1WDe2dynL9vdfIY361NM&usqp=CAU", 
       "text": "You fall back asleep and miss the adventure.",
       "nextScene": "scene5"
     },
     {
       "id": "scene4",
+      "background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2cycGgnpxvvelhfWb2bNeaVgbSpFspTE9aWEx2xIizIrOLx1MWpqIgNB5xZGpDxNW6aE&usqp=CAU", 
       "text": "The door creaks open, revealing a dark hallway.",
       "choices": [],
       "nextScene": "scene5"
     },
     {
       "id": "scene5",
+      "background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2wdNzt_wuSi-1wKKjd1UljhMxyD4QND_banGxjw2GuboOd2Xxh3xEp8GgHCjOX4gRcuQ&usqp=CAU", 
       "text": "You decide to stay put, wondering what lies beyond.",
       "choices": [],
       "nextEpisode": "episode2.json" 
