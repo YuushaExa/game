@@ -88,6 +88,8 @@
         <li><a href="#" data-episode-file="episode2.json">Episode 2: The Journey Continues</a></li>
         <!-- Add more episodes here -->
     </ul>
+
+        <div id="background-image" class="background-image"></div>
         <div id="episodeContent"></div> <!-- Added this line -->
 
     <script>
@@ -145,9 +147,9 @@
             const scene = episode.scenes.find(s => s.id === sceneId);
             if (scene) {
                      if (scene.background) {
-            episodeContent.style.backgroundImage = `url(${scene.background})`;
+            backgroundImage.style.backgroundImage = `url(${scene.background})`;
         } else {
-            episodeContent.style.backgroundImage = ''; // Reset if no background is provided
+            backgroundImage.style.backgroundImage = ''; // Reset if no background is provided
         }
                 let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
                 if (scene.choices && scene.choices.length > 0) {
