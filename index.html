@@ -145,6 +145,8 @@
         function displayScene(episode, sceneId) {
             const episodeContent = document.getElementById('episodeContent');
             const scene = episode.scenes.find(s => s.id === sceneId);
+             const backgroundImage = document.getElementById('background-image');
+            
             if (scene) {
                      if (scene.background) {
             backgroundImage.style.backgroundImage = `url(${scene.background})`;
