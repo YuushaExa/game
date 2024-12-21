@@ -38,7 +38,6 @@
     color: green;
 }
 
-
    .episode-list {
     opacity: 0;
     transform: translateY(-20px); /* Start slightly above */
@@ -75,6 +74,24 @@
     background-position: center;
     z-index: 1;
 }
+
+.scene-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .scene-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+.scene-wrapper{
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
     </style>
 </head>
         <script src="userScripts.js" defer></script>
@@ -89,7 +106,6 @@
         <!-- Add more episodes here -->
     </ul>
 
-        <div id="background-image" class="background-image"></div>
         <div id="episodeContent"></div> <!-- Added this line -->
 
     <script>
@@ -143,30 +159,44 @@
         }
 
         function displayScene(episode, sceneId) {
-            const episodeContent = document.getElementById('episodeContent');
-            const scene = episode.scenes.find(s => s.id === sceneId);
-             const backgroundImage = document.getElementById('background-image');
-            
-            if (scene) {
-                     if (scene.background) {
-            backgroundImage.style.backgroundImage = `url(${scene.background})`;
-        } else {
-            backgroundImage.style.backgroundImage = ''; // Reset if no background is provided
-        }
-                let content = `<h2>${episode.title}</h2><p>${scene.text}</p>`;
-                if (scene.choices && scene.choices.length > 0) {
-                    content += scene.choices.map(choice => 
-                        `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
-                    ).join('');
-                } else if (scene.nextScene) {
-                    content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
-                }
- if (scene.nextEpisode) {
-            content += `<button class="next-episode-button" data-next-episode="${scene.nextEpisode}">Next Episode</button>`;
- }
-                episodeContent.innerHTML = content;
+        const episodeContent = document.getElementById('episodeContent');
+        const scene = episode.scenes.find(s => s.id === sceneId);
+
+        if (scene) {
+            let content = `<div class="scene-wrapper">`;
+
+            // Background
+            if (scene.background) {
+                content += `<div class="background-image" style="background-image: url(${scene.background});"></div>`;
             }
+
+            content += `<div class="scene-content">`;
+
+            // Title
+            content += `<div class="scene-title">${episode.title}</div>`;
+
+            // Text
+            content += `<div class="scene-text">${scene.text}</div>`;
+
+            // Choices
+            if (scene.choices && scene.choices.length > 0) {
+                content += scene.choices.map(choice =>
+                    `<button class="choice-button" data-next-scene="${choice.nextScene}">${choice.text}</button>`
+                ).join('');
+            } else if (scene.nextScene) {
+                content += `<button class="next-button" data-next-scene="${scene.nextScene}">Next</button>`;
+            }
+
+            // Next Episode Button
+            if (scene.nextEpisode) {
+                content += `<button class="next-episode-button" data-next-episode="${scene.nextEpisode}">Next Episode</button>`;
+            }
+
+            content += `</div></div>`; // Close scene-content and scene-wrapper
+
+            episodeContent.innerHTML = content;
         }
+    }
 
                         // Event delegation for buttons, keeo it global
            document.getElementById('episodeContent').addEventListener('click', (event) => {
@@ -184,7 +214,7 @@
        function loadScene(sceneId) {
     const scene = currentEpisode.scenes.find(s => s.id === sceneId); 
     if (scene) {
-        displayScene(currentEpisode, sceneId); 
+        displayScene(currentEpisode, sceneId);  উপদেষ্টা
     } else {
         console.error('Scene not found:', sceneId);
     }
