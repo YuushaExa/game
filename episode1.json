@@ -1,9 +1,9 @@
 {
   "episode": "1",
-  "title": "The Beginning",
   "scenes": [
     {
       "id": "scene1",
+      "title": "The Beginning",
       "background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5ScLyz2VKygnlgsRYEmGyITjK0Q5NsPbQZQ&s", 
       "text": "You wake up in a strange place. Traveler, tell me your name.",
       "choices": [
