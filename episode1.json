@@ -8,9 +8,12 @@
 },
 "music": {
 "scene1Music": "example",
+"scene2Music": "example"
 },
 "variables": {
-"example": "example",
+ "playerName": "",
+  "hasKey": false,
+  "score": 0
 },
   "localization": {
     "en": {
@@ -18,10 +21,10 @@
       "2": "Look around.",
       "3": "Go back to sleep.",
       "4": "{playerName} see a {red}door{/red}.",
-      "5": "Open the door."
+      "5": "Open the door.",
       "6": "Ignore it.",
       "7": "You fall back asleep and miss the adventure.",
-      "8": "The door creaks open, revealing a dark hallway."
+      "8": "The door creaks open, revealing a dark hallway.",
       "9": "You decide to stay put, wondering what lies beyond."
     },
     "jp": {
