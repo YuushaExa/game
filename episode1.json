@@ -1,0 +1,73 @@
+{
+"backgrounds": {
+"scene1Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5ScLyz2VKygnlgsRYEmGyITjK0Q5NsPbQZQ&amp;s ",
+"scene2Background": "https://m.media-amazon.com/images/M/MV5BMTY3OTM0NjMxOV5BMl5BanBnXkFtZTcwNTQ3NjQyMQ@@._V1_.jpg ",
+"scene3Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk9m9bkwYVDdR4zi9_s0-PNL0aubDiSxaxK3uZRxixptBD5IG1WDe2dynL9vdfIY361NM&amp;usqp=CAU ",
+"scene4Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2cycGgnpxvvelhfWb2bNeaVgbSpFspTE9aWEx2xIizIrOLx1MWpqIgNB5xZGpDxNW6aE&amp;usqp=CAU ",
+"scene5Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2wdNzt_wuSi-1wKKjd1UljhMxyD4QND_banGxjw2GuboOd2Xxh3xEp8GgHCjOX4gRcuQ&amp;usqp=CAU "
+},
+"music": {
+"scene1Music": "example",
+
+},
+"variables": {
+"scene1Background": "example",
+},
+"episode": "1",
+"scenes": [
+{
+"id": "scene1",
+"title": "The Beginning",
+"background": "scene1Background",
+"music": "scene1Music",
+"text": "You wake up in a strange place. Traveler, tell me your name.",
+"choices": [
+{
+"text": "Look around.",
+"nextScene": "scene2"
+},
+{
+"text": "Go back to sleep.",
+"nextScene": "scene3"
+}
+]
+},
+{
+"id": "scene2",
+"background": "scene2Background",
+"music": "scene1Music",
+"text": "{playerName} see a {red}door{/red}.",
+"choices": [
+{
+"text": "Open the door.",
+"nextScene": "scene4"
+},
+{
+"text": "Ignore it.",
+"nextScene": "scene5"
+}
+]
+},
+{
+"id": "scene3",
+"background": "scene3Background",
+"music": "scene1Music",
+"text": "You fall back asleep and miss the adventure.",
+"nextScene": "scene5"
+},
+{
+"id": "scene4",
+"background": "scene4Background",
+"text": "The door creaks open, revealing a dark hallway.",
+"choices": [],
+"nextScene": "scene5"
+},
+{
+"id": "scene5",
+"background": "scene5Background",
+"text": "You decide to stay put, wondering what lies beyond.",
+"choices": [],
+"nextEpisode": "episode2.json"
+}
+]
+}
