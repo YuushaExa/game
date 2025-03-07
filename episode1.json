@@ -8,11 +8,34 @@
 },
 "music": {
 "scene1Music": "example",
-
 },
 "variables": {
-"scene1Background": "example",
+"example": "example",
 },
+  "localization": {
+    "en": {
+      "1": "You wake up in a strange place. Traveler, tell me your name.",
+      "2": "Look around.",
+      "3": "Go back to sleep.",
+      "4": "{playerName} see a {red}door{/red}.",
+      "5": "Open the door."
+      "6": "Ignore it.",
+      "7": "You fall back asleep and miss the adventure.",
+      "8": "The door creaks open, revealing a dark hallway."
+      "9": "You decide to stay put, wondering what lies beyond."
+    },
+    "jp": {
+   "1": "あなたは見知らぬ場所で目を覚まします。旅人よ、あなたの名前を教えてください。",
+"2": "周りを見回す。",
+"3": "再び眠りにつく。",
+"4": "{playerName}は{red}赤いドア{/red}を見る。",
+"5": "ドアを開ける。",
+"6": "無視する。",
+"7": "あなたは再び眠りに落ち、冒険を見逃してしまった。",
+"8": "ドアがきしむ音を立てて開き、暗い廊下が現れる。",
+"9": "あなたはその場に留まり、何があるのかと不思議に思う。"
+    }
+  },
 "episode": "1",
 "scenes": [
 {
@@ -20,14 +43,14 @@
 "title": "The Beginning",
 "background": "scene1Background",
 "music": "scene1Music",
-"text": "You wake up in a strange place. Traveler, tell me your name.",
+"textId": 1,
 "choices": [
 {
-"text": "Look around.",
+"textId": 2,
 "nextScene": "scene2"
 },
 {
-"text": "Go back to sleep.",
+"textId": 3,
 "nextScene": "scene3"
 }
 ]
@@ -36,14 +59,14 @@
 "id": "scene2",
 "background": "scene2Background",
 "music": "scene1Music",
-"text": "{playerName} see a {red}door{/red}.",
+"textId": 4,
 "choices": [
 {
-"text": "Open the door.",
+"textId": 5,
 "nextScene": "scene4"
 },
 {
-"text": "Ignore it.",
+"textId": 6,
 "nextScene": "scene5"
 }
 ]
@@ -52,21 +75,19 @@
 "id": "scene3",
 "background": "scene3Background",
 "music": "scene1Music",
-"text": "You fall back asleep and miss the adventure.",
+"textId": 7,
 "nextScene": "scene5"
 },
 {
 "id": "scene4",
 "background": "scene4Background",
-"text": "The door creaks open, revealing a dark hallway.",
-"choices": [],
+"textId": 8,
 "nextScene": "scene5"
 },
 {
 "id": "scene5",
 "background": "scene5Background",
-"text": "You decide to stay put, wondering what lies beyond.",
-"choices": [],
+"textId": 9,
 "nextEpisode": "episode2.json"
 }
 ]
