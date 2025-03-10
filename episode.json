@@ -11,7 +11,7 @@
 "scene2Music": "example"
 },
   "settings": {
-    "textSpeed": 0.8, // Global text speed setting
+    "textSpeed": 1,
     "autoAdvance": false
   },
 "variables": {
