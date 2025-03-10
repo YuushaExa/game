@@ -10,10 +10,14 @@
 "scene1Music": "example",
 "scene2Music": "example"
 },
+  "settings": {
+    "textSpeed": 0.8, // Global text speed setting
+    "autoAdvance": false
+  },
 "variables": {
  "playerName": "",
-  "hasKey": false,
-  "score": 0
+ "hasKey": false,
+ "score": 0
 },
   "localization": {
     "en": {
@@ -39,7 +43,7 @@
 "9": "あなたはその場に留まり、何があるのかと不思議に思う。"
     }
   },
-"episode": "1",
+"chapter": "1",
 "scenes": [
 {
 "id": "scene1",
@@ -91,7 +95,7 @@
 "id": "scene5",
 "background": "scene5Background",
 "textId": 9,
-"nextEpisode": "episode2.json"
+"nextChapter": "2"
 }
 ]
 }
