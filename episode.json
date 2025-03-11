@@ -6,6 +6,25 @@
 "scene4Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2cycGgnpxvvelhfWb2bNeaVgbSpFspTE9aWEx2xIizIrOLx1MWpqIgNB5xZGpDxNW6aE&amp;usqp=CAU ",
 "scene5Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2wdNzt_wuSi-1wKKjd1UljhMxyD4QND_banGxjw2GuboOd2Xxh3xEp8GgHCjOX4gRcuQ&amp;usqp=CAU "
 },
+{
+  "characters": {
+      "hero": {
+          "name": "Hero",
+          "color": "#FF0000",
+          "position": "left"
+          "sprites": {
+              "normal": "hero_normal.png"
+          }
+      },
+      "npc1": {
+          "name": "Old Man",
+          "color": "#00FF00",
+          "position": "right"
+          "sprites": {
+              "normal": "npc1_neutral.png"
+          }
+      }
+  },
 "music": {
 "scene1Music": "example",
 "scene2Music": "example"
@@ -18,6 +37,12 @@
 "opening": "example",
 "ending": "example"
 },
+
+ "defaultTransitions": {
+            "enterTransition": "slidein", // Global default enter transition
+            "exitTransition": "slideout" // Global default exit transition
+        },
+  
   "settings": {
     "textSpeed": 1,
     "autoAdvance": false
@@ -55,8 +80,39 @@
 "scenes": [
 {
 "id": "scene1",
+ "transition": "fade",
 "title": "The Beginning",
 "background": "scene1Background",
+          "dialogue": [
+              {
+               "character": "hero",
+            "textId": 10,
+        },
+        {
+            "character": "npc1",
+            "textId": 11,
+        },
+             {
+            "choices": [
+                {
+                    "textId": 4,
+"returnToPrevious": true 
+                },
+                {
+                    "textId": 5,
+"returnToPrevious": true 
+                },
+                {
+                    "textId": 6,
+                    "returnToPrevious": true 
+                }
+            ]
+        },
+        {
+            "character": "hero",
+            "textId": 12
+        }
+          ],
 "music": "scene1Music",
 "textId": 1,
 "choices": [
