@@ -39,8 +39,8 @@
 },
 
  "defaultTransitions": {
-            "enterTransition": "slidein", // Global default enter transition
-            "exitTransition": "slideout" // Global default exit transition
+            "enterTransition": "slidein",
+            "exitTransition": "slideout" 
         },
   
   "settings": {
@@ -96,15 +96,15 @@
             "choices": [
                 {
                     "textId": 4,
-"returnToPrevious": true 
+                    "action": "return"  
                 },
                 {
                     "textId": 5,
-"returnToPrevious": true 
+"action": "return"  
                 },
                 {
                     "textId": 6,
-                    "returnToPrevious": true 
+                    "action": "scene3"  
                 }
             ]
         },
@@ -118,11 +118,11 @@
 "choices": [
 {
 "textId": 2,
-"nextScene": "scene2"
+"action": "scene2"
 },
 {
 "textId": 3,
-"nextScene": "scene3"
+"action": "scene3"
 }
 ]
 },
@@ -134,11 +134,11 @@
 "choices": [
 {
 "textId": 5,
-"nextScene": "scene4"
+"action": "scene4"
 },
 {
 "textId": 6,
-"nextScene": "scene5"
+"action": "scene5"
 }
 ]
 },
@@ -147,13 +147,13 @@
 "background": "scene3Background",
 "music": "scene1Music",
 "textId": 7,
-"nextScene": "scene5"
+"action": "scene5"
 },
 {
 "id": "scene4",
 "background": "scene4Background",
 "textId": 8,
-"nextScene": "scene5"
+"action": "scene5"
 },
 {
 "id": "scene5",
