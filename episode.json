@@ -8,15 +8,15 @@
   },
   "characters": {
     "hero": {
-      "name": "Hero",
-      "color": "#FF0000",
+      "name": "textId": 1-1,
+      "color": "#FF0000", 
       "position": "left",
       "expression": {
         "normal": "hero_normal.png"
       }
     },
     "npc1": {
-      "name": "Old Man",
+      "name": "textId": 1-2,
       "color": "#00FF00",
       "position": "right",
       "expression": {
@@ -47,11 +47,14 @@
   "variables": {
     "playerName": "",
     "hasKey": false,
-    "score": 0
+    "score": 0,
+    "adventure_points": 0
   },
   "localization": {
     "en": {
       "1": "You wake up in a strange place. Traveler, tell me your name.",
+      "1-1": "Hero",
+      "1-2": "Old Man",
       "2": "Look around.",
       "3": "Go back to sleep.",
       "4": "{playerName} see a {red}door{/red}.",
@@ -65,6 +68,8 @@
     },
     "jp": {
       "1": "あなたは見知らぬ場所で目を覚まします。旅人よ、あなたの名前を教えてください。",
+      "1-1": "Hero1",
+      "1-2": "Old Man1",
       "2": "周りを見回す。",
       "3": "再び眠りにつく。",
       "4": "{playerName}は{red}赤いドア{/red}を見る。",
@@ -103,6 +108,9 @@
             },
             {
               "textId": 6,
+              "variables": [
+        ["adventure_points", "add", 10]
+      ],
               "action": "scene3"
             }
           ]
