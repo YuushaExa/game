@@ -1,57 +1,54 @@
 {
-"backgrounds": {
-"scene1Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5ScLyz2VKygnlgsRYEmGyITjK0Q5NsPbQZQ&amp;s ",
-"scene2Background": "https://m.media-amazon.com/images/M/MV5BMTY3OTM0NjMxOV5BMl5BanBnXkFtZTcwNTQ3NjQyMQ@@._V1_.jpg ",
-"scene3Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk9m9bkwYVDdR4zi9_s0-PNL0aubDiSxaxK3uZRxixptBD5IG1WDe2dynL9vdfIY361NM&amp;usqp=CAU ",
-"scene4Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2cycGgnpxvvelhfWb2bNeaVgbSpFspTE9aWEx2xIizIrOLx1MWpqIgNB5xZGpDxNW6aE&amp;usqp=CAU ",
-"scene5Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2wdNzt_wuSi-1wKKjd1UljhMxyD4QND_banGxjw2GuboOd2Xxh3xEp8GgHCjOX4gRcuQ&amp;usqp=CAU "
-},
-{
-  "characters": {
-      "hero": {
-          "name": "Hero",
-          "color": "#FF0000",
-          "position": "left"
-          "sprites": {
-              "normal": "hero_normal.png"
-          }
-      },
-      "npc1": {
-          "name": "Old Man",
-          "color": "#00FF00",
-          "position": "right"
-          "sprites": {
-              "normal": "npc1_neutral.png"
-          }
-      }
+  "backgrounds": {
+    "scene1Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5ScLyz2VKygnlgsRYEmGyITjK0Q5NsPbQZQ&amp;s",
+    "scene2Background": "https://m.media-amazon.com/images/M/MV5BMTY3OTM0NjMxOV5BMl5BanBnXkFtZTcwNTQ3NjQyMQ@@._V1_.jpg",
+    "scene3Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk9m9bkwYVDdR4zi9_s0-PNL0aubDiSxaxK3uZRxixptBD5IG1WDe2dynL9vdfIY361NM&amp;usqp=CAU",
+    "scene4Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2cycGgnpxvvelhfWb2bNeaVgbSpFspTE9aWEx2xIizIrOLx1MWpqIgNB5xZGpDxNW6aE&amp;usqp=CAU",
+    "scene5Background": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2wdNzt_wuSi-1wKKjd1UljhMxyD4QND_banGxjw2GuboOd2Xxh3xEp8GgHCjOX4gRcuQ&amp;usqp=CAU"
   },
-"music": {
-"scene1Music": "example",
-"scene2Music": "example"
-},
+  "characters": {
+    "hero": {
+      "name": "Hero",
+      "color": "#FF0000",
+      "position": "left",
+      "expression": {
+        "normal": "hero_normal.png"
+      }
+    },
+    "npc1": {
+      "name": "Old Man",
+      "color": "#00FF00",
+      "position": "right",
+      "expression": {
+        "normal": "npc1_neutral.png"
+      }
+    }
+  },
+  "music": {
+    "scene1Music": "example",
+    "scene2Music": "example"
+  },
   "sfx": {
-"door": "example",
-"window": "example"
-},
+    "door": "example",
+    "window": "example"
+  },
   "movie": {
-"opening": "example",
-"ending": "example"
-},
-
- "defaultTransitions": {
-            "enterTransition": "slidein",
-            "exitTransition": "slideout" 
-        },
-  
+    "opening": "example",
+    "ending": "example"
+  },
+  "defaultTransitions": {
+    "enterTransition": "slidein",
+    "exitTransition": "slideout"
+  },
   "settings": {
     "textSpeed": 1,
     "autoAdvance": false
   },
-"variables": {
- "playerName": "",
- "hasKey": false,
- "score": 0
-},
+  "variables": {
+    "playerName": "",
+    "hasKey": false,
+    "score": 0
+  },
   "localization": {
     "en": {
       "1": "You wake up in a strange place. Traveler, tell me your name.",
@@ -62,106 +59,106 @@
       "6": "Ignore it.",
       "7": "You fall back asleep and miss the adventure.",
       "8": "The door creaks open, revealing a dark hallway.",
-      "9": "You decide to stay put, wondering what lies beyond."
-       "10": "Ignore it.",
-      "11": "Ignore it.",
+      "9": "You decide to stay put, wondering what lies beyond.",
+      "10": "Ignore it.",
+      "11": "Ignore it."
     },
     "jp": {
-   "1": "あなたは見知らぬ場所で目を覚まします。旅人よ、あなたの名前を教えてください。",
-"2": "周りを見回す。",
-"3": "再び眠りにつく。",
-"4": "{playerName}は{red}赤いドア{/red}を見る。",
-"5": "ドアを開ける。",
-"6": "無視する。",
-"7": "あなたは再び眠りに落ち、冒険を見逃してしまった。",
-"8": "ドアがきしむ音を立てて開き、暗い廊下が現れる。",
-"9": "あなたはその場に留まり、何があるのかと不思議に思う。"
+      "1": "あなたは見知らぬ場所で目を覚まします。旅人よ、あなたの名前を教えてください。",
+      "2": "周りを見回す。",
+      "3": "再び眠りにつく。",
+      "4": "{playerName}は{red}赤いドア{/red}を見る。",
+      "5": "ドアを開ける。",
+      "6": "無視する。",
+      "7": "あなたは再び眠りに落ち、冒険を見逃してしまった。",
+      "8": "ドアがきしむ音を立てて開き、暗い廊下が現れる。",
+      "9": "あなたはその場に留まり、何があるのかと不思議に思う。"
     }
   },
-"chapter": "1",
-"scenes": [
-{
-"id": "scene1",
- "transition": "fade",
-"title": "The Beginning",
-"background": "scene1Background",
-          "dialogue": [
-              {
-               "character": "hero",
-            "textId": 10,
+  "chapter": "1",
+  "scenes": [
+    {
+      "id": "scene1",
+      "transition": "fade",
+      "title": "The Beginning",
+      "background": "scene1Background",
+      "dialogue": [
+        {
+          "character": "hero",
+          "textId": 10
         },
         {
-            "character": "npc1",
-            "textId": 11,
-        },
-             {
-            "choices": [
-                {
-                    "textId": 4,
-                    "action": "return"  
-                },
-                {
-                    "textId": 5,
-"action": "return"  
-                },
-                {
-                    "textId": 6,
-                    "action": "scene3"  
-                }
-            ]
+          "character": "npc1",
+          "textId": 11
         },
         {
-            "character": "hero",
-            "textId": 12
+          "choices": [
+            {
+              "textId": 4,
+              "action": "return"
+            },
+            {
+              "textId": 5,
+              "action": "return"
+            },
+            {
+              "textId": 6,
+              "action": "scene3"
+            }
+          ]
+        },
+        {
+          "character": "hero",
+          "textId": 12
         }
-          ],
-"music": "scene1Music",
-"textId": 1,
-"choices": [
-{
-"textId": 2,
-"action": "scene2"
-},
-{
-"textId": 3,
-"action": "scene3"
-}
-]
-},
-{
-"id": "scene2",
-"background": "scene2Background",
-"music": "scene1Music",
-"textId": 4,
-"choices": [
-{
-"textId": 5,
-"action": "scene4"
-},
-{
-"textId": 6,
-"action": "scene5"
-}
-]
-},
-{
-"id": "scene3",
-"background": "scene3Background",
-"music": "scene1Music",
-"textId": 7,
-"action": "scene5"
-},
-{
-"id": "scene4",
-"background": "scene4Background",
-"textId": 8,
-"action": "scene5"
-},
-{
-"id": "scene5",
-"background": "scene5Background",
-"textId": 9,
-"nextChapter": "2"
-}
-]
+      ],
+      "music": "scene1Music",
+      "textId": 1,
+      "choices": [
+        {
+          "textId": 2,
+          "action": "scene2"
+        },
+        {
+          "textId": 3,
+          "action": "scene3"
+        }
+      ]
+    },
+    {
+      "id": "scene2",
+      "background": "scene2Background",
+      "music": "scene1Music",
+      "textId": 4,
+      "choices": [
+        {
+          "textId": 5,
+          "action": "scene4"
+        },
+        {
+          "textId": 6,
+          "action": "scene5"
+        }
+      ]
+    },
+    {
+      "id": "scene3",
+      "background": "scene3Background",
+      "music": "scene1Music",
+      "textId": 7,
+      "action": "scene5"
+    },
+    {
+      "id": "scene4",
+      "background": "scene4Background",
+      "textId": 8,
+      "action": "scene5"
+    },
+    {
+      "id": "scene5",
+      "background": "scene5Background",
+      "textId": 9,
+      "nextChapter": "2"
+    }
+  ]
 }
