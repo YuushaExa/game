@@ -56,12 +56,6 @@ function buildHTML(htmlData) {
 
         gameContainer.appendChild(element);
     });
-
-    // Initialize the text panel with placeholder content
-    const textPanel = document.getElementById("text-panel");
-    if (textPanel) {
-        textPanel.textContent = "Dialogue will appear here...";
-    }
 }
 
 // Function to update the text panel with localized text
