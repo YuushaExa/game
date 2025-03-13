@@ -4,43 +4,61 @@ async function loadGameData(jsonFile) {
         if (!response.ok) throw new Error("Failed to load JSON");
 
         const data = await response.json();
-
-        // Store game data globally for easy access
         window.gameData = data;
 
-        // Example: Update the text panel with initial text
-        updateTextPanel("1");
+        // Initialize the first scene
+        changeScene("scene1");
 
     } catch (error) {
         console.error("Error loading JSON:", error);
     }
 }
 
-const jsonFile = document.getElementById('gameData').getAttribute('data-src');
-loadGameData(jsonFile);
-
-// Function to update the text panel with localized text
-function updateTextPanel(textId) {
-    const { localization, settings, variables } = window.gameData;
-
-    // Get the selected language
-    const selectedLanguage = settings.languages;
-
-    // Get the localized text
-    const localizedText = localization[selectedLanguage][textId];
-    if (!localizedText) {
-        console.warn(`No localization found for textId: ${textId}`);
+function changeScene(sceneId) {
+    const scene = window.gameData.scenes.find(s => s.id === sceneId);
+    if (!scene) {
+        console.warn(`Scene ${sceneId} not found.`);
         return;
     }
 
-    // Replace placeholders with variable values
-    let updatedText = localizedText.replace(/{(\w+)}/g, (match, key) => {
-        return variables[key] !== undefined ? variables[key] : match;
+    // Hide all elements
+    document.querySelectorAll(".screen, .panel").forEach(element => {
+        element.style.display = "none";
     });
 
-    // Update the text panel
-    const textPanel = document.getElementById("text-panel");
-    if (textPanel) {
-        textPanel.textContent = updatedText;
+    // Show elements for the current scene
+    scene.visibleElements.forEach(elementId => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.style.display = "block";
+        } else {
+            console.warn(`Element with ID ${elementId} not found.`);
+        }
+    });
+
+    // Update the background (optional)
+    if (scene.background) {
+        document.body.style.backgroundImage = `url(${scene.background})`;
+    }
+
+    // Update dialogue or other scene-specific content
+    if (scene.dialogue) {
+        updateDialogue(scene.dialogue);
     }
 }
+
+function updateDialogue(dialogue) {
+    const textPanel = document.getElementById("text-panel");
+    if (textPanel) {
+        textPanel.textContent = dialogue.map(line => line.textId).join("\n");
+    }
+}
+
+// Load game data
+const jsonFile = document.getElementById('gameData').getAttribute('data-src');
+loadGameData(jsonFile);
+
+// Example: Add event listeners for scene transitions
+document.getElementById("start-button").addEventListener("click", () => {
+    changeScene("scene2");
+});
