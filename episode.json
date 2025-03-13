@@ -39,6 +39,7 @@
   "html": {
 "start_screen": {
     "type": "div",
+  "bind": "startScreen",
     "attributes": {
       "id": "start-screen",
       "class": "screen"
