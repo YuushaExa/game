@@ -88,6 +88,8 @@
       "transition": "fade",
       "title": "The Beginning",
       "background": "scene1Background",
+            "visibleElements": ["start-screen"],
+
       "dialogue": [
         {
           "name": "hero",
@@ -136,6 +138,8 @@
     },
     {
       "id": "scene2",
+            "visibleElements": ["text-panel"],
+
       "background": "scene2Background",
       "music": "scene1Music",
       "textId": "4",
