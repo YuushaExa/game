@@ -33,11 +33,15 @@ const jsonFile = document.getElementById('gameData').getAttribute('data-src');
 loadGameData(jsonFile);
 
 function buildHTML(htmlData, parentElement = document.getElementById("game"), sceneData = null) {
+    console.log("Building HTML for scene:", sceneData); // Debug scene data
+
     Object.keys(htmlData).forEach(key => {
         const elementData = htmlData[key];
+        console.log("Processing element:", key, "Bound to:", elementData.bind); // Debug element binding
 
         // Skip this element if it is bound but the bound property does not exist in the scene
         if (elementData.bind && (!sceneData || !sceneData[elementData.bind])) {
+            console.log("Skipping element:", key, "because it is not bound to the current scene.");
             return; // Skip this element
         }
 
