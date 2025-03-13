@@ -8,15 +8,17 @@
   },
   "characters": {
     "hero": {
-      "name": "textId": 1-1,
-      "color": "#FF0000", 
+      "name": "Hero",
+      "textId": "1-1",
+      "color": "#FF0000",
       "position": "left",
       "expression": {
         "normal": "hero_normal.png"
       }
     },
     "npc1": {
-      "name": "textId": 1-2,
+      "name": "Old Man",
+      "textId": "1-2",
       "color": "#00FF00",
       "position": "right",
       "expression": {
@@ -57,7 +59,8 @@
         "color": "#000"
       },
       "content": "This is a text panel."
-    },
+    }
+  },
   "defaultTransitions": {
     "enterTransition": "slidein",
     "exitTransition": "slideout"
@@ -113,45 +116,45 @@
       "dialogue": [
         {
           "name": "hero",
-          "textId": 10
+          "textId": "10"
         },
         {
           "name": "npc1",
-          "textId": 11
+          "textId": "11"
         },
         {
           "choices": [
             {
-              "textId": 4,
+              "textId": "4",
               "action": "return"
             },
             {
-              "textId": 5,
+              "textId": "5",
               "action": "return"
             },
             {
-              "textId": 6,
+              "textId": "6",
               "variables": [
-        ["adventure_points", "add", 10]
-      ],
+                ["adventure_points", "add", 10]
+              ],
               "action": "scene3"
             }
           ]
         },
         {
           "name": "hero",
-          "textId": 12
+          "textId": "12"
         }
       ],
       "music": "scene1Music",
-      "textId": 1,
+      "textId": "1",
       "choices": [
         {
-          "textId": 2,
+          "textId": "2",
           "action": "scene2"
         },
         {
-          "textId": 3,
+          "textId": "3",
           "action": "scene3"
         }
       ]
@@ -160,14 +163,14 @@
       "id": "scene2",
       "background": "scene2Background",
       "music": "scene1Music",
-      "textId": 4,
+      "textId": "4",
       "choices": [
         {
-          "textId": 5,
+          "textId": "5",
           "action": "scene4"
         },
         {
-          "textId": 6,
+          "textId": "6",
           "action": "scene5"
         }
       ]
@@ -176,19 +179,19 @@
       "id": "scene3",
       "background": "scene3Background",
       "music": "scene1Music",
-      "textId": 7,
+      "textId": "7",
       "action": "scene5"
     },
     {
       "id": "scene4",
       "background": "scene4Background",
-      "textId": 8,
+      "textId": "8",
       "action": "scene5"
     },
     {
       "id": "scene5",
       "background": "scene5Background",
-      "textId": 9,
+      "textId": "9",
       "nextChapter": "2"
     }
   ]
