@@ -5,45 +5,25 @@ async function loadGameData(jsonFile) {
 
         const data = await response.json();
 
-        // Store game data globally for easy access
-        window.gameData = data;
-
         if (data.html) {
-            // Start from scene1 by default
-            const initialScene = data.scenes.find(scene => scene.id === "scene1");
-            if (!initialScene) {
-                console.error("Scene1 not found in the game data.");
-                return;
-            }
-
-            // Clear the existing game content
-            const gameElement = document.getElementById("game");
-            gameElement.innerHTML = "";
-
-            // Build HTML with the initial scene data
-            buildHTML(data.html, gameElement, initialScene);
+            buildHTML(data.html);
         } else {
             console.warn("No 'html' section found in JSON.");
         }
+
+        // Store game data globally for easy access
+        window.gameData = data;
     } catch (error) {
         console.error("Error loading JSON:", error);
     }
 }
+
 const jsonFile = document.getElementById('gameData').getAttribute('data-src');
 loadGameData(jsonFile);
 
-function buildHTML(htmlData, parentElement = document.getElementById("game"), sceneData = null) {
-    console.log("Building HTML for scene:", sceneData); // Debug scene data
-
+function buildHTML(htmlData, parentElement = document.getElementById("game")) {
     Object.keys(htmlData).forEach(key => {
         const elementData = htmlData[key];
-        console.log("Processing element:", key, "Bound to:", elementData.bind); // Debug element binding
-
-        // Skip this element if it is bound but the bound property does not exist in the scene
-        if (elementData.bind && (!sceneData || !sceneData[elementData.bind])) {
-            console.log("Skipping element:", key, "because it is not bound to the current scene.");
-            return; // Skip this element and its children
-        }
 
         // Create element based on type
         const element = document.createElement(elementData.type || "div");
@@ -65,20 +45,6 @@ function buildHTML(htmlData, parentElement = document.getElementById("game"), sc
             element.textContent = elementData.content;
         }
 
-        // Handle binding to scene data
-        if (elementData.bind && sceneData) {
-            const boundData = sceneData[elementData.bind];
-            if (boundData) {
-                // Update element content based on bound data
-                if (Array.isArray(boundData)) {
-                    // If bound data is an array (e.g., dialogue), join it into a string
-                    element.textContent = boundData.map(item => item.text || item).join(" ");
-                } else {
-                    element.textContent = boundData;
-                }
-            }
-        }
-
         // Add event listeners
         if (elementData.events) {
             Object.keys(elementData.events).forEach(eventType => {
@@ -88,21 +54,36 @@ function buildHTML(htmlData, parentElement = document.getElementById("game"), sc
 
         // Recursively build and append children
         if (elementData.children) {
-            buildHTML(elementData.children, element, sceneData);
+            buildHTML(elementData.children, element);
         }
 
         // Append the element to the parent
         parentElement.appendChild(element);
     });
 }
-function transitionToScene(sceneId) {
-    const scene = window.gameData.scenes.find(s => s.id === sceneId);
-    if (scene) {
-        // Clear the existing game content
-        const gameElement = document.getElementById("game");
-        gameElement.innerHTML = "";
 
-        // Rebuild HTML with the new scene data
-        buildHTML(window.gameData.html, gameElement, scene);
+// Function to update the text panel with localized text
+function updateTextPanel(textId) {
+    const { localization, settings, variables } = window.gameData;
+
+    // Get the selected language
+    const selectedLanguage = settings.languages;
+
+    // Get the localized text
+    const localizedText = localization[selectedLanguage][textId];
+    if (!localizedText) {
+        console.warn(`No localization found for textId: ${textId}`);
+        return;
+    }
+
+    // Replace placeholders with variable values
+    let updatedText = localizedText.replace(/{(\w+)}/g, (match, key) => {
+        return variables[key] !== undefined ? variables[key] : match;
+    });
+
+    // Update the text panel
+    const textPanel = document.getElementById("text-panel");
+    if (textPanel) {
+        textPanel.textContent = updatedText;
     }
 }
