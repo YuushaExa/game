@@ -42,7 +42,7 @@ function buildHTML(htmlData, parentElement = document.getElementById("game"), sc
         // Skip this element if it is bound but the bound property does not exist in the scene
         if (elementData.bind && (!sceneData || !sceneData[elementData.bind])) {
             console.log("Skipping element:", key, "because it is not bound to the current scene.");
-            return; // Skip this element
+            return; // Skip this element and its children
         }
 
         // Create element based on type
