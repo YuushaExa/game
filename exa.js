@@ -29,7 +29,6 @@ async function loadGameData(jsonFile) {
         console.error("Error loading JSON:", error);
     }
 }
-
 const jsonFile = document.getElementById('gameData').getAttribute('data-src');
 loadGameData(jsonFile);
 
@@ -37,12 +36,9 @@ function buildHTML(htmlData, parentElement = document.getElementById("game"), sc
     Object.keys(htmlData).forEach(key => {
         const elementData = htmlData[key];
 
-        // Check if the element is bound to a scene property
-        if (elementData.bind) {
-            // If the bound property does not exist in the current scene, skip this element
-            if (!sceneData || !sceneData[elementData.bind]) {
-                return; // Skip this element
-            }
+        // Skip this element if it is bound but the bound property does not exist in the scene
+        if (elementData.bind && (!sceneData || !sceneData[elementData.bind])) {
+            return; // Skip this element
         }
 
         // Create element based on type
@@ -95,7 +91,6 @@ function buildHTML(htmlData, parentElement = document.getElementById("game"), sc
         parentElement.appendChild(element);
     });
 }
-
 function transitionToScene(sceneId) {
     const scene = window.gameData.scenes.find(s => s.id === sceneId);
     if (scene) {
