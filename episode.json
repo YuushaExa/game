@@ -122,6 +122,7 @@
   },
   "text_panel": {
     "type": "div",
+          "bind": "dialogue",
     "attributes": {
       "id": "text-panel",
       "class": "panel"
