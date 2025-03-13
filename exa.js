@@ -14,6 +14,8 @@ async function loadGameData(jsonFile) {
         console.error("Error loading JSON:", error);
     }
 }
+   const jsonFile = document.getElementById('gameData').getAttribute('data-src');
+    loadGameData(jsonFile);
 
 function buildHTML(htmlData) {
     const gameContainer = document.getElementById("game");
