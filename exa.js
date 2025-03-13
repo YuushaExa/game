@@ -21,9 +21,7 @@ async function loadGameData(jsonFile) {
 const jsonFile = document.getElementById('gameData').getAttribute('data-src');
 loadGameData(jsonFile);
 
-function buildHTML(htmlData) {
-    const gameContainer = document.getElementById("game");
-
+function buildHTML(htmlData, parentElement = document.getElementById("game")) {
     Object.keys(htmlData).forEach(key => {
         const elementData = htmlData[key];
 
@@ -59,10 +57,10 @@ function buildHTML(htmlData) {
             buildHTML(elementData.children, element);
         }
 
-        gameContainer.appendChild(element);
+        // Append the element to the parent
+        parentElement.appendChild(element);
     });
 }
-
 
 // Function to update the text panel with localized text
 function updateTextPanel(textId) {
