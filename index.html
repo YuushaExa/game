@@ -21,8 +21,8 @@
 <body>
   <div id="game"></div>
   <div id="error-message">Failed to load the game engine. Please contant app owner. </div>
-  <script type="text/javascript" src="exa.js" onerror="handleScriptError()"></script>
   <script id="gameData" data-src="episode.json"></script>
+  <script type="text/javascript" src="exa.js" onerror="handleScriptError()"></script>
   <script>
     function handleScriptError() {
       const errorMessage = document.getElementById('error-message');
