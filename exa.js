@@ -92,3 +92,15 @@ function buildHTML(htmlData, parentElement = document.getElementById("game"), sc
         parentElement.appendChild(element);
     });
 }
+
+function transitionToScene(sceneId) {
+    const scene = window.gameData.scenes.find(s => s.id === sceneId);
+    if (scene) {
+        // Clear the existing game content
+        const gameElement = document.getElementById("game");
+        gameElement.innerHTML = "";
+
+        // Rebuild HTML with the new scene data
+        buildHTML(window.gameData.html, gameElement, scene);
+    }
+}
