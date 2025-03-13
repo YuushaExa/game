@@ -10,8 +10,12 @@ async function loadGameData(jsonFile) {
             const currentChapter = data.chapter;
             const currentScene = data.scenes.find(scene => scene.id === `scene${currentChapter}`);
 
+            // Clear the existing game content
+            const gameElement = document.getElementById("game");
+            gameElement.innerHTML = "";
+
             // Build HTML with the current scene data
-            buildHTML(data.html, document.getElementById("game"), currentScene);
+            buildHTML(data.html, gameElement, currentScene);
         } else {
             console.warn("No 'html' section found in JSON.");
         }
@@ -29,6 +33,14 @@ loadGameData(jsonFile);
 function buildHTML(htmlData, parentElement = document.getElementById("game"), sceneData = null) {
     Object.keys(htmlData).forEach(key => {
         const elementData = htmlData[key];
+
+        // Check if the element is bound to a scene property
+        if (elementData.bind) {
+            // If the bound property does not exist in the current scene, skip this element
+            if (!sceneData || !sceneData[elementData.bind]) {
+                return; // Skip this element
+            }
+        }
 
         // Create element based on type
         const element = document.createElement(elementData.type || "div");
@@ -50,13 +62,6 @@ function buildHTML(htmlData, parentElement = document.getElementById("game"), sc
             element.textContent = elementData.content;
         }
 
-        // Add event listeners
-        if (elementData.events) {
-            Object.keys(elementData.events).forEach(eventType => {
-                element.addEventListener(eventType, window[elementData.events[eventType]]);
-            });
-        }
-
         // Handle binding to scene data
         if (elementData.bind && sceneData) {
             const boundData = sceneData[elementData.bind];
@@ -69,6 +74,13 @@ function buildHTML(htmlData, parentElement = document.getElementById("game"), sc
                     element.textContent = boundData;
                 }
             }
+        }
+
+        // Add event listeners
+        if (elementData.events) {
+            Object.keys(elementData.events).forEach(eventType => {
+                element.addEventListener(eventType, window[elementData.events[eventType]]);
+            });
         }
 
         // Recursively build and append children
