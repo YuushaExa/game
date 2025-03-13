@@ -8,8 +8,7 @@
   },
   "characters": {
     "hero": {
-      "name": "Hero",
-      "textId": "1-1",
+      "name": "1-1",
       "color": "#FF0000",
       "position": "left",
       "expression": {
@@ -17,8 +16,7 @@
       }
     },
     "npc1": {
-      "name": "Old Man",
-      "textId": "1-2",
+      "name": "1-2",
       "color": "#00FF00",
       "position": "right",
       "expression": {
