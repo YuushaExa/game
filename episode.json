@@ -36,14 +36,28 @@
     "opening": "example",
     "ending": "example"
   },
-"html": {
+  "html": {
     "text_panel": {
-      "size": ["95%", "25%"],
-      "color": "#9cf",
-      "bottom": "32px",
-      "size_text": "20px",
-    }
-},
+      "type": "div",
+      "attributes": {
+        "id": "text-panel",
+        "class": "panel"
+      },
+      "styles": {
+        "width": "95%",
+        "height": "25%",
+        "backgroundColor": "#9cf",
+        "position": "absolute",
+        "bottom": "32px",
+        "fontSize": "20px",
+        "display": "flex",
+        "alignItems": "center",
+        "justifyContent": "center",
+        "textAlign": "center",
+        "color": "#000"
+      },
+      "content": "This is a text panel."
+    },
   "defaultTransitions": {
     "enterTransition": "slidein",
     "exitTransition": "slideout"
