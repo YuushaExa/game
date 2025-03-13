@@ -5,23 +5,26 @@ async function loadGameData(jsonFile) {
 
         const data = await response.json();
 
+        // Store game data globally for easy access
+        window.gameData = data;
+
         if (data.html) {
-            // Find the current scene based on the chapter
-            const currentChapter = data.chapter;
-            const currentScene = data.scenes.find(scene => scene.id === `scene${currentChapter}`);
+            // Start from scene1 by default
+            const initialScene = data.scenes.find(scene => scene.id === "scene1");
+            if (!initialScene) {
+                console.error("Scene1 not found in the game data.");
+                return;
+            }
 
             // Clear the existing game content
             const gameElement = document.getElementById("game");
             gameElement.innerHTML = "";
 
-            // Build HTML with the current scene data
-            buildHTML(data.html, gameElement, currentScene);
+            // Build HTML with the initial scene data
+            buildHTML(data.html, gameElement, initialScene);
         } else {
             console.warn("No 'html' section found in JSON.");
         }
-
-        // Store game data globally for easy access
-        window.gameData = data;
     } catch (error) {
         console.error("Error loading JSON:", error);
     }
