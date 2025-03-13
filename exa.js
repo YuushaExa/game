@@ -54,9 +54,15 @@ function buildHTML(htmlData) {
             });
         }
 
+        // Recursively build and append children
+        if (elementData.children) {
+            buildHTML(elementData.children, element);
+        }
+
         gameContainer.appendChild(element);
     });
 }
+
 
 // Function to update the text panel with localized text
 function updateTextPanel(textId) {
