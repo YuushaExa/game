@@ -51,13 +51,3 @@ function buildHTML(htmlData) {
         gameContainer.appendChild(element);
     });
 }
-
-// Example event function (you can define more)
-function startGame() {
-    alert("Game Started!");
-}
-
-// Load JSON on page load
-document.addEventListener("DOMContentLoaded", () => {
-    loadGameData("episode.json");
-});
