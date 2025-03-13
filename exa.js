@@ -21,10 +21,7 @@ function changeScene(sceneId) {
         return;
     }
 
-    // Hide all elements
-    document.querySelectorAll(".screen, .panel").forEach(element => {
-        element.style.display = "none";
-    });
+
 
     // Show elements for the current scene
     scene.visibleElements.forEach(elementId => {
