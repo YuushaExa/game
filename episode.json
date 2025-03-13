@@ -67,7 +67,14 @@
         "styles": {
           "padding": "10px 20px",
           "fontSize": "20px",
-          "cursor": "pointer"
+          "cursor": "pointer",
+          "backgroundColor": "#4CAF50",
+      "color": "black", // Added
+      "zIndex": "1", // Added
+      "position": "relative", // Added
+      "border": "none",
+      "borderRadius": "5px",
+      "transition": "background-color 0.3s ease"
         },
         "content": "Start"
       },
@@ -80,7 +87,14 @@
         "styles": {
           "padding": "10px 20px",
           "fontSize": "20px",
-          "cursor": "pointer"
+          "cursor": "pointer",
+   "backgroundColor": "#4CAF50",
+      "color": "black", // Added
+      "zIndex": "1", // Added
+      "position": "relative", // Added
+      "border": "none",
+      "borderRadius": "5px",
+      "transition": "background-color 0.3s ease"
         },
         "content": "Load"
       },
@@ -93,7 +107,14 @@
         "styles": {
           "padding": "10px 20px",
           "fontSize": "20px",
-          "cursor": "pointer"
+          "cursor": "pointer",
+   "backgroundColor": "#4CAF50",
+      "color": "black", // Added
+      "zIndex": "1", // Added
+      "position": "relative", // Added
+      "border": "none",
+      "borderRadius": "5px",
+      "transition": "background-color 0.3s ease"
         },
         "content": "Settings"
       }
