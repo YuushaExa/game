@@ -36,13 +36,22 @@
     "opening": "example",
     "ending": "example"
   },
+"parameters": {
+    "text_panel": {
+      "size": ["95%", "25%"],
+      "color": "#9cf",
+      "bottom": "32px",
+      "size_text": "20px",
+    }
+},
   "defaultTransitions": {
     "enterTransition": "slidein",
     "exitTransition": "slideout"
   },
   "settings": {
     "textSpeed": 1,
-    "autoAdvance": false
+    "autoAdvance": false,
+    "languages": "en"
   },
   "variables": {
     "playerName": "",
@@ -89,11 +98,11 @@
       "background": "scene1Background",
       "dialogue": [
         {
-          "character": "hero",
+          "name": "hero",
           "textId": 10
         },
         {
-          "character": "npc1",
+          "name": "npc1",
           "textId": 11
         },
         {
@@ -116,7 +125,7 @@
           ]
         },
         {
-          "character": "hero",
+          "name": "hero",
           "textId": 12
         }
       ],
