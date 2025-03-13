@@ -6,7 +6,12 @@ async function loadGameData(jsonFile) {
         const data = await response.json();
 
         if (data.html) {
-            buildHTML(data.html);
+            // Find the current scene based on the chapter
+            const currentChapter = data.chapter;
+            const currentScene = data.scenes.find(scene => scene.id === `scene${currentChapter}`);
+
+            // Build HTML with the current scene data
+            buildHTML(data.html, document.getElementById("game"), currentScene);
         } else {
             console.warn("No 'html' section found in JSON.");
         }
@@ -21,7 +26,7 @@ async function loadGameData(jsonFile) {
 const jsonFile = document.getElementById('gameData').getAttribute('data-src');
 loadGameData(jsonFile);
 
-function buildHTML(htmlData, parentElement = document.getElementById("game")) {
+function buildHTML(htmlData, parentElement = document.getElementById("game"), sceneData = null) {
     Object.keys(htmlData).forEach(key => {
         const elementData = htmlData[key];
 
@@ -52,38 +57,26 @@ function buildHTML(htmlData, parentElement = document.getElementById("game")) {
             });
         }
 
+        // Handle binding to scene data
+        if (elementData.bind && sceneData) {
+            const boundData = sceneData[elementData.bind];
+            if (boundData) {
+                // Update element content based on bound data
+                if (Array.isArray(boundData)) {
+                    // If bound data is an array (e.g., dialogue), join it into a string
+                    element.textContent = boundData.map(item => item.text || item).join(" ");
+                } else {
+                    element.textContent = boundData;
+                }
+            }
+        }
+
         // Recursively build and append children
         if (elementData.children) {
-            buildHTML(elementData.children, element);
+            buildHTML(elementData.children, element, sceneData);
         }
 
         // Append the element to the parent
         parentElement.appendChild(element);
     });
-}
-
-// Function to update the text panel with localized text
-function updateTextPanel(textId) {
-    const { localization, settings, variables } = window.gameData;
-
-    // Get the selected language
-    const selectedLanguage = settings.languages;
-
-    // Get the localized text
-    const localizedText = localization[selectedLanguage][textId];
-    if (!localizedText) {
-        console.warn(`No localization found for textId: ${textId}`);
-        return;
-    }
-
-    // Replace placeholders with variable values
-    let updatedText = localizedText.replace(/{(\w+)}/g, (match, key) => {
-        return variables[key] !== undefined ? variables[key] : match;
-    });
-
-    // Update the text panel
-    const textPanel = document.getElementById("text-panel");
-    if (textPanel) {
-        textPanel.textContent = updatedText;
-    }
 }
