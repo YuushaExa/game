@@ -5,14 +5,12 @@ async function loadGameData(jsonFile) {
 
         const data = await response.json();
 
-        if (data.html) {
-            buildHTML(data.html);
-        } else {
-            console.warn("No 'html' section found in JSON.");
-        }
-
         // Store game data globally for easy access
         window.gameData = data;
+
+        // Example: Update the text panel with initial text
+        updateTextPanel("1");
+
     } catch (error) {
         console.error("Error loading JSON:", error);
     }
@@ -20,47 +18,6 @@ async function loadGameData(jsonFile) {
 
 const jsonFile = document.getElementById('gameData').getAttribute('data-src');
 loadGameData(jsonFile);
-
-function buildHTML(htmlData, parentElement = document.getElementById("game")) {
-    Object.keys(htmlData).forEach(key => {
-        const elementData = htmlData[key];
-
-        // Create element based on type
-        const element = document.createElement(elementData.type || "div");
-
-        // Set attributes
-        if (elementData.attributes) {
-            Object.keys(elementData.attributes).forEach(attr => {
-                element.setAttribute(attr, elementData.attributes[attr]);
-            });
-        }
-
-        // Apply styles
-        if (elementData.styles) {
-            Object.assign(element.style, elementData.styles);
-        }
-
-        // Set text content
-        if (elementData.content) {
-            element.textContent = elementData.content;
-        }
-
-        // Add event listeners
-        if (elementData.events) {
-            Object.keys(elementData.events).forEach(eventType => {
-                element.addEventListener(eventType, window[elementData.events[eventType]]);
-            });
-        }
-
-        // Recursively build and append children
-        if (elementData.children) {
-            buildHTML(elementData.children, element);
-        }
-
-        // Append the element to the parent
-        parentElement.appendChild(element);
-    });
-}
 
 // Function to update the text panel with localized text
 function updateTextPanel(textId) {
