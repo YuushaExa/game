@@ -1,136 +1,130 @@
-// Load game data from JSON file
-async function loadGameData(jsonFile) {
-    try {
-        const response = await fetch(jsonFile);
-        if (!response.ok) throw new Error("Failed to load JSON");
+document.addEventListener('DOMContentLoaded', () => {
+  const gameDataElement = document.getElementById('gameData');
+  const gameData = JSON.parse(gameDataElement.textContent);
 
-        const data = await response.json();
-        window.gameData = data;
+  const gameContainer = document.getElementById('game');
+  const textPanel = document.getElementById('text-panel');
+  const startScreen = document.getElementById('start-screen');
+  const startButton = document.getElementById('start-button');
+  const loadButton = document.getElementById('load-button');
+  const settingsButton = document.getElementById('settings-button');
 
-        // Initialize the first scene
-        changeScene("scene1");
+  let currentScene = null;
+  let currentLanguage = 'en'; // Default language
 
-    } catch (error) {
-        console.error("Error loading JSON:", error);
-        const errorMessage = document.getElementById('error-message');
-        errorMessage.style.display = 'block';
+  // Start game when the start button is clicked
+  startButton.addEventListener('click', () => {
+    startScreen.style.display = 'none';
+    loadScene('scene1'); // Start with the first scene
+  });
+
+  // Load a specific scene
+  function loadScene(sceneId) {
+    const scene = gameData.scenes.find(s => s.id === sceneId);
+    if (!scene) {
+      console.error(`Scene ${sceneId} not found!`);
+      return;
     }
-}
+    currentScene = scene;
+    renderScene(scene);
+  }
 
-// Change to a specific scene
-function changeScene(sceneId) {
-    const scene = window.gameData.scenes.find(s => s.id === sceneId);
-    if (scene) {
-        displayScene(scene);
-    } else {
-        console.error("Scene not found:", sceneId);
-    }
-}
+  // Render a scene
+  function renderScene(scene) {
+    // Clear previous scene
+    textPanel.innerHTML = '';
 
-// Display the scene content, including dialogue
-function displayScene(scene) {
-    const gameContainer = document.getElementById('game');
-    gameContainer.innerHTML = '';
+    // Set background
+    const backgroundUrl = gameData.backgrounds[scene.background];
+    gameContainer.style.backgroundImage = `url(${backgroundUrl})`;
 
-    // Background
-    if (scene.background) {
-        const backgroundImage = document.createElement('div');
-        backgroundImage.classList.add('background-image');
-        backgroundImage.style.backgroundImage = `url(${window.gameData.backgrounds[scene.background]})`;
-        gameContainer.appendChild(backgroundImage);
-    }
-
-    // Text Panel
-    const textPanel = document.getElementById('text-panel');
-    textPanel.innerHTML = ''; // Clear previous content
-
-    // Display dialogue if it exists
-    if (scene.dialogue && scene.dialogue.length > 0) {
-        let currentDialogueIndex = 0;
-
-        // Function to display the current dialogue
-        const showDialogue = () => {
-            const dialogueEntry = scene.dialogue[currentDialogueIndex];
-            const character = window.gameData.characters[dialogueEntry.name];
-            const text = window.gameData.localization[window.gameData.settings.languages][dialogueEntry.textId];
-
-            // Clear the text panel
-            textPanel.innerHTML = '';
-
-            // Display character name and text
-            const nameElement = document.createElement('div');
-            nameElement.classList.add('character-name');
-            nameElement.textContent = character.name;
-            nameElement.style.color = character.color; // Dynamic color from JSON
-            textPanel.appendChild(nameElement);
-
-            const textElement = document.createElement('div');
-            textElement.textContent = text;
-            textPanel.appendChild(textElement);
-
-            // Show the text panel
-            textPanel.style.display = 'flex';
-
-            // Move to the next dialogue entry
-            currentDialogueIndex++;
-
-            // If there are more dialogues, set a timeout for the next one
-            if (currentDialogueIndex < scene.dialogue.length) {
-                setTimeout(showDialogue, 2000); // Adjust delay as needed
-            } else {
-                // If no more dialogues, show choices (if any)
-                if (scene.choices && scene.choices.length > 0) {
-                    displayChoices(scene.choices);
-                }
-            }
-        };
-
-        // Start displaying dialogue
-        showDialogue();
-    } else if (scene.textId) {
-        // Fallback to displaying a single text entry if no dialogue exists
-        textPanel.textContent = window.gameData.localization[window.gameData.settings.languages][scene.textId];
-        textPanel.style.display = 'flex';
-    } else {
-        textPanel.style.display = 'none';
+    // Render title if it exists
+    if (scene.title) {
+      const titleElement = document.createElement('h1');
+      titleElement.textContent = scene.title;
+      textPanel.appendChild(titleElement);
     }
 
-    // Display choices (if no dialogue or after dialogue ends)
-    if (scene.choices && scene.choices.length > 0 && (!scene.dialogue || scene.dialogue.length === 0)) {
-        displayChoices(scene.choices);
-    }
-}
-
-// Display choices
-function displayChoices(choices) {
-    const choicesContainer = document.createElement('div');
-    choicesContainer.classList.add('choices-container');
-
-    choices.forEach(choice => {
-        const choiceButton = document.createElement('button');
-        choiceButton.classList.add('menu-button');
-        choiceButton.textContent = window.gameData.localization[window.gameData.settings.languages][choice.textId];
-        choiceButton.addEventListener('click', () => {
-            if (choice.action) {
-                changeScene(choice.action);
-            }
-        });
-        choicesContainer.appendChild(choiceButton);
-    });
-
-    document.getElementById('game').appendChild(choicesContainer);
-}
-// Event delegation for buttons
-document.getElementById('game').addEventListener('click', (event) => {
-    const target = event.target;
-    if (target.classList.contains('menu-button')) {
-        const sceneId = target.getAttribute('data-next-scene');
-        if (sceneId) {
-            changeScene(sceneId);
+    // Render dialogue
+    if (scene.dialogue) {
+      scene.dialogue.forEach(dialogue => {
+        if (dialogue.name) {
+          const character = gameData.characters[dialogue.name];
+          const dialogueElement = document.createElement('div');
+          dialogueElement.textContent = `${character.name}: ${getLocalizedText(dialogue.textId)}`;
+          dialogueElement.style.color = character.color;
+          textPanel.appendChild(dialogueElement);
+        } else if (dialogue.choices) {
+          renderChoices(dialogue.choices);
         }
+      });
     }
-});
 
-// Load game data
-const jsonFile = document.getElementById('gameData').getAttribute('data-src');
-loadGameData(jsonFile);
+    // Render choices
+    if (scene.choices) {
+      renderChoices(scene.choices);
+    }
+
+    // Play music if it exists
+    if (scene.music) {
+      const music = gameData.music[scene.music];
+      console.log(`Playing music: ${music}`); // Replace with actual audio playback logic
+    }
+  }
+
+  // Render choices
+  function renderChoices(choices) {
+    choices.forEach(choice => {
+      const choiceButton = document.createElement('button');
+      choiceButton.textContent = getLocalizedText(choice.textId);
+      choiceButton.addEventListener('click', () => {
+        handleChoice(choice);
+      });
+      textPanel.appendChild(choiceButton);
+    });
+  }
+
+  // Handle user choice
+  function handleChoice(choice) {
+    console.log(`Choice selected: ${getLocalizedText(choice.textId)}`);
+
+    // Update variables if any
+    if (choice.variables) {
+      choice.variables.forEach(([variable, operation, value]) => {
+        if (operation === 'add') {
+          gameData.variables[variable] += value;
+        } else if (operation === 'set') {
+          gameData.variables[variable] = value;
+        }
+      });
+    }
+
+    // Handle action
+    if (choice.action) {
+      if (choice.action.startsWith('scene')) {
+        loadScene(choice.action); // Transition to another scene
+      } else if (choice.action === 'return') {
+        // Handle return action (e.g., go back to the previous scene)
+      }
+    }
+  }
+
+  // Get localized text
+  function getLocalizedText(textId) {
+    const localizedText = gameData.localization[currentLanguage][textId];
+    if (!localizedText) {
+      console.error(`Text ID ${textId} not found for language ${currentLanguage}`);
+      return `[MISSING TEXT: ${textId}]`;
+    }
+    return localizedText.replace(/{playerName}/g, gameData.variables.playerName);
+  }
+
+  // Initialize game
+  function initializeGame() {
+    // Set default variables
+    gameData.variables.playerName = prompt('Enter your name:') || 'Traveler';
+    startScreen.style.display = 'block'; // Show the start screen
+  }
+
+  initializeGame();
+});
