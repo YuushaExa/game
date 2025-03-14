@@ -27,7 +27,6 @@ function changeScene(sceneId) {
     }
 }
 
-// Display the scene content
 // Display the scene content, including dialogue
 function displayScene(scene) {
     const gameContainer = document.getElementById('game');
@@ -36,13 +35,8 @@ function displayScene(scene) {
     // Background
     if (scene.background) {
         const backgroundImage = document.createElement('div');
+        backgroundImage.classList.add('background-image');
         backgroundImage.style.backgroundImage = `url(${window.gameData.backgrounds[scene.background]})`;
-        backgroundImage.style.width = '100%';
-        backgroundImage.style.height = '100%';
-        backgroundImage.style.position = 'absolute';
-        backgroundImage.style.top = '0';
-        backgroundImage.style.left = '0';
-        backgroundImage.style.backgroundSize = 'cover';
         gameContainer.appendChild(backgroundImage);
     }
 
@@ -65,9 +59,9 @@ function displayScene(scene) {
 
             // Display character name and text
             const nameElement = document.createElement('div');
+            nameElement.classList.add('character-name');
             nameElement.textContent = character.name;
-            nameElement.style.color = character.color;
-            nameElement.style.fontWeight = 'bold';
+            nameElement.style.color = character.color; // Dynamic color from JSON
             textPanel.appendChild(nameElement);
 
             const textElement = document.createElement('div');
@@ -110,17 +104,12 @@ function displayScene(scene) {
 // Display choices
 function displayChoices(choices) {
     const choicesContainer = document.createElement('div');
-    choicesContainer.style.position = 'absolute';
-    choicesContainer.style.bottom = '20px';
-    choicesContainer.style.left = '50%';
-    choicesContainer.style.transform = 'translateX(-50%)';
-    choicesContainer.style.display = 'flex';
-    choicesContainer.style.gap = '10px';
+    choicesContainer.classList.add('choices-container');
 
     choices.forEach(choice => {
         const choiceButton = document.createElement('button');
-        choiceButton.textContent = window.gameData.localization[window.gameData.settings.languages][choice.textId];
         choiceButton.classList.add('menu-button');
+        choiceButton.textContent = window.gameData.localization[window.gameData.settings.languages][choice.textId];
         choiceButton.addEventListener('click', () => {
             if (choice.action) {
                 changeScene(choice.action);
