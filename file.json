@@ -32,7 +32,7 @@
             "dialogues": [
                 {
                     "character": "Rei",
-                    "text": { "ru": "Что дальше?", "en": "What's next?" }
+                    "text": { "ru": "Что дальше?", "en": "What's next?" },
                     "next_scene": "start_screen"
                 }
             ]
