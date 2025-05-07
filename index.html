@@ -1,28 +1,11 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>Visual Novel Engine</title>
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-                font-family: Arial, sans-serif;
-                background-color: #f0f0f0;
-            }
-            #main {
-                width: 100vw;
-                height: 100vh;
-                overflow: hidden;
-            }
-            #engine {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
-        </style>
-    </head>
-    <body onload="loadJsonFile('file.json')">
-        <div id='main'></div>
-        <script type="text/javascript" src="engine.js"></script>
-    </body>
+<head>
+    <title>Visual Novel Engine</title>
+    <link rel="stylesheet" href="engine.css">
+</head>
+<body>
+    <div id="main" data-story="file.json"></div>
+    <script src="engine.js"></script>
+</body>
 </html>
