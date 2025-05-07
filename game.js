@@ -42,6 +42,10 @@ const gameData = {
                         <div>
                             <div class="title">Visual Novel</div>
                             <button class="start-btn" next_scene="block_1">Start Game</button>
+                             <div id="language-switcher">
+        <button data-lang="en">English</button>
+        <button data-lang="ru">Русский</button>
+    </div>
                         </div>
                     </body>
                 </html>
