@@ -8,6 +8,11 @@
                 font-family: Arial, sans-serif;
                 background-color: #f0f0f0;
             }
+            #main {
+                width: 100vw;
+                height: 100vh;
+                overflow: hidden;
+            }
             #engine {
                 display: flex;
                 flex-direction: column;
@@ -16,7 +21,7 @@
             }
         </style>
     </head>
-<body onload="loadJsonFile('file.json')">
+    <body onload="loadJsonFile('file.json')">
         <div id='main'></div>
         <script type="text/javascript" src="engine.js"></script>
     </body>
