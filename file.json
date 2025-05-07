@@ -1,28 +1,9 @@
 {
-    "metadata": {
-        "title": "My Visual Novel",
-        "version": "1.0"
-    },
-    "settings": {
-        "default_font": "Arial",
-        "default_font_size": "18px",
-        "languages": ["en", "ru"],
-        "default_language": "en",
-        "launch_story": "block_1"
-    },
-    "characters": {
-        "Rei": {
-            "name": { "ru": "Рей", "en": "Rei" },
-            "default_image": "rei.jpg",
-            "text_color": "#ff00ff"
-        },
-        "klkkl": {
-            "name": { "ru": "клккл", "en": "klkkl" },
-            "text_color": "#003eff"
-        }
-    },
-    "variables": {},
     "scenes": {
+        "start_screen": {
+            "html": "<html>\n    <head>\n        <style>\n            body {\n                margin: 0;\n                padding: 0;\n                display: flex;\n                justify-content: center;\n                align-items: center;\n                height: 100vh;\n                background: linear-gradient(135deg, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);\n                color: white;\n                font-family: Arial, sans-serif;\n                text-align: center;\n            }\n            .title {\n                font-size: 3em;\n                margin-bottom: 20px;\n                text-shadow: 2px 2px 4px rgba(0,0,0,0.5);\n            }\n            .start-btn {\n                padding: 15px 30px;\n                background-color: #ff6b6b;\n                color: white;\n                border: none;\n                border-radius: 5px;\n                font-size: 1.2em;\n                cursor: pointer;\n                transition: all 0.3s;\n            }\n            .start-btn:hover {\n                background-color: #ff8e8e;\n                transform: scale(1.05);\n            }\n        </style>\n    </head>\n    <body>\n        <div>\n            <div class=\"title\">Visual Novel</div>\n            <button class=\"start-btn\" onclick=\"load_story('file','story.json')\">Start Game</button>\n        </div>\n    </body>\n</html>",
+            "next_scene": "block_1"
+        },
         "block_1": {
             "background": {
                 "type": "image",
@@ -48,7 +29,6 @@
                 "type": "color",
                 "source": "#f0f0f0"
             },
-					"html": "<html>\n    <head>\n    </head>\n    <!--After loading, the load_story function is launched, indicating a file or array with history-->\n    <body onload=\"load_story('file','story.json')\">\n        <!--display area-->\n        <div id='tuesday' style='width:100%; height:90vh;'></div>\n        <!--path to the engine file, always at the end of the page-->\n        <script type=\"text/javascript\" src=\"tuesday.js\"></script>\n    </body>\n</html>",
             "dialogues": [
                 {
                     "character": "Rei",
