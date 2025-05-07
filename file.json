@@ -1,0 +1,60 @@
+{
+    "metadata": {
+        "title": "My Visual Novel",
+        "version": "1.0"
+    },
+    "settings": {
+        "default_font": "Arial",
+        "default_font_size": "18px",
+        "languages": ["en", "ru"],
+        "default_language": "en",
+        "launch_story": "block_1"
+    },
+    "characters": {
+        "Rei": {
+            "name": { "ru": "Рей", "en": "Rei" },
+            "default_image": "rei.jpg",
+            "text_color": "#ff00ff"
+        },
+        "klkkl": {
+            "name": { "ru": "клккл", "en": "klkkl" },
+            "text_color": "#003eff"
+        }
+    },
+    "variables": {},
+    "scenes": {
+        "block_1": {
+            "background": {
+                "type": "image",
+                "source": "background1.jpg"
+            },
+            "dialogues": [
+                {
+                    "character": "Rei",
+                    "text": { "ru": "Привет", "en": "Hello" }
+                },
+                {
+                    "character": "klkkl",
+                    "text": { "ru": "Как дела?", "en": "How are you?" }
+                },
+                {
+                    "text": { "ru": "Это повествование.", "en": "This is narration." },
+                    "next_scene": "block_2"
+                }
+            ]
+        },
+        "block_2": {
+            "background": {
+                "type": "color",
+                "source": "#f0f0f0"
+            },
+					"html": "<html>\n    <head>\n    </head>\n    <!--After loading, the load_story function is launched, indicating a file or array with history-->\n    <body onload=\"load_story('file','story.json')\">\n        <!--display area-->\n        <div id='tuesday' style='width:100%; height:90vh;'></div>\n        <!--path to the engine file, always at the end of the page-->\n        <script type=\"text/javascript\" src=\"tuesday.js\"></script>\n    </body>\n</html>",
+            "dialogues": [
+                {
+                    "character": "Rei",
+                    "text": { "ru": "Что дальше?", "en": "What's next?" }
+                }
+            ]
+        }
+    }
+}
