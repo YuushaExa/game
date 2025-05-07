@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Visual Novel Engine</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+                background-color: #f0f0f0;
+            }
+            #engine {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body onload="file('file','file.json')">
+        <div id='main'></div>
+        <script type="text/javascript" src="engine.js"></script>
+    </body>
+</html>
