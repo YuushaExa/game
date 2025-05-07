@@ -28,55 +28,34 @@ function loadScene(sceneId) {
 
 function renderScene() {
     const mainDiv = document.getElementById('main');
+    
+    // Clear previous content
     mainDiv.innerHTML = '';
 
-    // Set background
+    // Set background styles
+    let backgroundStyle = '';
     if (currentScene.background) {
         if (currentScene.background.type === 'image') {
-            mainDiv.style.backgroundImage = `url(${currentScene.background.source})`;
-            mainDiv.style.backgroundSize = 'cover';
-            mainDiv.style.backgroundPosition = 'center';
+            backgroundStyle = `background-image: url('${currentScene.background.source}'); background-size: cover; background-position: center;`;
         } else if (currentScene.background.type === 'color') {
-            mainDiv.style.backgroundColor = currentScene.background.source;
-            mainDiv.style.backgroundImage = 'none';
+            backgroundStyle = `background-color: ${currentScene.background.source};`;
         }
     }
 
-    // Render HTML content if present
-    if (currentScene.html) {
-        const htmlContainer = document.createElement('div');
-        htmlContainer.innerHTML = currentScene.html;
-        mainDiv.appendChild(htmlContainer);
-    }
+    // Create main container with background
+    mainDiv.innerHTML = `
+        <div style="${backgroundStyle} width: 100%; height: 100vh; position: relative;">
+            ${currentScene.html || ''}
+            <div style="position: fixed; bottom: 0; left: 0; right: 0; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 20px; min-height: 100px;">
+                <div id="character-name" style="font-weight: bold; margin-bottom: 10px;"></div>
+                <div id="dialogue-text" style="margin-bottom: 10px;"></div>
+                <button id="next-button" style="padding: 5px 10px;">Next</button>
+            </div>
+        </div>
+    `;
 
-    // Render dialogue interface
-    const dialogueContainer = document.createElement('div');
-    dialogueContainer.style.position = 'fixed';
-    dialogueContainer.style.bottom = '0';
-    dialogueContainer.style.left = '0';
-    dialogueContainer.style.right = '0';
-    dialogueContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    dialogueContainer.style.color = 'white';
-    dialogueContainer.style.padding = '20px';
-    dialogueContainer.style.minHeight = '100px';
-
-    const characterNameDiv = document.createElement('div');
-    characterNameDiv.style.fontWeight = 'bold';
-    characterNameDiv.style.marginBottom = '10px';
-
-    const textDiv = document.createElement('div');
-    textDiv.style.marginBottom = '10px';
-
-    const nextButton = document.createElement('button');
-    nextButton.textContent = 'Next';
-    nextButton.style.padding = '5px 10px';
-    nextButton.onclick = nextDialogue;
-
-    dialogueContainer.appendChild(characterNameDiv);
-    dialogueContainer.appendChild(textDiv);
-    dialogueContainer.appendChild(nextButton);
-
-    mainDiv.appendChild(dialogueContainer);
+    // Add event listener to the button
+    document.getElementById('next-button').addEventListener('click', nextDialogue);
 
     // Show first dialogue
     showDialogue(currentDialogueIndex);
@@ -84,7 +63,7 @@ function renderScene() {
 
 function showDialogue(index) {
     if (!currentScene || !currentScene.dialogues || index >= currentScene.dialogues.length) {
-        // No more dialogues, check for next scene
+        // Check for next scene
         if (currentScene.dialogues[index - 1]?.next_scene) {
             loadScene(currentScene.dialogues[index - 1].next_scene);
         }
@@ -92,14 +71,13 @@ function showDialogue(index) {
     }
 
     const dialogue = currentScene.dialogues[index];
-    const dialogueContainer = document.querySelector('#main > div:last-child');
-    const characterNameDiv = dialogueContainer.querySelector('div:first-child');
-    const textDiv = dialogueContainer.querySelector('div:nth-child(2)');
+    const characterNameDiv = document.getElementById('character-name');
+    const textDiv = document.getElementById('dialogue-text');
 
     // Set character name and color
     if (dialogue.character) {
         const character = gameData.characters[dialogue.character];
-        characterNameDiv.textContent = character.name[currentLanguage] || dialogue.character;
+        characterNameDiv.innerHTML = character.name[currentLanguage] || dialogue.character;
         characterNameDiv.style.color = character.text_color || 'white';
         characterNameDiv.style.display = 'block';
     } else {
@@ -107,7 +85,7 @@ function showDialogue(index) {
     }
 
     // Set text
-    textDiv.textContent = dialogue.text[currentLanguage] || dialogue.text.en || '';
+    textDiv.innerHTML = dialogue.text[currentLanguage] || dialogue.text.en || '';
 }
 
 function nextDialogue() {
@@ -115,10 +93,9 @@ function nextDialogue() {
     showDialogue(currentDialogueIndex);
 }
 
-// Expose functions to global scope for HTML event handlers
+// Global functions
 window.load_story = function(type, source) {
     if (type === 'file') {
         loadJsonFile(source);
     }
-    // Add other types if needed
 };
