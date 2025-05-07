@@ -63,20 +63,26 @@ class VisualNovelEngine {
     }
 
     // Render an HTML scene
-    renderHtmlScene(scene) {
+   renderHtmlScene(scene) {
         const mainDiv = document.getElementById('main');
         mainDiv.innerHTML = scene.html;
         
         // If there's a next_scene defined, set up progression
         if (scene.next_scene) {
             setTimeout(() => {
-                // Override load_story if it exists in the HTML
-                if (scene.html.includes('load_story(')) {
-                    window.load_story = () => {
-                        this.renderScene(scene.next_scene);
-                    };
-                } else if (scene.auto_advance) {
-                    // Auto-advance after delay if specified
+                // Find all elements with next_scene attributes
+                const nextSceneElements = mainDiv.querySelectorAll('[next_scene]');
+                
+                // Add click handlers to these elements
+                nextSceneElements.forEach(element => {
+                    const targetScene = element.getAttribute('next_scene');
+                    element.addEventListener('click', () => {
+                        this.renderScene(targetScene);
+                    });
+                });
+
+                // If no elements found but auto_advance is set
+                if (nextSceneElements.length === 0 && scene.auto_advance) {
                     setTimeout(() => {
                         this.renderScene(scene.next_scene);
                     }, scene.auto_advance_delay || 3000);
@@ -272,10 +278,7 @@ class VisualNovelEngine {
 // Initialize the engine when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     window.vnEngine = new VisualNovelEngine();
-    
-    // Check if we should load a story immediately
-    const mainDiv = document.getElementById('main');
-    if (mainDiv && mainDiv.dataset.story) {
-        vnEngine.init(mainDiv.dataset.story);
+    if (document.getElementById('main').dataset.story) {
+        vnEngine.init(document.getElementById('main').dataset.story);
     }
 });
