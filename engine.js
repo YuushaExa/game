@@ -1,34 +1,21 @@
-// Visual Novel Engine
 class VisualNovelEngine {
     constructor() {
         this.currentScene = null;
         this.currentDialogueIndex = 0;
-        this.language = 'en'; // Default language
+        this.language = 'en';
         this.scenesData = {};
         this.handlers = {};
     }
 
-    // Initialize the engine
-    init(jsonFile) {
-        this.loadJsonFile(jsonFile);
-        this.setupLanguageSwitcher();
-    }
-
-    // Load JSON file
-    loadJsonFile(filename) {
-        fetch(filename)
-            .then(response => response.json())
-            .then(data => {
-                this.scenesData = data.scenes;
-                this.triggerEvent('dataLoaded');
-                this.startVisualNovel();
-            })
-            .catch(error => console.error('Error loading JSON file:', error));
+    // Initialize the engine with game data
+    init(gameData) {
+        this.scenesData = gameData.scenes;
+        this.triggerEvent('dataLoaded');
+        this.startVisualNovel();
     }
 
     // Start the visual novel
     startVisualNovel() {
-        // Check for start screen first, then fall back to block_1
         if (this.scenesData['start_screen']) {
             this.renderScene('start_screen');
         } else if (this.scenesData['block_1']) {
@@ -52,7 +39,6 @@ class VisualNovelEngine {
         const mainDiv = document.getElementById('main');
         mainDiv.innerHTML = '';
 
-        // Check if this is an HTML scene or a regular scene
         if (scene.html) {
             this.renderHtmlScene(scene);
         } else {
@@ -63,11 +49,10 @@ class VisualNovelEngine {
     }
 
     // Render an HTML scene
-   renderHtmlScene(scene) {
+    renderHtmlScene(scene) {
         const mainDiv = document.getElementById('main');
         mainDiv.innerHTML = scene.html;
         
-        // If there's a next_scene defined, set up progression
         if (scene.next_scene) {
             setTimeout(() => {
                 // Find all elements with next_scene attributes
@@ -81,11 +66,11 @@ class VisualNovelEngine {
                     });
                 });
 
-                // If no elements found but auto_advance is set
-                if (nextSceneElements.length === 0 && scene.auto_advance) {
+                // Auto-advance if no elements found
+                if (nextSceneElements.length === 0) {
                     setTimeout(() => {
                         this.renderScene(scene.next_scene);
-                    }, scene.auto_advance_delay || 3000);
+                    }, 3000);
                 }
             }, 100);
         }
@@ -98,11 +83,7 @@ class VisualNovelEngine {
         // Create scene container
         const sceneContainer = document.createElement('div');
         sceneContainer.className = 'vn-scene';
-        sceneContainer.style.width = '100%';
-        sceneContainer.style.height = '100vh';
-        sceneContainer.style.position = 'relative';
-        sceneContainer.style.overflow = 'hidden';
-
+        
         // Set background
         this.setSceneBackground(scene, sceneContainer);
 
@@ -116,6 +97,7 @@ class VisualNovelEngine {
         // Show first dialogue
         this.showDialogue(this.currentDialogueIndex);
     }
+
 
     // Set scene background
     setSceneBackground(scene, container) {
@@ -278,7 +260,11 @@ class VisualNovelEngine {
 // Initialize the engine when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     window.vnEngine = new VisualNovelEngine();
-    if (document.getElementById('main').dataset.story) {
-        vnEngine.init(document.getElementById('main').dataset.story);
+    
+    // Check if gameData is available
+    if (typeof gameData !== 'undefined') {
+        vnEngine.init(gameData);
+    } else {
+        console.error('gameData is not defined. Make sure game.js is loaded.');
     }
 });
