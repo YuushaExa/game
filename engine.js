@@ -52,8 +52,10 @@ class VisualNovelEngine {
     renderHtmlScene(scene) {
         const mainDiv = document.getElementById('main');
         mainDiv.innerHTML = scene.html;
+    // Set up language switcher for this scene
+    this.setupLanguageSwitcher();
         
-        if (scene.next_scene) {
+            if (scene.next_scene) {
             setTimeout(() => {
                 // Find all elements with next_scene attributes
                 const nextSceneElements = mainDiv.querySelectorAll('[next_scene]');
