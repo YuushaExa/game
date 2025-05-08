@@ -27,18 +27,61 @@ class VisualNovelEngine {
     }
 
     // Render a scene
- renderScene(sceneId) {
-        // Handle special scene IDs
-        if (sceneId === "previous_scene") {
-            if (this.sceneHistory.length > 1) {
-                sceneId = this.sceneHistory[this.sceneHistory.length - 2];
-                this.sceneHistory.pop(); // Remove current scene
-                this.sceneHistory.pop(); // Remove previous scene we're returning to
-            } else {
-                sceneId = "start_screen"; // Fallback if no history
-            }
-        }
+ renderHtmlScene(scene) {
+        const mainDiv = document.getElementById('main');
+        mainDiv.innerHTML = scene.html;
+        
+        // Set up language switcher for this scene
+        this.setupLanguageSwitcher();
+        
+        // Handle scene progression
+        setTimeout(() => {
+            // Find all elements with next_scene attributes
+            const nextSceneElements = mainDiv.querySelectorAll('[next_scene]');
+            
+            // Add click handlers to these elements
+            nextSceneElements.forEach(element => {
+                element.addEventListener('click', (e) => {
+                    const targetScene = element.getAttribute('next_scene');
+                    this.handleSceneTransition(targetScene);
+                });
+            });
 
+            // Auto-advance if specified
+            if (scene.next_scene && nextSceneElements.length === 0) {
+                setTimeout(() => {
+                    this.handleSceneTransition(scene.next_scene);
+                }, 3000);
+            }
+        }, 100);
+    }
+
+    // New method to handle scene transitions
+    handleSceneTransition(targetScene) {
+        if (targetScene === "previous_scene") {
+            this.goBack();
+        } else {
+            this.renderScene(targetScene);
+        }
+    }
+
+    // Method to go back to previous scene
+    goBack() {
+        if (this.sceneHistory.length > 1) {
+            // Remove current scene from history
+            this.sceneHistory.pop();
+            // Get previous scene
+            const previousScene = this.sceneHistory[this.sceneHistory.length - 1];
+            // Render it (without adding to history again)
+            this.renderScene(previousScene, false);
+        } else {
+            // Fallback if no history
+            this.renderScene("start_screen");
+        }
+    }
+
+    // Modified renderScene with history control
+    renderScene(sceneId, addToHistory = true) {
         const scene = this.scenesData[sceneId];
         if (!scene) {
             console.error(`Scene ${sceneId} not found`);
@@ -46,7 +89,7 @@ class VisualNovelEngine {
         }
 
         // Update scene history
-        if (sceneId !== this.currentScene) {
+        if (addToHistory && sceneId !== this.currentScene) {
             this.sceneHistory.push(sceneId);
             if (this.sceneHistory.length > 10) { // Limit history size
                 this.sceneHistory.shift();
@@ -67,37 +110,6 @@ class VisualNovelEngine {
 
         this.triggerEvent('sceneChanged', { sceneId });
     }
-
-    // Render an HTML scene
-    renderHtmlScene(scene) {
-        const mainDiv = document.getElementById('main');
-        mainDiv.innerHTML = scene.html;
-    // Set up language switcher for this scene
-    this.setupLanguageSwitcher();
-        
-            if (scene.next_scene) {
-            setTimeout(() => {
-                // Find all elements with next_scene attributes
-                const nextSceneElements = mainDiv.querySelectorAll('[next_scene]');
-                
-                // Add click handlers to these elements
-                nextSceneElements.forEach(element => {
-                    const targetScene = element.getAttribute('next_scene');
-                    element.addEventListener('click', () => {
-                        this.renderScene(targetScene);
-                    });
-                });
-
-                // Auto-advance if no elements found
-                if (nextSceneElements.length === 0) {
-                    setTimeout(() => {
-                        this.renderScene(scene.next_scene);
-                    }, 3000);
-                }
-            }, 100);
-        }
-    }
-
     // Render a regular dialogue scene
     renderRegularScene(scene) {
         const mainDiv = document.getElementById('main');
