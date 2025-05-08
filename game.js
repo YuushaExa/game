@@ -64,10 +64,7 @@ const gameData = {
                         <div>
                             <div class="title">Visual Novel</div>
                             <button class="start-btn" next_scene="block_1">Start Game</button>
-                             <div id="language-switcher">
-        <button data-lang="en">English</button>
-        <button data-lang="ru">Русский</button>
-    </div>
+                    <button class="options-btn" next_scene="options">Options</button>
                         </div>
             `,
             next_scene: "block_1"
@@ -104,6 +101,38 @@ const gameData = {
                     next_scene: "start_screen"
                 }
             ]
-        }
+        },
+      options: {
+            html: `
+                <style>
+                    .options-menu {
+                        background: rgba(0,0,0,0.8);
+                        color: white;
+                        padding: 30px;
+                        border-radius: 10px;
+                        max-width: 500px;
+                        margin: auto;
+                    }
+                    .back-btn {
+                        padding: 10px 20px;
+                        background-color: #ff6b6b;
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                        margin-top: 20px;
+                        cursor: pointer;
+                    }
+                </style>
+                <div class="options-menu">
+                    <h2>Options</h2>
+                    <div id="language-switcher">
+                        <button data-lang="en">English</button>
+                        <button data-lang="ru">Русский</button>
+                    </div>
+                    <div>Volume controls would go here</div>
+                    <button class="back-btn" next_scene="previous_scene">Back</button>
+                </div>
+            `
+        },
     }
 };
