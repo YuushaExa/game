@@ -1,4 +1,10 @@
 const gameData = {
+  hero: {
+    name: {
+       str: 15,
+        hp: 30
+    }
+  },
   enemies: {
     poring: {
         str: 5,
