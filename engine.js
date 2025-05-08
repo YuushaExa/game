@@ -53,7 +53,7 @@ class VisualNovelEngine {
         const mainDiv = document.getElementById('main');
         mainDiv.innerHTML = scene.html;
     // Set up language switcher for this scene
-    this.setupLanguageSwitcher();
+this.switchLanguage();
         
             if (scene.next_scene) {
             setTimeout(() => {
@@ -223,13 +223,32 @@ class VisualNovelEngine {
     }
 
     // Switch language
-    switchLanguage(lang) {
-        this.language = lang;
-        if (this.currentScene) {
-            this.showDialogue(this.currentDialogueIndex);
+switchLanguage(lang = null, switcherElement = 'language-switcher') {
+    // If no language provided, check if it's coming from a UI event
+    if (lang === null) {
+        const switcher = document.getElementById(switcherElement);
+        if (switcher) {
+            // Set up event listeners if they don't exist yet
+            if (!this._languageSwitcherInitialized) {
+                switcher.querySelectorAll('button').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const newLang = e.target.dataset.lang;
+                        if (newLang) this.switchLanguage(newLang);
+                    });
+                });
+                this._languageSwitcherInitialized = true;
+            }
         }
-        this.triggerEvent('languageChanged', { language: lang });
+        return; // Exit if no language was provided
     }
+
+    // Actual language switching logic
+    this.language = lang;
+    if (this.currentScene) {
+        this.showDialogue(this.currentDialogueIndex);
+    }
+    this.triggerEvent('languageChanged', { language: lang });
+}
 
     // Event handling system
     on(event, handler) {
@@ -245,18 +264,7 @@ class VisualNovelEngine {
         }
     }
 
-    // Setup language switcher
-    setupLanguageSwitcher() {
-        const switcher = document.getElementById('language-switcher');
-        if (switcher) {
-            switcher.querySelectorAll('button').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const lang = e.target.dataset.lang;
-                    if (lang) this.switchLanguage(lang);
-                });
-            });
-        }
-    }
+
 }
 
 // Initialize the engine when the page loads
