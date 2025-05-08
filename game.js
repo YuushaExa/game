@@ -2,8 +2,6 @@ const gameData = {
     scenes: {
         start_screen: {
             html: `
-                <html>
-                    <head>
                         <style>
                             body {
                                 margin: 0;
@@ -37,8 +35,6 @@ const gameData = {
                                 transform: scale(1.05);
                             }
                         </style>
-                    </head>
-                    <body>
                         <div>
                             <div class="title">Visual Novel</div>
                             <button class="start-btn" next_scene="block_1">Start Game</button>
@@ -47,8 +43,6 @@ const gameData = {
         <button data-lang="ru">Русский</button>
     </div>
                         </div>
-                    </body>
-                </html>
             `,
             next_scene: "block_1"
         },
