@@ -5,6 +5,7 @@ class VisualNovelEngine {
         this.language = 'en';
         this.scenesData = {};
         this.handlers = {};
+        this.sceneHistory = []; 
     }
 
     // Initialize the engine with game data
@@ -26,11 +27,30 @@ class VisualNovelEngine {
     }
 
     // Render a scene
-    renderScene(sceneId) {
+ renderScene(sceneId) {
+        // Handle special scene IDs
+        if (sceneId === "previous_scene") {
+            if (this.sceneHistory.length > 1) {
+                sceneId = this.sceneHistory[this.sceneHistory.length - 2];
+                this.sceneHistory.pop(); // Remove current scene
+                this.sceneHistory.pop(); // Remove previous scene we're returning to
+            } else {
+                sceneId = "start_screen"; // Fallback if no history
+            }
+        }
+
         const scene = this.scenesData[sceneId];
         if (!scene) {
             console.error(`Scene ${sceneId} not found`);
             return;
+        }
+
+        // Update scene history
+        if (sceneId !== this.currentScene) {
+            this.sceneHistory.push(sceneId);
+            if (this.sceneHistory.length > 10) { // Limit history size
+                this.sceneHistory.shift();
+            }
         }
 
         this.currentScene = sceneId;
