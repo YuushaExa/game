@@ -82,7 +82,24 @@ const gameData = {
                 source: "#f0f0f0"
             },
            html: `
-                    <button class="options-btn" next_scene="options">Options</button>
+                   <button id="colorButton">Click me to change color</button>
+<script> // Get the button element
+const button = document.getElementById("colorButton");
+
+// Array of possible colors
+const colors = ["red", "blue", "green", "yellow", "purple", "orange"];
+let currentColorIndex = 0;
+
+// Add click event listener
+button.addEventListener("click", function() {
+    // Change to the next color
+    currentColorIndex = (currentColorIndex + 1) % colors.length;
+    button.style.backgroundColor = colors[currentColorIndex];
+    
+    // Optional: Change text color for better contrast
+    button.style.color = "white";
+});
+</script>
                 `,
         },
       options: {
