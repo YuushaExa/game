@@ -64,6 +64,7 @@ const gameData = {
                         <div>
                             <div class="title">Visual Novel</div>
                             <button class="start-btn" next_scene="block_1">Start Game</button>
+                         <button class="start-btn" next_scene="block_2">Start 2</button>
                     <button class="options-btn" next_scene="options">Options</button>
                         </div>
             `,
@@ -97,7 +98,7 @@ const gameData = {
             dialogues: [
                 {
                     character: "Rei",
-                    text: { ru: "Что дальше?", en: "What's next?" },
+                    text: { ru: "Что дальше 2?", en: "What's next 2?" },
                     next_scene: "start_screen"
                 }
             ]
