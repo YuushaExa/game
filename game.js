@@ -92,7 +92,8 @@ const gameData = {
             button.style.backgroundColor = colors[currentColorIndex];
             button.style.color = "white";
         });
-    }
+    },
+                      next_scene: "block_1"
         },
       options: {
             html: `
