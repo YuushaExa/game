@@ -95,6 +95,9 @@ const gameData = {
                 type: "color",
                 source: "#f0f0f0"
             },
+           html: `
+                    <button class="options-btn" next_scene="options">Options</button>
+                `,
             dialogues: [
                 {
                     character: "Rei",
