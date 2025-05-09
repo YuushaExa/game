@@ -111,27 +111,33 @@ class VisualNovelEngine {
         this.triggerEvent('sceneChanged', { sceneId });
     }
     // Render a regular dialogue scene
-    renderRegularScene(scene) {
-        const mainDiv = document.getElementById('main');
-        
-        // Create scene container
-        const sceneContainer = document.createElement('div');
-        sceneContainer.className = 'vn-scene';
-        
-        // Set background
-        this.setSceneBackground(scene, sceneContainer);
+renderRegularScene(scene) {
+    const mainDiv = document.getElementById('main');
+    
+    // Create scene container
+    const sceneContainer = document.createElement('div');
+    sceneContainer.className = 'vn-scene';
+    
+    // Set background
+    this.setSceneBackground(scene, sceneContainer);
 
-        // Create dialogue box
+    // Add custom HTML content if it exists
+    if (scene.html) {
+        const htmlContainer = document.createElement('div');
+        htmlContainer.innerHTML = scene.html;
+        sceneContainer.appendChild(htmlContainer);
+    }
+
+    // Create dialogue box (only if dialogues exist)
+    if (scene.dialogues && scene.dialogues.length > 0) {
         const dialogueBox = this.createDialogueBox();
         sceneContainer.appendChild(dialogueBox);
-
-        // Append to main div
-        mainDiv.appendChild(sceneContainer);
-
-        // Show first dialogue
         this.showDialogue(this.currentDialogueIndex);
     }
 
+    // Append to main div
+    mainDiv.appendChild(sceneContainer);
+}
 
     // Set scene background
     setSceneBackground(scene, container) {
