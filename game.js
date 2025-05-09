@@ -81,26 +81,18 @@ const gameData = {
                 type: "color",
                 source: "#f0f0f0"
             },
-           html: `
-                   <button id="colorButton">Click me to change color</button>
-<script> // Get the button element
-const button = document.getElementById("colorButton");
+        html: `<button id="colorButton">Click me to change color</button>`,
+    onRender: function() {
+        const button = document.getElementById("colorButton");
+        const colors = ["red", "blue", "green", "yellow", "purple", "orange"];
+        let currentColorIndex = 0;
 
-// Array of possible colors
-const colors = ["red", "blue", "green", "yellow", "purple", "orange"];
-let currentColorIndex = 0;
-
-// Add click event listener
-button.addEventListener("click", function() {
-    // Change to the next color
-    currentColorIndex = (currentColorIndex + 1) % colors.length;
-    button.style.backgroundColor = colors[currentColorIndex];
-    
-    // Optional: Change text color for better contrast
-    button.style.color = "white";
-});
-</script>
-                `,
+        button.addEventListener("click", function() {
+            currentColorIndex = (currentColorIndex + 1) % colors.length;
+            button.style.backgroundColor = colors[currentColorIndex];
+            button.style.color = "white";
+        });
+    }
         },
       options: {
             html: `
