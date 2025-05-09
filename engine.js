@@ -44,7 +44,9 @@ class VisualNovelEngine {
         
         const mainDiv = document.getElementById('main');
         mainDiv.innerHTML = scene.html || '';
-
+ if (scene.onRender) {
+        scene.onRender();
+    }
         // Set up scene interactions
         setTimeout(() => {
             // Find all elements with next_scene attributes
