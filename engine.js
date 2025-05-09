@@ -3,7 +3,6 @@ class VisualNovelEngine {
         this.currentScene = null;
         this.scenesData = {};
         this.handlers = {};
-        this.sceneHistory = [];
     }
 
     // Initialize the engine with game data
@@ -25,28 +24,22 @@ class VisualNovelEngine {
     }
 
     // Render a scene
-    renderScene(sceneId, addToHistory = true) {
+    renderScene(sceneId) {
         const scene = this.scenesData[sceneId];
         if (!scene) {
             console.error(`Scene ${sceneId} not found`);
             return;
         }
 
-        // Update scene history
-        if (addToHistory && sceneId !== this.currentScene) {
-            this.sceneHistory.push(sceneId);
-            if (this.sceneHistory.length > 10) { // Limit history size
-                this.sceneHistory.shift();
-            }
-        }
-
         this.currentScene = sceneId;
         
         const mainDiv = document.getElementById('main');
         mainDiv.innerHTML = scene.html || '';
- if (scene.onRender) {
-        scene.onRender();
-    }
+        
+        if (scene.onRender) {
+            scene.onRender();
+        }
+
         // Set up scene interactions
         setTimeout(() => {
             // Find all elements with next_scene attributes
@@ -56,43 +49,19 @@ class VisualNovelEngine {
             nextSceneElements.forEach(element => {
                 element.addEventListener('click', (e) => {
                     const targetScene = element.getAttribute('next_scene');
-                    this.handleSceneTransition(targetScene);
+                    this.renderScene(targetScene);
                 });
             });
 
             // Auto-advance if specified
             if (scene.next_scene && nextSceneElements.length === 0) {
                 setTimeout(() => {
-                    this.handleSceneTransition(scene.next_scene);
+                    this.renderScene(scene.next_scene);
                 }, 3000);
             }
         }, 100);
 
         this.triggerEvent('sceneChanged', { sceneId });
-    }
-
-    // Handle scene transitions
-    handleSceneTransition(targetScene) {
-        if (targetScene === "previous_scene") {
-            this.goBack();
-        } else {
-            this.renderScene(targetScene);
-        }
-    }
-
-    // Method to go back to previous scene
-    goBack() {
-        if (this.sceneHistory.length > 1) {
-            // Remove current scene from history
-            this.sceneHistory.pop();
-            // Get previous scene
-            const previousScene = this.sceneHistory[this.sceneHistory.length - 1];
-            // Render it (without adding to history again)
-            this.renderScene(previousScene, false);
-        } else {
-            // Fallback if no history
-            this.renderScene("start_screen");
-        }
     }
 
     // Event handling system
