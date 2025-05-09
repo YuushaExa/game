@@ -75,20 +75,6 @@ const gameData = {
                 type: "image",
                 source: "background1.jpg"
             },
-            dialogues: [
-                {
-                    character: "Rei",
-                    text: { ru: "Привет", en: "Hello" }
-                },
-                {
-                    character: "klkkl",
-                    text: { ru: "Как дела?", en: "How are you?" }
-                },
-                {
-                    text: { ru: "Это повествование.", en: "This is narration." },
-                    next_scene: "block_2"
-                }
-            ]
         },
         block_2: {
             background: {
@@ -98,13 +84,6 @@ const gameData = {
            html: `
                     <button class="options-btn" next_scene="options">Options</button>
                 `,
-            dialogues: [
-                {
-                    character: "Rei",
-                    text: { ru: "Что дальше 2?", en: "What's next 2?" },
-                    next_scene: "start_screen"
-                }
-            ]
         },
       options: {
             html: `
