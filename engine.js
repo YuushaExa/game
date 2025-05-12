@@ -4,32 +4,37 @@ class VisualNovelEngine {
         this.scenesData = {};
         this.handlers = {};
         this.mainDiv = document.getElementById('main');
-        this.sceneTimeout = null; // To store the timeout reference
+        this.sceneTimeout = null;
+        this.currentDialogIndex = 0;
+        this.currentDialogs = [];
         
-        // Set up event delegation once during initialization
         this.setupEventDelegation();
     }
 
-    // Initialize the engine with game data
     init(gameData) {
         this.scenesData = gameData.scenes;
+        this.uiTemplates = gameData.ui || {}; // Store UI templates
         this.triggerEvent('dataLoaded');
         this.startVisualNovel();
     }
 
-    // Set up event delegation for scene transitions
     setupEventDelegation() {
         this.mainDiv.addEventListener('click', (e) => {
-            // Check if the clicked element or its parent has a next_scene attribute
             const elementWithNextScene = e.target.closest('[next_scene]');
             if (elementWithNextScene) {
                 const targetScene = elementWithNextScene.getAttribute('next_scene');
                 this.renderScene(targetScene);
+                return;
+            }
+
+            // Check for dialog advancement
+            const dialogAdvancer = e.target.closest('[advance_dialog]');
+            if (dialogAdvancer && this.currentDialogs.length > 0) {
+                this.advanceDialog();
             }
         });
     }
 
-    // Start the visual novel
     startVisualNovel() {
         if (this.scenesData['start_screen']) {
             this.renderScene('start_screen');
@@ -40,13 +45,14 @@ class VisualNovelEngine {
         }
     }
 
-    // Render a scene
     renderScene(sceneId) {
-        // Clear any existing timeout
+        // Clear existing state
         if (this.sceneTimeout) {
             clearTimeout(this.sceneTimeout);
             this.sceneTimeout = null;
         }
+        this.currentDialogIndex = 0;
+        this.currentDialogs = [];
 
         const scene = this.scenesData[sceneId];
         if (!scene) {
@@ -55,33 +61,76 @@ class VisualNovelEngine {
         }
 
         this.currentScene = sceneId;
-        this.mainDiv.innerHTML = scene.html || '';
         
         // Set background if specified
         if (scene.background) {
             this.setBackground(scene.background);
         }
-        
-        if (scene.onRender) {
-            scene.onRender();
-        }
 
-        // Set up automatic transition if specified
-        if (scene.scene && scene.scene.time) {
-            const time = parseInt(scene.scene.time) * 1000; // Convert to milliseconds
-            const nextScene = scene.scene.next_scene;
+        // Check for dialog data
+        if (scene.dialog) {
+            this.currentDialogs = scene.dialog;
+            this.renderDialog();
+        } else {
+            // Regular scene rendering
+            this.mainDiv.innerHTML = scene.html || '';
             
-            if (nextScene) {
-                this.sceneTimeout = setTimeout(() => {
-                    this.renderScene(nextScene);
-                }, time);
+            if (scene.onRender) {
+                scene.onRender();
+            }
+
+            // Set up automatic transition if specified
+            if (scene.scene && scene.scene.time) {
+                const time = parseInt(scene.scene.time) * 1000;
+                const nextScene = scene.scene.next_scene;
+                
+                if (nextScene) {
+                    this.sceneTimeout = setTimeout(() => {
+                        this.renderScene(nextScene);
+                    }, time);
+                }
             }
         }
 
         this.triggerEvent('sceneChanged', { sceneId });
     }
 
-    // Helper method to set background
+    renderDialog() {
+        if (this.currentDialogIndex >= this.currentDialogs.length) {
+            // No more dialogs, check for auto scene transition
+            const scene = this.scenesData[this.currentScene];
+            if (scene.scene && scene.scene.next_scene) {
+                this.renderScene(scene.scene.next_scene);
+            }
+            return;
+        }
+
+        const dialog = this.currentDialogs[this.currentDialogIndex];
+        let dialogHTML = this.uiTemplates.dialog || `
+            <div class="dialog">
+                <div class="name" id="nameDisplay">${dialog.name || ''}</div>
+                <div class="image" id="imageDisplay">
+                    ${dialog.image ? `<img src="${dialog.image}">` : ''}
+                </div>
+                <div class="text" id="textDisplay">${dialog.text || ''}</div>
+                <button advance_dialog>Next</button>
+            </div>
+        `;
+
+        // Replace placeholders with actual dialog data
+        dialogHTML = dialogHTML
+            .replace('${name}', dialog.name || '')
+            .replace('${image}', dialog.image ? `<img src="${dialog.image}">` : '')
+            .replace('${text}', dialog.text || '');
+
+        this.mainDiv.innerHTML = dialogHTML;
+    }
+
+    advanceDialog() {
+        this.currentDialogIndex++;
+        this.renderDialog();
+    }
+
     setBackground(background) {
         if (background.type === "image") {
             document.body.style.backgroundImage = `url('${background.source}')`;
@@ -94,7 +143,6 @@ class VisualNovelEngine {
         }
     }
 
-    // Event handling system
     on(event, handler) {
         if (!this.handlers[event]) {
             this.handlers[event] = [];
@@ -109,11 +157,9 @@ class VisualNovelEngine {
     }
 }
 
-// Initialize the engine when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     window.vnEngine = new VisualNovelEngine();
     
-    // Check if gameData is available
     if (typeof gameData !== 'undefined') {
         vnEngine.init(gameData);
     } else {
