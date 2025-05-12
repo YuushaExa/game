@@ -4,6 +4,7 @@ class VisualNovelEngine {
         this.scenesData = {};
         this.handlers = {};
         this.mainDiv = document.getElementById('main');
+        this.sceneTimeout = null; // To store the timeout reference
         
         // Set up event delegation once during initialization
         this.setupEventDelegation();
@@ -41,6 +42,12 @@ class VisualNovelEngine {
 
     // Render a scene
     renderScene(sceneId) {
+        // Clear any existing timeout
+        if (this.sceneTimeout) {
+            clearTimeout(this.sceneTimeout);
+            this.sceneTimeout = null;
+        }
+
         const scene = this.scenesData[sceneId];
         if (!scene) {
             console.error(`Scene ${sceneId} not found`);
@@ -50,11 +57,41 @@ class VisualNovelEngine {
         this.currentScene = sceneId;
         this.mainDiv.innerHTML = scene.html || '';
         
+        // Set background if specified
+        if (scene.background) {
+            this.setBackground(scene.background);
+        }
+        
         if (scene.onRender) {
             scene.onRender();
         }
 
+        // Set up automatic transition if specified
+        if (scene.scene && scene.scene.time) {
+            const time = parseInt(scene.scene.time) * 1000; // Convert to milliseconds
+            const nextScene = scene.scene.next_scene;
+            
+            if (nextScene) {
+                this.sceneTimeout = setTimeout(() => {
+                    this.renderScene(nextScene);
+                }, time);
+            }
+        }
+
         this.triggerEvent('sceneChanged', { sceneId });
+    }
+
+    // Helper method to set background
+    setBackground(background) {
+        if (background.type === "image") {
+            document.body.style.backgroundImage = `url('${background.source}')`;
+            document.body.style.backgroundSize = "cover";
+            document.body.style.backgroundPosition = "center";
+            document.body.style.backgroundRepeat = "no-repeat";
+        } else if (background.type === "color") {
+            document.body.style.background = background.source;
+            document.body.style.backgroundImage = "none";
+        }
     }
 
     // Event handling system
