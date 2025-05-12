@@ -1,4 +1,20 @@
 const gameData = {
+        ui: {
+        dialog: `
+            <div class="dialog">
+                <div class="name" id="nameDisplay">${name}</div>
+                <div class="image" id="imageDisplay">${image}</div>
+                <div class="text" id="textDisplay">${text}</div>
+                <button advance_dialog>Next</button>
+            </div>
+        `,
+        test: `
+            <div class="test">
+                <div class="ngame" id="nameDigsplay"></div>
+                <div class="tgext" id="textDgisplay"></div>
+            </div>
+        `
+    },
     scenes: {
         start_screen: {
             html: `
@@ -49,8 +65,25 @@ const gameData = {
                 type: "image",
                 source: "background1.jpg"
             },
+             dialog: [
+                {
+                    name: "Character 1",
+                    image: "avatar.jpg",
+                    text: "This is the first dialogue."
+                },
+                {
+                    name: "Character 1",
+                    image: "avatar.jpg",
+                    text: "This is the second dialogue."
+                },
+                {
+                    name: "Character 2",
+                    image: "avatar2.jpg",
+                    text: "This is the third dialogue."
+                }
+            ],
             scene: {
-                time: "5", // in seconds
+                time: "25", // in seconds
                 next_scene: "block_2" // scene to transition to after 5 seconds
             },
         },
