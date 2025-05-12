@@ -95,9 +95,8 @@ class VisualNovelEngine {
         this.triggerEvent('sceneChanged', { sceneId });
     }
 
-    renderDialog() {
+  renderDialog() {
         if (this.currentDialogIndex >= this.currentDialogs.length) {
-            // No more dialogs, check for auto scene transition
             const scene = this.scenesData[this.currentScene];
             if (scene.scene && scene.scene.next_scene) {
                 this.renderScene(scene.scene.next_scene);
@@ -117,7 +116,7 @@ class VisualNovelEngine {
             </div>
         `;
 
-        // Replace placeholders with actual dialog data
+        // Manually replace placeholders
         dialogHTML = dialogHTML
             .replace('${name}', dialog.name || '')
             .replace('${image}', dialog.image ? `<img src="${dialog.image}">` : '')
@@ -158,11 +157,11 @@ class VisualNovelEngine {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    window.vnEngine = new VisualNovelEngine();
-    
+    // Check if gameData exists after all scripts are loaded
     if (typeof gameData !== 'undefined') {
+        window.vnEngine = new VisualNovelEngine();
         vnEngine.init(gameData);
     } else {
-        console.error('gameData is not defined. Make sure game.js is loaded.');
+        console.error('gameData is not defined. Make sure game.js is loaded before engine.js');
     }
 });
