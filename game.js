@@ -1,20 +1,4 @@
 const gameData = {
-   ui: {
-        dialog: `
-            <div class="dialog">
-                <div class="name" id="nameDisplay"></div>
-                <div class="image" id="imageDisplay"></div>
-                <div class="text" id="textDisplay"></div>
-                <button advance_dialog>Next</button>
-            </div>
-        `,
-        test: `
-            <div class="test">
-                <div class="ngame" id="nameDigsplay"></div>
-                <div class="tgext" id="textDgisplay"></div>
-            </div>
-        `
-    },
     scenes: {
         start_screen: {
             html: `
