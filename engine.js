@@ -17,22 +17,24 @@ class VisualNovelEngine {
         this.startVisualNovel();
     }
 
-    setupEventDelegation() {
-        this.mainDiv.addEventListener('click', (e) => {
+  setupEventDelegation() {
+        document.addEventListener('click', (e) => {
+            // First check if we're in a dialog sequence
+            if (this.currentSceneData?.dialog && this.currentDialogIndex < this.currentSceneData.dialog.length) {
+                e.preventDefault();
+                this.progressDialog();
+                return;
+            }
+
+            // Then check for scene transition elements
             const elementWithNextScene = e.target.closest('[next_scene]');
             if (elementWithNextScene) {
                 const targetScene = elementWithNextScene.getAttribute('next_scene');
                 this.renderScene(targetScene);
-                return;
-            }
-
-            // Handle dialog progression on click
-            if (this.currentSceneData?.dialog && this.currentDialogIndex < this.currentSceneData.dialog.length) {
-                e.preventDefault();
-                this.progressDialog();
             }
         });
     }
+
 
     startVisualNovel() {
         if (this.scenesData['start_screen']) {
