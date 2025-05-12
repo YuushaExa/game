@@ -49,6 +49,10 @@ const gameData = {
                 type: "image",
                 source: "background1.jpg"
             },
+            scene: {
+                time: "5", // in seconds
+                next_scene: "block_2" // scene to transition to after 5 seconds
+            },
         },
         block_2: {
             background: {
