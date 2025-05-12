@@ -1,10 +1,10 @@
 const gameData = {
-        ui: {
+   ui: {
         dialog: `
             <div class="dialog">
-                <div class="name" id="nameDisplay">${name}</div>
-                <div class="image" id="imageDisplay">${image}</div>
-                <div class="text" id="textDisplay">${text}</div>
+                <div class="name" id="nameDisplay"></div>
+                <div class="image" id="imageDisplay"></div>
+                <div class="text" id="textDisplay"></div>
                 <button advance_dialog>Next</button>
             </div>
         `,
