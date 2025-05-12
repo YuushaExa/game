@@ -3,6 +3,10 @@ class VisualNovelEngine {
         this.currentScene = null;
         this.scenesData = {};
         this.handlers = {};
+        this.mainDiv = document.getElementById('main');
+        
+        // Set up event delegation once during initialization
+        this.setupEventDelegation();
     }
 
     // Initialize the engine with game data
@@ -10,6 +14,18 @@ class VisualNovelEngine {
         this.scenesData = gameData.scenes;
         this.triggerEvent('dataLoaded');
         this.startVisualNovel();
+    }
+
+    // Set up event delegation for scene transitions
+    setupEventDelegation() {
+        this.mainDiv.addEventListener('click', (e) => {
+            // Check if the clicked element or its parent has a next_scene attribute
+            const elementWithNextScene = e.target.closest('[next_scene]');
+            if (elementWithNextScene) {
+                const targetScene = elementWithNextScene.getAttribute('next_scene');
+                this.renderScene(targetScene);
+            }
+        });
     }
 
     // Start the visual novel
@@ -32,34 +48,11 @@ class VisualNovelEngine {
         }
 
         this.currentScene = sceneId;
-        
-        const mainDiv = document.getElementById('main');
-        mainDiv.innerHTML = scene.html || '';
+        this.mainDiv.innerHTML = scene.html || '';
         
         if (scene.onRender) {
             scene.onRender();
         }
-
-        // Set up scene interactions
-        setTimeout(() => {
-            // Find all elements with next_scene attributes
-            const nextSceneElements = mainDiv.querySelectorAll('[next_scene]');
-            
-            // Add click handlers to these elements
-            nextSceneElements.forEach(element => {
-                element.addEventListener('click', (e) => {
-                    const targetScene = element.getAttribute('next_scene');
-                    this.renderScene(targetScene);
-                });
-            });
-
-            // Auto-advance if specified
-            if (scene.next_scene && nextSceneElements.length === 0) {
-                setTimeout(() => {
-                    this.renderScene(scene.next_scene);
-                }, 3000);
-            }
-        }, 100);
 
         this.triggerEvent('sceneChanged', { sceneId });
     }
