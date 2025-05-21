@@ -77,7 +77,8 @@ const gameData = {
                 source: "#f0f0f0"
             },
         html: ` <div id="counter">0</div>
-    <button id="incrementBtn">Click to +1</button>`,
+    <button id="incrementBtn">Click to +1</button>                             <button class="start-btn" next_scene="block_1">Start Game</button>
+`,
     onRender: function() {
 const counterElement = document.getElementById('counter');
 const incrementBtn = document.getElementById('incrementBtn');
