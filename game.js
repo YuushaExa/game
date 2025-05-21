@@ -42,7 +42,7 @@ const gameData = {
                             <div class="title">Visual Novel</div>
                             <button class="start-btn" next_scene="block_1">Start Game</button>
                          <button class="start-btn" next_scene="block_2">Start 2</button>
-                                             <div class="count-display">Current count: ${globalCount}</div>
+                    <div class="count-display">Current count: ${gameState.globalCount}</div>
                     <button class="options-btn" next_scene="options">Options</button>
                         </div>
             `,
