@@ -84,7 +84,7 @@ const gameData = {
                 type: "color",
                 source: "#f0f0f0"
             },
-        html: `<div id="counter">${globalCount}</div>
+        html: `<div id="counter">${gameState.globalCount}</div>
                   <button id="incrementBtn">Click to +1</button>
                   <button class="start-btn" next_scene="start_screen">Return to Home</button>`,
             onRender: function() {
@@ -93,8 +93,8 @@ const gameData = {
                 counterElement.textContent = gameState.globalCount;
                 incrementBtn.addEventListener('click', function() {
                     globalCount++;
-                    counterElement.textContent = globalCount;
-                    console.log('Counter incremented to:', globalCount);
+                    counterElement.textContent = gameState.globalCount;
+                    console.log('Counter incremented to:', gameState.globalCount);
                 });
             },
                       next_scene: "block_1"
