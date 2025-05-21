@@ -76,17 +76,26 @@ const gameData = {
                 type: "color",
                 source: "#f0f0f0"
             },
-        html: `<button id="colorButton">Click me to change color</button>`,
+        html: ` <div id="counter">0</div>
+    <button id="incrementBtn">Click to +1</button>`,
     onRender: function() {
-        const button = document.getElementById("colorButton");
-        const colors = ["red", "blue", "green", "yellow", "purple", "orange"];
-        let currentColorIndex = 0;
+const counterElement = document.getElementById('counter');
+const incrementBtn = document.getElementById('incrementBtn');
 
-        button.addEventListener("click", function() {
-            currentColorIndex = (currentColorIndex + 1) % colors.length;
-            button.style.backgroundColor = colors[currentColorIndex];
-            button.style.color = "white";
-        });
+// Initialize counter
+let count = 0;
+
+// Add click event listener to the button
+incrementBtn.addEventListener('click', function() {
+    // Increment the counter
+    count++;
+    
+    // Update the displayed count
+    counterElement.textContent = count;
+    
+    // Optional: Log to console
+    console.log('Counter incremented to:', count);
+});
     },
                       next_scene: "block_1"
         },
