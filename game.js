@@ -87,30 +87,30 @@ const gameData = {
         html: `<div id="counter">${gameState.globalCount}</div>
                   <button id="incrementBtn">Click to +1</button>
                   <button class="start-btn" next_scene="start_screen">Return to Home</button>`,
-        onRender: function() {
-    const counterElement = document.getElementById('counter');
-    const incrementBtn = document.getElementById('incrementBtn');
-     if (gameState.intervalId) {
-            clearInterval(gameState.intervalId);
+   onRender: function() {
+        const counterElement = document.getElementById('counter');
+        const incrementBtn = document.getElementById('incrementBtn');
+        
+        // Stop any existing auto-increment
+        if (gameState.autoIncrement) {
+            clearInterval(gameState.autoIncrement);
         }
-            
-    // Set initial value
-    counterElement.textContent = gameState.globalCount;
-    
-    // Manual increment button
-    incrementBtn.addEventListener('click', function() {
-        gameState.globalCount++;
+        
+        // Set initial value
         counterElement.textContent = gameState.globalCount;
-        console.log('Counter incremented to:', gameState.globalCount);
-    });
-    
-    // Automatic increment every second
-    const intervalId = setInterval(function() {
-        gameState.globalCount++;
-        counterElement.textContent = gameState.globalCount;
-        console.log('Auto-incremented to:', gameState.globalCount);
-    }, 1000); // 1000ms = 1 second
-
+        
+        // Manual increment button
+        incrementBtn.addEventListener('click', function() {
+            gameState.globalCount++;
+            counterElement.textContent = gameState.globalCount;
+        });
+        
+        // Start new auto-increment
+        gameState.autoIncrement = setInterval(function() {
+            gameState.globalCount++;
+            counterElement.textContent = gameState.globalCount;
+        }, 1000);
+    }
 },
                       next_scene: "block_1"
         },
