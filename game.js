@@ -1,5 +1,6 @@
-let globalCount = 0;
-
+const gameState = {
+    globalCount: 0
+};
 const gameData = {
     scenes: {
         start_screen: {
@@ -45,6 +46,10 @@ const gameData = {
                     <button class="options-btn" next_scene="options">Options</button>
                         </div>
             `,
+            onRender: function() {
+                // Refresh the count display when returning to this scene
+                document.querySelector('.count-display').textContent = `Current count: ${gameState.globalCount}`;
+            },
             next_scene: "block_1"
         },
         block_1: {
@@ -85,7 +90,7 @@ const gameData = {
             onRender: function() {
                 const counterElement = document.getElementById('counter');
                 const incrementBtn = document.getElementById('incrementBtn');
-globalCount();
+                counterElement.textContent = gameState.globalCount;
                 incrementBtn.addEventListener('click', function() {
                     globalCount++;
                     counterElement.textContent = globalCount;
