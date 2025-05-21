@@ -90,7 +90,10 @@ const gameData = {
         onRender: function() {
     const counterElement = document.getElementById('counter');
     const incrementBtn = document.getElementById('incrementBtn');
-    
+     if (gameState.intervalId) {
+            clearInterval(gameState.intervalId);
+        }
+            
     // Set initial value
     counterElement.textContent = gameState.globalCount;
     
@@ -107,9 +110,7 @@ const gameData = {
         counterElement.textContent = gameState.globalCount;
         console.log('Auto-incremented to:', gameState.globalCount);
     }, 1000); // 1000ms = 1 second
-    
-    // Store intervalId in case you need to clear it later
-    this.intervalId = intervalId;
+
 },
                       next_scene: "block_1"
         },
