@@ -110,7 +110,6 @@ const gameData = {
             gameState.globalCount++;
             counterElement.textContent = gameState.globalCount;
         }, 1000);
-    }
 },
                       next_scene: "block_1"
         },
