@@ -92,7 +92,7 @@ const gameData = {
                 const incrementBtn = document.getElementById('incrementBtn');
                 counterElement.textContent = gameState.globalCount;
                 incrementBtn.addEventListener('click', function() {
-                    globalCount++;
+                    gameState.globalCount++;
                     counterElement.textContent = gameState.globalCount;
                     console.log('Counter incremented to:', gameState.globalCount);
                 });
