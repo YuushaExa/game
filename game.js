@@ -85,7 +85,7 @@ const gameData = {
             onRender: function() {
                 const counterElement = document.getElementById('counter');
                 const incrementBtn = document.getElementById('incrementBtn');
-
+globalCount;
                 incrementBtn.addEventListener('click', function() {
                     globalCount++;
                     counterElement.textContent = globalCount;
