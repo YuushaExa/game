@@ -87,16 +87,30 @@ const gameData = {
         html: `<div id="counter">${gameState.globalCount}</div>
                   <button id="incrementBtn">Click to +1</button>
                   <button class="start-btn" next_scene="start_screen">Return to Home</button>`,
-            onRender: function() {
-                const counterElement = document.getElementById('counter');
-                const incrementBtn = document.getElementById('incrementBtn');
-                counterElement.textContent = gameState.globalCount;
-                incrementBtn.addEventListener('click', function() {
-                    gameState.globalCount++;
-                    counterElement.textContent = gameState.globalCount;
-                    console.log('Counter incremented to:', gameState.globalCount);
-                });
-            },
+        onRender: function() {
+    const counterElement = document.getElementById('counter');
+    const incrementBtn = document.getElementById('incrementBtn');
+    
+    // Set initial value
+    counterElement.textContent = gameState.globalCount;
+    
+    // Manual increment button
+    incrementBtn.addEventListener('click', function() {
+        gameState.globalCount++;
+        counterElement.textContent = gameState.globalCount;
+        console.log('Counter incremented to:', gameState.globalCount);
+    });
+    
+    // Automatic increment every second
+    const intervalId = setInterval(function() {
+        gameState.globalCount++;
+        counterElement.textContent = gameState.globalCount;
+        console.log('Auto-incremented to:', gameState.globalCount);
+    }, 1000); // 1000ms = 1 second
+    
+    // Store intervalId in case you need to clear it later
+    this.intervalId = intervalId;
+},
                       next_scene: "block_1"
         },
       options: {
