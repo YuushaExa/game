@@ -100,54 +100,92 @@ class VisualNovelEngine {
         this.triggerEvent('sceneChanged', { sceneId });
     }
 
-    renderDialogSystem() {
-        this.mainDiv.innerHTML = `
-            <div class="dialog-container">
-                <div class="dialog">
-                    <div class="name" id="nameDisplay"></div>
-                    <div class="image-container">
-                        <img class="image" id="imageDisplay" src="" alt="Character image">
-                    </div>
-                    <div class="text" id="textDisplay"></div>
-                </div>
-            </div>
-            <style>
-                .dialog-container {
-                    position: fixed;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    background: rgba(0, 0, 0, 0.7);
-                    color: white;
-                    padding: 20px;
-                    display: flex;
-                    justify-content: center;
-                }
-                .dialog {
-                    max-width: 800px;
-                    width: 100%;
-                }
-                .name {
-                    font-weight: bold;
-                    font-size: 1.2em;
-                    margin-bottom: 10px;
-                }
-                .image-container {
-                    float: left;
-                    margin-right: 20px;
-                    margin-bottom: 10px;
-                }
-                .image {
-                    max-height: 150px;
-                    max-width: 150px;
-                    border-radius: 5px;
-                }
-                .text {
-                    line-height: 1.5;
-                }
-            </style>
-        `;
+ renderDialogSystem() {
+    // Clear any existing dialog first
+    const existingDialog = this.mainDiv.querySelector('.dialog-container');
+    if (existingDialog) {
+        existingDialog.remove();
     }
+
+    // Add new dialog container
+    this.mainDiv.insertAdjacentHTML('beforeend', `
+        <div class="dialog-container">
+            <div class="dialog">
+                <div class="name" id="nameDisplay"></div>
+                <div class="image-container">
+                    <img class="image" id="imageDisplay" src="" alt="Character image">
+                </div>
+                <div class="text" id="textDisplay"></div>
+                <button class="next-button" id="nextDialog">Next</button>
+            </div>
+        </div>
+    `);
+
+    // Add styles (only once)
+    if (!document.getElementById('dialogStyles')) {
+        const style = document.createElement('style');
+        style.id = 'dialogStyles';
+        style.textContent = `
+            .dialog-container {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(0, 0, 0, 0.7);
+                color: white;
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+                z-index: 1000;
+            }
+            .dialog {
+                max-width: 800px;
+                width: 100%;
+            }
+            .name {
+                font-weight: bold;
+                font-size: 1.2em;
+                margin-bottom: 10px;
+            }
+            .image-container {
+                float: left;
+                margin-right: 20px;
+                margin-bottom: 10px;
+            }
+            .image {
+                max-height: 150px;
+                max-width: 150px;
+                border-radius: 5px;
+            }
+            .text {
+                line-height: 1.5;
+            }
+            .next-button {
+                margin-top: 10px;
+                padding: 5px 15px;
+                cursor: pointer;
+                background: #444;
+                color: white;
+                border: none;
+                border-radius: 4px;
+            }
+            .next-button:hover {
+                background: #555;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // Add event listener for the next button
+    const nextButton = document.getElementById('nextDialog');
+    if (nextButton) {
+        // Remove any existing listeners to prevent duplicates
+        nextButton.replaceWith(nextButton.cloneNode(true));
+        document.getElementById('nextDialog').addEventListener('click', () => {
+            this.nextDialog();
+        });
+    }
+}
 
     showCurrentDialog() {
         if (!this.currentSceneData.dialog || this.currentDialogIndex >= this.currentSceneData.dialog.length) {
